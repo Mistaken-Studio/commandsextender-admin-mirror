@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4E6D17D-926C-4A8A-A8DA-49E6EEE08B45}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mistaken.CommandsExtender.Admin</RootNamespace>
+    <AssemblyName>Mistaken.CommandsExtender.Admin</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <DocumentationFile>bin\Debug\Mistaken.CommandsExtender.Admin.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Exiled.API" HintPath="$(MISTAKEN_REFERENCES)\Exiled.API.dll" />
+    <Reference Include="Exiled.Events" HintPath="$(MISTAKEN_REFERENCES)\Exiled.Events.dll" />
+    <Reference Include="Exiled.Permissions" HintPath="$(MISTAKEN_REFERENCES)\Exiled.Permissions.dll" />
+    <Reference Include="Mistaken.Updater" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.Updater.dll" />
+    <Reference Include="0Mistaken.API" HintPath="$(MISTAKEN_REFERENCES)\0Mistaken.API.dll" />
+    <Reference Include="Mistaken.RoundLogger" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.RoundLogger.dll" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(MISTAKEN_REFERENCES)\UnityEngine.CoreModule.dll" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(MISTAKEN_REFERENCES)\UnityEngine.PhysicsModule.dll" />
+    <Reference Include="CommandSystem.Core" HintPath="$(MISTAKEN_REFERENCES)\CommandSystem.Core.dll" />
+    <Reference Include="Mirror" HintPath="$(MISTAKEN_REFERENCES)\Mirror.dll" />
+    <Reference Include="0Harmony" HintPath="$(MISTAKEN_REFERENCES)\0Harmony.dll" />
+    <Reference Include="NorthwoodLib" HintPath="$(MISTAKEN_REFERENCES)\NorthwoodLib.dll" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(MISTAKEN_REFERENCES)\Assembly-CSharp-firstpass.dll" />
+    <Reference Include="Assembly-CSharp-Publicized" HintPath="$(MISTAKEN_REFERENCES)\Assembly-CSharp-Publicized.dll" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandsHandler.cs" />
+    <Compile Include="Commands\AfkCommand.cs" />
+    <Compile Include="Commands\AmmoCommand.cs" />
+    <Compile Include="Commands\BigItemsCommand.cs" />
+    <Compile Include="Commands\BlackoutCommand.cs" />
+    <Compile Include="Commands\C106Command.cs" />
+    <Compile Include="Commands\CassiePrivateCommand.cs" />
+    <Compile Include="Commands\CEHelpCommand.cs" />
+    <Compile Include="Commands\ClearMapCommand.cs" />
+    <Compile Include="Commands\Controll079Command.cs" />
+    <Compile Include="Commands\CustomRoundTimeCommand.cs" />
+    <Compile Include="Commands\DLCZCommand.cs" />
+    <Compile Include="Commands\DmgInfoCommand.cs" />
+    <Compile Include="Commands\DoorRestartCommand.cs" />
+    <Compile Include="Commands\DropAllCommand.cs" />
+    <Compile Include="Commands\FakeNickCommand.cs" />
+    <Compile Include="Commands\GiveRankCommand.cs" />
+    <Compile Include="Commands\Grenades\BallCommand.cs" />
+    <Compile Include="Commands\Grenades\CandelaCommand.cs" />
+    <Compile Include="Commands\Grenades\FlashCommand.cs" />
+    <Compile Include="Commands\Grenades\GrenadeCommand.cs" />
+    <Compile Include="Commands\IntercomCommand.cs" />
+    <Compile Include="Commands\KillCommand.cs" />
+    <Compile Include="Commands\LastAttackerCmd.cs" />
+    <Compile Include="Commands\LastVictimCommand.cs" />
+    <Compile Include="Commands\LockElevatorCommand.cs" />
+    <Compile Include="Commands\MarkCommand.cs" />
+    <Compile Include="Commands\MCommands\MCloseCommand.cs" />
+    <Compile Include="Commands\MCommands\MDestroyCommand.cs" />
+    <Compile Include="Commands\MCommands\MLockCommand.cs" />
+    <Compile Include="Commands\MCommands\MOpenCommand.cs" />
+    <Compile Include="Commands\MCommands\MUnLockCommand.cs" />
+    <Compile Include="Commands\MuteAllCommand.cs" />
+    <Compile Include="Commands\OverchargeCommand.cs" />
+    <Compile Include="Commands\OverheatCommand.cs" />
+    <Compile Include="Commands\PBCClearCmd.cs" />
+    <Compile Include="Commands\PBCCmd.cs" />
+    <Compile Include="Commands\PoliceCommand.cs" />
+    <Compile Include="Commands\RespawnCommand.cs" />
+    <Compile Include="Commands\RespawnLockCommand.cs" />
+    <Compile Include="Commands\SetSizeCommand.cs" />
+    <Compile Include="Commands\ShakeCommand.cs" />
+    <Compile Include="Commands\SpawnDummyCommand.cs" />
+    <Compile Include="Commands\SpecRoleCommand.cs" />
+    <Compile Include="Commands\TalkCommand.cs" />
+    <Compile Include="Commands\TeslaCommand.cs" />
+    <Compile Include="Commands\TpcCommand.cs" />
+    <Compile Include="Commands\TTRCommand.cs" />
+    <Compile Include="Commands\TutorialMeCommand.cs" />
+    <Compile Include="Commands\UnMuteAllCommand.cs" />
+    <Compile Include="Commands\VanishCommand.cs" />
+    <Compile Include="Commands\WarheadCommand.cs" />
+    <Compile Include="Commands\WarpCommand.cs" />
+    <Compile Include="Commands\WorkstationCommand.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Patches\NicknamePatch.cs" />
+    <Compile Include="Patches\NicknamePatch2.cs" />
+    <Compile Include="PluginHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+    <None Include="packages.config" />
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) $(MISTAKEN_REFERENCES)\$(TargetFileName)
+copy $(TargetDir)\$(TargetName).xml $(MISTAKEN_REFERENCES)\$(TargetName).xml</PostBuildEvent>
+  </PropertyGroup>
+</Project>
