@@ -1,0 +1,8 @@
+﻿################################################################################
+# Ten plik .gitignore został utworzony automatycznie przez Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/CommandsExtender-Admin/obj/Debug
+/packages/StyleCop.Analyzers.1.1.118
+/CommandsExtender-Admin/bin/Debug
