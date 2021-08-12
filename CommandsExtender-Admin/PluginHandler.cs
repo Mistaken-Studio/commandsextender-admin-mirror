@@ -33,7 +33,7 @@ namespace Mistaken.CommandsExtender.Admin
         {
             Instance = this;
 
-            this.harmony = new HarmonyLib.Harmony("com.mistaken.api");
+            this.harmony = new HarmonyLib.Harmony("com.mistaken.commandsextenderadmin");
             this.harmony.PatchAll();
             new CommandsHandler(this);
 

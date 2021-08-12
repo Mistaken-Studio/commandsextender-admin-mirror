@@ -61,6 +61,9 @@
     <Compile Include="CommandsHandler.cs" />
     <Compile Include="Commands\AfkCommand.cs" />
     <Compile Include="Commands\AmmoCommand.cs" />
+    <Compile Include="Commands\Ban2\Ban2Command.cs" />
+    <Compile Include="Commands\Ban2\ConfirmCommand.cs" />
+    <Compile Include="Commands\Ban2\GuessBanDurationEventArgs.cs" />
     <Compile Include="Commands\BigItemsCommand.cs" />
     <Compile Include="Commands\BlackoutCommand.cs" />
     <Compile Include="Commands\C106Command.cs" />
