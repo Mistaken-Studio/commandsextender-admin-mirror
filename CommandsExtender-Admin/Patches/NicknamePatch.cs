@@ -12,7 +12,7 @@ using Mistaken.CommandsExtender.Admin.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Patches
 {
-    /// <summary>
+    /*/// <summary>
     /// Nickname patch.
     /// </summary>
     [HarmonyPatch(typeof(NicknameSync), "UpdateNickname", typeof(string))]
@@ -36,5 +36,5 @@ namespace Mistaken.CommandsExtender.Admin.Patches
                 n = newNick;
             return true;
         }
-    }
+    }*/
 }

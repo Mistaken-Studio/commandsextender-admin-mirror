@@ -51,7 +51,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             }
             else if (bool.TryParse(args[0], out bool value))
             {
-                GameObject.FindObjectOfType<LureSubjectContainer>().SetState(value);
+                GameObject.FindObjectOfType<LureSubjectContainer>().SetState(value, value);
                 success = true;
                 return new string[] { "Changed" };
             }

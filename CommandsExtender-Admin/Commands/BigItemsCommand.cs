@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class BigItemsCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "big_items";
@@ -71,5 +71,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 return new string[] { this.GetUsage() };
             }
         }
-    }
+    }*/
 }

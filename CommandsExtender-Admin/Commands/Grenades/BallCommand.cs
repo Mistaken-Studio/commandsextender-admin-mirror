@@ -12,7 +12,7 @@ using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class BallCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ball";
@@ -60,5 +60,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
                 RealPlayers.Get(item).DropGrenadeUnder(2, times);
             }
         }
-    }
+    }*/
 }

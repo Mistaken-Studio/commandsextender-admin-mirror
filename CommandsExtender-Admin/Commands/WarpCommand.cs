@@ -6,6 +6,7 @@
 
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
@@ -104,7 +105,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "079":
                     {
-                        Vector3 pos = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp079);
+                        Vector3 pos = RoleType.Scp079.GetRandomSpawnProperties().Item1;
                         player.Position = new Vector3(pos.x, pos.y + 2, pos.z);
                         return new string[] { "Done" };
                     }

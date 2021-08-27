@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class KillCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "kill";
@@ -47,5 +47,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             return "Kill [Id] [Reason]";
         }
-    }
+    }*/
 }

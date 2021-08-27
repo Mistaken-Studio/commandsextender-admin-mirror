@@ -34,7 +34,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         });
 
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
-        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)>();
+        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, ushort AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)> SavedInfo
+            = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, ushort AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)>();
 
         public string Permission => "talk";
 
@@ -54,14 +55,14 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             {
                 foreach (var playerId in players)
                 {
-                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
+                    if (SavedInfo.TryGetValue(playerId, out var data))
                     {
                         SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
                         if (p == null)
                         {
-                            if (data.Role.GetTeam() == Team.SCP)
-                                NineTailedFoxAnnouncer.CheckForZombies(Server.Host.GameObject);
+                            // if (data.Role.GetTeam() == Team.SCP)
+                            //     NineTailedFoxAnnouncer.CheckForZombies(Server.Host.GameObject);
                             continue;
                         }
 
@@ -107,17 +108,18 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                                 p.Health = data.HP;
                                 p.ArtificialHealth = data.AP;
-                                p.Inventory.Clear();
+                                p.ClearInventory();
                                 foreach (var item in data.Inventory)
-                                    p.Inventory.items.Add(item);
-
-                                p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
-                                p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
-                                p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                                    p.AddItem(item);
+                                p.Ammo[ItemType.Ammo12gauge] = data.Ammo12gauge;
+                                p.Ammo[ItemType.Ammo44cal] = data.Ammo44cal;
+                                p.Ammo[ItemType.Ammo556x45] = data.Ammo556x45;
+                                p.Ammo[ItemType.Ammo762x39] = data.Ammo762x39;
+                                p.Ammo[ItemType.Ammo9x19] = data.Ammo9x19;
 
                                 foreach (var item in data.effects)
                                 {
-                                    item.effect.ServerChangeIntensity(item.intensity);
+                                    item.effect.Intensity = item.intensity;
                                     item.effect.ServerChangeDuration(item.dur);
                                 }
 
@@ -158,10 +160,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                             p.Role,
                             p.Health,
                             p.ArtificialHealth,
-                            p.Inventory.items.ToArray(),
-                            p.Ammo[(int)AmmoType.Nato9],
-                            p.Ammo[(int)AmmoType.Nato556],
-                            p.Ammo[(int)AmmoType.Nato762],
+                            p.Items.ToArray(),
+                            p.Ammo[ItemType.Ammo12gauge],
+                            p.Ammo[ItemType.Ammo44cal],
+                            p.Ammo[ItemType.Ammo556x45],
+                            p.Ammo[ItemType.Ammo762x39],
+                            p.Ammo[ItemType.Ammo9x19],
                             RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName),
                             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType,
                             p.ReferenceHub.playerEffectsController.AllEffects.Values.Select(i => (i, i.Duration, i.Intensity)).ToArray()));

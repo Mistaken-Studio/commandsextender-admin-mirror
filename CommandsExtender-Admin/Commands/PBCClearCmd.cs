@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+﻿/*// -----------------------------------------------------------------------
 // <copyright file="PBCClearCmd.cs" company="Mistaken">
 // Copyright (c) Mistaken. All rights reserved.
 // </copyright>
@@ -43,3 +43,4 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         }
     }
 }
+*/

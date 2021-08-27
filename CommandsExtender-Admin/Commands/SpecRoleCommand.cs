@@ -59,7 +59,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     break;
                 case "ci":
                 case "chaos":
-                    SpecRole = RoleType.ChaosInsurgency;
+                    SpecRole = RoleType.ChaosConscript;
                     break;
                 case "guard":
                     SpecRole = RoleType.FacilityGuard;
@@ -67,19 +67,19 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 case "ntfcommander":
                 case "comm":
                 case "commander":
-                    SpecRole = RoleType.NtfCommander;
+                    SpecRole = RoleType.NtfCaptain;
                     break;
                 case "ntfcadet":
                 case "cadet":
-                    SpecRole = RoleType.NtfCadet;
+                    SpecRole = RoleType.NtfPrivate;
                     break;
                 case "ntflieutenant":
                 case "lieutenant":
-                    SpecRole = RoleType.NtfLieutenant;
+                    SpecRole = RoleType.NtfSergeant;
                     break;
                 case "ntfsci":
                 case "ntfscientist":
-                    SpecRole = RoleType.NtfScientist;
+                    SpecRole = RoleType.NtfSpecialist;
                     break;
                 case "173":
                     SpecRole = RoleType.Scp173;

@@ -12,7 +12,7 @@ using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class WarheadCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "basic";
@@ -222,5 +222,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             return "warhead start/stop/on/off/lockstart/lockstop/lockbutton/locklever/getlast/stats";
         }
-    }
+    }*/
 }

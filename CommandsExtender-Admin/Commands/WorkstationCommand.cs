@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class WorkstationCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "workstation";
@@ -112,5 +112,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             spawned.transform.localScale = size;
             NetworkServer.Spawn(spawned);
         }
-    }
+    }*/
 }

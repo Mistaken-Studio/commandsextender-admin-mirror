@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class AmmoCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ammo";
@@ -138,5 +138,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             s = true;
             return output;
         }
-    }
+    }*/
 }
