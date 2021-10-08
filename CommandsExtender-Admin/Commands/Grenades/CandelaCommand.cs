@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
-using Grenades;
 using MEC;
 using Mirror;
 using Mistaken.API;
@@ -17,7 +16,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class CandelaCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "canadel";
@@ -99,5 +98,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
             NetworkServer.Destroy(originalComponent.gameObject);
             GameObject.Destroy(originalComponent.gameObject);
         }
-    }
+    }*/
 }

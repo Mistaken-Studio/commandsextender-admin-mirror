@@ -33,7 +33,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             if (args.Length == 0) return new string[] { this.GetUsage() };
             var output = this.ForeachPlayer(args[0], out bool success, (player) =>
             {
-                player.ReferenceHub.inventory.ServerDropAll();
+                player.DropItems();
                 return new string[] { "Done" };
             });
             if (!success) return new string[] { "Player not found", this.GetUsage() };

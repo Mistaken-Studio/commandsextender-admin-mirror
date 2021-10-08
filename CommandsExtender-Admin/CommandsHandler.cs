@@ -41,7 +41,6 @@ namespace Mistaken.CommandsExtender.Admin
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => this.Player_ChangingRole(ev));
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => this.Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.Dying += this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => this.Player_Dying(ev));
-            Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => this.Player_ChangedRole(ev));
         }
 
         public override void OnDisable()
@@ -54,42 +53,12 @@ namespace Mistaken.CommandsExtender.Admin
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => this.Player_ChangingRole(ev));
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => this.Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.Dying -= this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => this.Player_Dying(ev));
-            Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => this.Player_ChangedRole(ev));
-        }
-
-        private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
-        {
-            if (ev.Player.IsHuman)
-            {
-                var set = ev.Player.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
-                if (set.Count != 0)
-                {
-                    foreach (var admin in set)
-                    {
-                        if (admin.Role == RoleType.Tutorial)
-                            ev.Player.ChangeAppearance(admin, RoleType.Tutorial);
-                    }
-                }
-            }
-
-            foreach (var item in RealPlayers.List)
-            {
-                var set2 = item.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
-                foreach (var admin in set2)
-                {
-                    if (admin.Role != RoleType.Tutorial)
-                    {
-                        set2.Remove(admin);
-                        item.ChangeAppearance(admin, item.Role);
-                    }
-                }
-            }
         }
 
         private void Server_RoundStarted()
         {
-            TalkCommand.AfterWarHeadRooms.Add(Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.ChaosInsurgency));
-            TalkCommand.AfterWarHeadRooms.Add(Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.NtfCommander));
+            TalkCommand.AfterWarHeadRooms.Add(RoleType.ChaosConscript.GetRandomSpawnProperties().Item1);
+            TalkCommand.AfterWarHeadRooms.Add(RoleType.NtfCaptain.GetRandomSpawnProperties().Item1);
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(87f, 996f, -48f)); // Elevator near Gate B
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, -58f)); // Bridge
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, 1f)); // Crossroads near Gate A elevator
@@ -102,6 +71,41 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (ev.NewRole == RoleType.Spectator && SpecRoleCommand.SpecRole != RoleType.Spectator && SpecRoleCommand.SpecRole != RoleType.None)
                 ev.NewRole = SpecRoleCommand.SpecRole;
+
+            if (VanishHandler.Vanished.ContainsKey(ev.Player.Id))
+            {
+                VanishHandler.SetGhost(ev.Player, false);
+                ev.Player.Broadcast(5, "Vanish deactivated due to role change", Broadcast.BroadcastFlags.AdminChat);
+            }
+
+            MEC.Timing.CallDelayed(1, () =>
+            {
+                if (ev.Player.IsHuman)
+                {
+                    var set = ev.Player.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+                    if (set.Count != 0)
+                    {
+                        foreach (var admin in set)
+                        {
+                            if (admin.Role == RoleType.Tutorial)
+                                ev.Player.ChangeAppearance(admin, RoleType.Tutorial);
+                        }
+                    }
+                }
+
+                foreach (var item in RealPlayers.List)
+                {
+                    var set2 = item.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+                    foreach (var admin in set2)
+                    {
+                        if (admin.Role != RoleType.Tutorial)
+                        {
+                            set2.Remove(admin);
+                            item.ChangeAppearance(admin, item.Role);
+                        }
+                    }
+                }
+            });
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
@@ -134,7 +138,7 @@ namespace Mistaken.CommandsExtender.Admin
             {
                 foreach (var playerId in players)
                 {
-                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
+                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -156,18 +160,20 @@ namespace Mistaken.CommandsExtender.Admin
                                 p.Position = data.Pos;
                                 p.Health = data.HP;
                                 p.ArtificialHealth = data.AP;
-                                p.Inventory.Clear();
+                                p.ClearInventory();
                                 foreach (var item in data.Inventory)
-                                    p.Inventory.items.Add(item);
-                                p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
-                                p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
-                                p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                                    p.AddItem(item);
+                                p.Ammo[ItemType.Ammo12gauge] = data.Ammo12gauge;
+                                p.Ammo[ItemType.Ammo44cal] = data.Ammo44cal;
+                                p.Ammo[ItemType.Ammo556x45] = data.Ammo556x45;
+                                p.Ammo[ItemType.Ammo762x39] = data.Ammo762x39;
+                                p.Ammo[ItemType.Ammo9x19] = data.Ammo9x19;
                                 p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName.Trim();
                                 p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
 
                                 foreach (var item in data.effects)
                                 {
-                                    item.effect.ServerChangeIntensity(item.intensity);
+                                    item.effect.Intensity = item.intensity;
                                     item.effect.ServerChangeDuration(item.dur);
                                 }
                             },
@@ -184,7 +190,7 @@ namespace Mistaken.CommandsExtender.Admin
             if (!ev.Target.IsReadyPlayer())
                 return;
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
-                ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.DamageType.name} | {ev.Amount}");
+                ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.DamageType.Name} | {ev.Amount}");
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
                 LastAttackers[ev.Target.UserId] = (null, ev.Attacker);
             else
@@ -219,16 +225,16 @@ namespace Mistaken.CommandsExtender.Admin
                 ev.Door.BreakDoor();
             MDestroyCommand.Active.Remove(ev.Player.Id);
             if (MOpenCommand.Active.Contains(ev.Player.Id))
-                ev.Door.NetworkTargetState = true;
+                ev.Door.IsOpen = true;
             MOpenCommand.Active.Remove(ev.Player.Id);
             if (MCloseCommand.Active.Contains(ev.Player.Id))
-                ev.Door.NetworkTargetState = false;
+                ev.Door.IsOpen = false;
             MCloseCommand.Active.Remove(ev.Player.Id);
             if (MLockCommand.Active.Contains(ev.Player.Id))
-                ev.Door.NetworkActiveLocks |= (byte)DoorLockReason.AdminCommand;
+                ev.Door.ChangeLock(ev.Door.DoorLockType | DoorLockType.AdminCommand);
             MLockCommand.Active.Remove(ev.Player.Id);
             if (MUnlockCommand.Active.Contains(ev.Player.Id))
-                ev.Door.NetworkActiveLocks = (byte)(ev.Door.NetworkActiveLocks & ~(byte)DoorLockReason.AdminCommand);
+                ev.Door.ChangeLock(ev.Door.DoorLockType & ~DoorLockType.AdminCommand);
             MUnlockCommand.Active.Remove(ev.Player.Id);
         }
 

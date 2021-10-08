@@ -29,7 +29,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
-            Recontainer079.BeginContainment(true);
+            Recontainer079.FindObjectOfType<Recontainer079>().BeginOvercharge();
             success = true;
             return new string[] { "Starting" };
         }

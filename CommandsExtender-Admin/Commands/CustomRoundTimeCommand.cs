@@ -26,7 +26,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = true;
-            return new string[] { RoundStart.RoundLenght.ToString("hh\\:mm\\:ss\\.fff", CultureInfo.InvariantCulture) };
+            return new string[] { RoundStart.RoundLength.ToString("hh\\:mm\\:ss\\.fff", CultureInfo.InvariantCulture) };
         }
     }
 }

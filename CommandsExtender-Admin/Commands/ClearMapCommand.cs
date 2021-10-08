@@ -6,6 +6,7 @@
 
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Features;
 using Mirror;
 using Mistaken.API.Commands;
 using UnityEngine;
@@ -35,8 +36,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             bool ragdoll = false;
             if (args.Length > 0)
                 bool.TryParse(args[0], out ragdoll);
-            foreach (var item in Pickup.Instances.ToArray())
-                item.Delete();
+            foreach (var item in Map.Pickups.ToArray())
+                item.Destroy();
             if (ragdoll)
             {
                 foreach (var item in GameObject.FindObjectsOfType<Ragdoll>().ToArray())

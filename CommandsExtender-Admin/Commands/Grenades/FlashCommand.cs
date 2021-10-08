@@ -12,7 +12,7 @@ using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class FlashCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "flash";
@@ -61,5 +61,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
                 return new string[] { "Done" };
             }
         }
-    }
+    }*/
 }

@@ -21,7 +21,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "warhead";
 
-        public override string[] Aliases => new string[] { };
+        public override string[] Aliases => new string[] { "warhead_controll", "wc" };
 
         public override string Description => "Controll Alpha Warhead";
 

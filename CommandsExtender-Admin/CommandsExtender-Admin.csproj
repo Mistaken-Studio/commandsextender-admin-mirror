@@ -24,6 +24,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <RegisterForComInterop>false</RegisterForComInterop>
     <DocumentationFile>bin\Debug\Mistaken.CommandsExtender.Admin.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,11 +61,10 @@
   <ItemGroup>
     <Compile Include="CommandsHandler.cs" />
     <Compile Include="Commands\AfkCommand.cs" />
-    <Compile Include="Commands\AmmoCommand.cs" />
     <Compile Include="Commands\Ban2\Ban2Command.cs" />
     <Compile Include="Commands\Ban2\ConfirmCommand.cs" />
     <Compile Include="Commands\Ban2\GuessBanDurationEventArgs.cs" />
-    <Compile Include="Commands\BigItemsCommand.cs" />
+    <Compile Include="Commands\FullChangeColorCommand.cs" />
     <Compile Include="Commands\BlackoutCommand.cs" />
     <Compile Include="Commands\C106Command.cs" />
     <Compile Include="Commands\CassiePrivateCommand.cs" />
@@ -83,7 +83,6 @@
     <Compile Include="Commands\Grenades\FlashCommand.cs" />
     <Compile Include="Commands\Grenades\GrenadeCommand.cs" />
     <Compile Include="Commands\IntercomCommand.cs" />
-    <Compile Include="Commands\KillCommand.cs" />
     <Compile Include="Commands\LastAttackerCmd.cs" />
     <Compile Include="Commands\LastVictimCommand.cs" />
     <Compile Include="Commands\LockElevatorCommand.cs" />
@@ -96,8 +95,6 @@
     <Compile Include="Commands\MuteAllCommand.cs" />
     <Compile Include="Commands\OverchargeCommand.cs" />
     <Compile Include="Commands\OverheatCommand.cs" />
-    <Compile Include="Commands\PBCClearCmd.cs" />
-    <Compile Include="Commands\PBCCmd.cs" />
     <Compile Include="Commands\PoliceCommand.cs" />
     <Compile Include="Commands\RespawnCommand.cs" />
     <Compile Include="Commands\RespawnLockCommand.cs" />
@@ -114,7 +111,6 @@
     <Compile Include="Commands\VanishCommand.cs" />
     <Compile Include="Commands\WarheadCommand.cs" />
     <Compile Include="Commands\WarpCommand.cs" />
-    <Compile Include="Commands\WorkstationCommand.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Patches\NicknamePatch.cs" />
     <Compile Include="Patches\NicknamePatch2.cs" />

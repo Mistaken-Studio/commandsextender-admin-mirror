@@ -18,7 +18,7 @@ namespace Mistaken.CommandsExtender.Admin
 {
     /// <inheritdoc/>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class Ban2Command : IBetterCommand
+    public class Ban2Command : IBetterCommand, IUsageProvider
     {
         /// <summary>
         /// Event used to guess ban duration.
@@ -35,6 +35,14 @@ namespace Mistaken.CommandsExtender.Admin
         public override string Description => "Good old ban2";
 
         /// <inheritdoc/>
+        public string[] Usage => new string[]
+        {
+            "%player%",
+            "Duration (ex 5m, 1h, 2d, 1w, 1mo, 50y)",
+            "Reason",
+        };
+
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
@@ -43,7 +51,7 @@ namespace Mistaken.CommandsExtender.Admin
                 try
                 {
                     var commandSender = sender as CommandSender;
-                    if (!int.TryParse(args[0], out int pid))
+                    if (!int.TryParse(args[0].Split('.')[0], out int pid))
                         return new string[] { "Failed to parse playerId to int32" };
                     var target = RealPlayers.Get(pid);
                     if (target == null)
