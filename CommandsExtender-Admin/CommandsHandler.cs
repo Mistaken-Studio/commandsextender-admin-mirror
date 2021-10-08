@@ -138,7 +138,7 @@ namespace Mistaken.CommandsExtender.Admin
             {
                 foreach (var playerId in players)
                 {
-                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, ushort AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
+                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -225,16 +225,16 @@ namespace Mistaken.CommandsExtender.Admin
                 ev.Door.BreakDoor();
             MDestroyCommand.Active.Remove(ev.Player.Id);
             if (MOpenCommand.Active.Contains(ev.Player.Id))
-                ev.Door.Open = true;
+                ev.Door.IsOpen = true;
             MOpenCommand.Active.Remove(ev.Player.Id);
             if (MCloseCommand.Active.Contains(ev.Player.Id))
-                ev.Door.Open = false;
+                ev.Door.IsOpen = false;
             MCloseCommand.Active.Remove(ev.Player.Id);
             if (MLockCommand.Active.Contains(ev.Player.Id))
-                ev.Door.DoorLockType |= DoorLockType.AdminCommand;
+                ev.Door.ChangeLock(ev.Door.DoorLockType | DoorLockType.AdminCommand);
             MLockCommand.Active.Remove(ev.Player.Id);
             if (MUnlockCommand.Active.Contains(ev.Player.Id))
-                ev.Door.DoorLockType &= ~DoorLockType.AdminCommand;
+                ev.Door.ChangeLock(ev.Door.DoorLockType & ~DoorLockType.AdminCommand);
             MUnlockCommand.Active.Remove(ev.Player.Id);
         }
 
