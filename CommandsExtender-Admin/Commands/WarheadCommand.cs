@@ -19,9 +19,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public string PluginName => PluginHandler.Instance.Name;
 
-        public override string Command => "warhead";
+        public override string Command => "warhead_controll";
 
-        public override string[] Aliases => new string[] { "warhead_controll", "wc" };
+        public override string[] Aliases => new string[] { "wc" };
 
         public override string Description => "Controll Alpha Warhead";
 
