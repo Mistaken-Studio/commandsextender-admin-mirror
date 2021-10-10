@@ -113,7 +113,7 @@ namespace Mistaken.CommandsExtender.Admin
 
         internal static void CompleteBan(CommandSender senderPlayer, string reason, Player target, int duration, string textTime, bool loud)
         {
-            target.Ban(duration * 60, $"[{textTime}] {reason}", senderPlayer?.SenderId ?? "UNKNOWN");
+            target.Ban(duration * 60, $"[{textTime}] {reason}", senderPlayer?.LogName ?? "UNKNOWN");
             if (loud)
                 Map.Broadcast(5, target?.Nickname + " has been <color=red>banned</color> from this server", Broadcast.BroadcastFlags.Normal);
         }
