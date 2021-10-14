@@ -78,11 +78,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             }
             else
             {
-                player.Role = RoleType.Spectator;
-                VanishHandler.SetGhost(player, false);
                 player.IsGodModeEnabled = false;
                 player.IsBypassModeEnabled = false;
                 player.NoClipEnabled = false;
+                player.Role = RoleType.Spectator;
+                VanishHandler.SetGhost(player, false);
             }
 
             success = true;
