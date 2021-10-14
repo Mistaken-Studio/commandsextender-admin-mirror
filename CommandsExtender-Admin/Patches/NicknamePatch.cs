@@ -12,11 +12,11 @@ using Mistaken.CommandsExtender.Admin.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Patches
 {
-    /*/// <summary>
+    /// <summary>
     /// Nickname patch.
     /// </summary>
-    [HarmonyPatch(typeof(NicknameSync), "UpdateNickname", typeof(string))]
-    [HarmonyPatch(typeof(NicknameSync), "CallCmdSetNick", typeof(string))]
+    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.UpdateNickname), typeof(string))]
+    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.UserCode_CmdSetNick), typeof(string))]
     public static class NicknamePatch
     {
         /// <summary>
@@ -36,5 +36,5 @@ namespace Mistaken.CommandsExtender.Admin.Patches
                 n = newNick;
             return true;
         }
-    }*/
+    }
 }
