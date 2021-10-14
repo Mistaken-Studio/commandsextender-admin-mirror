@@ -33,7 +33,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
-            if (args.Length < 3) 
+            if (args.Length < 3)
                 return new string[] { this.GetUsage() };
             string color = args[1].ToLower();
             string txt = string.Join(" ", args.Skip(2));

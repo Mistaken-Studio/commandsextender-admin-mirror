@@ -12,11 +12,11 @@ using Mistaken.CommandsExtender.Admin.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Patches
 {
-    /*/// <summary>
+    /// <summary>
     /// Nickname patch.
     /// </summary>
-    [HarmonyPatch(typeof(NicknameSync), "UpdateNickname", typeof(string))]
-    [HarmonyPatch(typeof(NicknameSync), "CallCmdSetNick", typeof(string))]
+    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.UpdateNickname), typeof(string))]
+    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.UserCode_CmdSetNick), typeof(string))]
     public static class NicknamePatch
     {
         /// <summary>
@@ -32,9 +32,9 @@ namespace Mistaken.CommandsExtender.Admin.Patches
             if (string.IsNullOrWhiteSpace(__instance._hub.characterClassManager.UserId))
                 return true;
             RealNicknames[__instance._hub.characterClassManager.UserId] = n;
-            if (FakeNickCommand.FullNicknames.TryGetValue(__instance._hub.characterClassManager.UserId, out string newNick))
+            if (FakeNickCommand.RealNicknames.TryGetValue(__instance._hub.characterClassManager.UserId, out string newNick))
                 n = newNick;
             return true;
         }
-    }*/
+    }
 }
