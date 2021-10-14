@@ -6,14 +6,16 @@
 
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Features.Items;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
+using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class FlashCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    internal class FlashCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "flash";
 
@@ -26,16 +28,25 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public override string[] Aliases => new string[] { };
 
+        public string[] Usage => new string[]
+        {
+            "%player%",
+            "amount (default is 1)",
+        };
+
         public string GetUsage()
         {
-            return "FLASH [PLAYER ID/'ALL'] (AMOUNT)";
+            return "FLASH [PLAYER ID] (AMOUNT)";
         }
 
         public void DropUnder(int[] pids, int times)
         {
+            var nade = new Throwable(ItemType.GrenadeFlash);
             foreach (var item in pids)
             {
-                RealPlayers.Get(item).DropGrenadeUnder(1, times);
+                var player = RealPlayers.Get(item);
+                for (int i = 0; i < times; i++)
+                    nade.Throw(player.Position, Vector3.down);
             }
         }
 
@@ -61,5 +72,5 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
                 return new string[] { "Done" };
             }
         }
-    }*/
+    }
 }

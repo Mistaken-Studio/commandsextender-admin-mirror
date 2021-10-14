@@ -8,16 +8,19 @@ using System.Collections.Generic;
 using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using InventorySystem.Items.ThrowableProjectiles;
 using MEC;
 using Mirror;
 using Mistaken.API;
 using Mistaken.API.Commands;
+using Mistaken.API.Extensions;
 using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class CandelaCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    internal class CandelaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "canadel";
 
@@ -28,6 +31,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
         public override string[] Aliases => new string[] { };
 
         public string PluginName => PluginHandler.Instance.Name;
+
+        public string[] Usage => new string[]
+        {
+            "%player%",
+            "amount (default is 1)",
+        };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
@@ -54,49 +63,44 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public string GetUsage()
         {
-            return "CANADEL [PLAYER ID/'ALL'] (AMOUNT)";
+            return "CANADEL [PLAYER ID] (AMOUNT)";
         }
 
         public void DropUnder(int[] pids, int times)
         {
             foreach (var item in pids)
-                API.Diagnostics.Module.RunSafeCoroutine(this.Execute(RealPlayers.Get(item).GrenadeManager, times), "CanadelCommand.Execute");
+                API.Diagnostics.Module.RunSafeCoroutine(this.Execute(RealPlayers.Get(item), times), "CanadelCommand.Execute");
         }
 
         public void Throw(int pid, int times)
         {
-            API.Diagnostics.Module.RunSafeCoroutine(this.Execute(RealPlayers.Get(pid).GrenadeManager, times), "CanadelCommand.Execute");
+            API.Diagnostics.Module.RunSafeCoroutine(this.Execute(RealPlayers.Get(pid), times), "CanadelCommand.Execute");
         }
 
-        public IEnumerator<float> Execute(GrenadeManager grenadeManager, int amount = 5, bool throwIt = false)
+        public IEnumerator<float> Execute(Player player, int amount = 5, bool throwIt = false)
         {
-            GrenadeSettings settings = grenadeManager.availableGrenades[1];
+            var nade = new Throwable(ItemType.GrenadeFlash);
 
-            Grenade originalComponent = UnityEngine.Object.Instantiate<GameObject>(settings.grenadeInstance).GetComponent<Grenade>();
+            ThrownProjectile projectile;
             if (throwIt)
-                originalComponent.InitData(grenadeManager, Vector3.zero, Player.Get(grenadeManager.gameObject).ReferenceHub.PlayerCameraReference.forward);
+                projectile = nade.Throw(player.Position, player.CameraTransform.forward);
             else
-                originalComponent.InitData(grenadeManager, Vector3.zero, Vector3.down);
-            NetworkServer.Spawn(originalComponent.gameObject);
+                projectile = nade.Throw(player.Position, Vector3.down);
             yield return Timing.WaitForSeconds(2);
-            Vector3 originaPosition = originalComponent.transform.position;
+            Vector3 originaPosition = projectile.transform.position;
             for (int i = 0; i < amount; i++)
             {
-                Grenade component = UnityEngine.Object.Instantiate<GameObject>(settings.grenadeInstance).GetComponent<Grenade>();
                 Vector3 dir = new Vector3
                 {
                     x = UnityEngine.Random.Range(-2f, 2f),
                     y = 2f,
                     z = UnityEngine.Random.Range(-2f, 2f),
                 };
-                grenadeManager.transform.position = originaPosition;
-                component.InitData(grenadeManager, Vector3.one, dir, UnityEngine.Random.Range(0.5f, 5f));
-                NetworkServer.Spawn(component.gameObject);
+                projectile = nade.Throw(originaPosition, dir, UnityEngine.Random.Range(0.5f, 5f));
                 yield return Timing.WaitForSeconds(0.1f);
             }
 
-            NetworkServer.Destroy(originalComponent.gameObject);
-            GameObject.Destroy(originalComponent.gameObject);
+            NetworkServer.Destroy(projectile.gameObject);
         }
-    }*/
+    }
 }
