@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using CommandSystem;
-using Mistaken.API.Commands;
-using Exiled.API.Extensions;
 using System.Linq;
+using CommandSystem;
+using Exiled.API.Extensions;
+using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
