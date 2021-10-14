@@ -36,6 +36,7 @@ namespace Mistaken.CommandsExtender.Admin
             this.harmony = new HarmonyLib.Harmony("com.mistaken.commandsextenderadmin");
             this.harmony.PatchAll();
             new CommandsHandler(this);
+            new LogHandler(this);
 
             API.Diagnostics.Module.OnEnable(this);
 
