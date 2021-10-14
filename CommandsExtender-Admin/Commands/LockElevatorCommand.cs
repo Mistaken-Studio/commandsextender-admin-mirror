@@ -12,7 +12,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class LockElevatorCommand : IBetterCommand, IPermissionLocked
+    internal class LockElevatorCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "lockelevator";
 
@@ -24,6 +24,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { "lelevator" };
 
+        public string[] Usage => new string[] { "elevator (049/Nuke/GateA/GateB/LczA/LczB)", "value (true/false)" };
+
         public string GetUsage()
         {
             return "LOCKELEVATOR [ELEVATOR] TRUE/FALSE \n Elevators:\n049\nNuke\nGateA\nGateB\nLczA\nLczB";
@@ -32,8 +34,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length < 2) return new string[] { this.GetUsage() };
-            if (!bool.TryParse(args[1], out bool value)) return new string[] { this.GetUsage() };
+            if (args.Length < 2)
+                return new string[] { this.GetUsage() };
+            if (!bool.TryParse(args[1], out bool value))
+                return new string[] { this.GetUsage() };
             success = true;
             var elevators = Map.Lifts;
             switch (args[0].ToLower())

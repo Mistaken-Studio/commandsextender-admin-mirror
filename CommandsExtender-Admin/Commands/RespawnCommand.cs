@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class RespawnCommand : IBetterCommand, IPermissionLocked
+    internal class RespawnCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "respawn";
 
@@ -21,6 +21,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string Command => "respawn";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[] { "time to respawn" };
 
         public string GetUsage()
         {

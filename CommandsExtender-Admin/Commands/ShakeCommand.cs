@@ -15,18 +15,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
     {
         public string Permission => "shake";
 
-        public override string Description => "SHAKE";
+        public override string Description => "Shakes screen";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "shake";
 
         public override string[] Aliases => new string[] { };
-
-        public string GetUsage()
-        {
-            return "SHAKE";
-        }
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {

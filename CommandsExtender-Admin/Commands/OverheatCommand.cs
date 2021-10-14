@@ -11,17 +11,20 @@ using Mistaken.API.Utilities;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class OverheatCommand : IBetterCommand, IPermissionLocked
+    internal class OverheatCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "overheat";
 
-        public override string Description => "OVERHEAT";
+        public override string Description
+            => "When triggered will overheat facility reactor (Kill everyone) after x amount of time where x is defined by level (-1 will cancel, 16 will be instant, 0 will be T-30minutes)";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "overheat";
 
         public override string[] Aliases => new string[] { "oheat" };
+
+        public string[] Usage => new string[] { "level (0-7, 16, -1)" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
@@ -32,6 +35,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             success = true;
             switch (proggressLevel)
             {
+                case -1:
+                    return new string[] { "Deactivated overheat" };
                 case 0:
                     return new string[] { "Overheat in T-30m" };
                 case 1:

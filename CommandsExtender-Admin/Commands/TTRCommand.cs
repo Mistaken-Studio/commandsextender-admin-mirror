@@ -16,7 +16,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
     {
         public string Permission => "ttr";
 
-        public override string Description => "Returns Time To Respawn";
+        public override string Description => "Time To Respawn";
 
         public string PluginName => PluginHandler.Instance.Name;
 

@@ -10,17 +10,19 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class Controll079Command : IBetterCommand, IPermissionLocked
+    internal class Controll079Command : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "controll079";
 
-        public override string Description => "Edit SCP 079 data";
+        public override string Description => "This command can for example give you 5th level or force 1st";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "controll079";
 
         public override string[] Aliases => new string[] { "c079" };
+
+        public string[] Usage => new string[] { "%player%", "lvl/xp/ap/max_ap", "value" };
 
         public string GetUsage()
         {

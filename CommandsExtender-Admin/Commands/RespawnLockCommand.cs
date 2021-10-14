@@ -10,13 +10,15 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class RespawnLockCommand : IBetterCommand
+    internal class RespawnLockCommand : IBetterCommand, IUsageProvider
     {
-        public override string Description => "RESPAWNLOCK";
+        public override string Description => "Blocks respawns";
 
         public override string Command => "respawnlock";
 
         public override string[] Aliases => new string[] { "disresp" };
+
+        public string[] Usage => new string[] { "true/false" };
 
         public string GetUsage()
         {

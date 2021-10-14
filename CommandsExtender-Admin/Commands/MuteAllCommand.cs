@@ -44,24 +44,27 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             foreach (var player in RealPlayers.List.Where(p => p.IsMuted == false && !p.CheckPermissions(PlayerPermissions.AdminChat)))
             {
                 Muted.Add(player.UserId);
-                player.IsMuted = true;
-                API.Diagnostics.Module.RunSafeCoroutine(this.InformGlobalMute(player), "MuteAllCommand.InformGlobalMute");
+                player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
             }
+
+            API.Diagnostics.Module.RunSafeCoroutine(this.InformGlobalMute(), "MuteAllCommand.InformGlobalMute");
 
             RoundLogger.RLogger.Log("GLOBAL MUTE", "ACTIVATED", "Activated GlobalMute");
             MapPlus.Broadcast("GLOBAL MUTE", 10, "Activated Global Mute", Broadcast.BroadcastFlags.AdminChat);
             return new string[] { "Done" };
         }
 
-        private IEnumerator<float> InformGlobalMute(Player player)
+        private IEnumerator<float> InformGlobalMute()
         {
             while (GlobalMuteActive)
             {
-                player.SetGUI("globalMute", PseudoGUIPosition.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
+                foreach (var player in RealPlayers.List)
+                    player.SetGUI("globalMute", PseudoGUIPosition.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
                 yield return MEC.Timing.WaitForSeconds(1);
             }
 
-            player.SetGUI("globalMute", PseudoGUIPosition.TOP, null);
+            foreach (var player in RealPlayers.List)
+                player.SetGUI("globalMute", PseudoGUIPosition.TOP, null);
         }
     }
 }

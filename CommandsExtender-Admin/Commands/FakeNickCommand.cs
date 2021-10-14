@@ -13,20 +13,21 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class FakeNickCommand : IBetterCommand, IPermissionLocked
+    internal class FakeNickCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static readonly Dictionary<string, string> FullNicknames = new Dictionary<string, string>();
 
         public string Permission => "fakenick";
 
-        public override string Description =>
-            "Fakenick";
+        public override string Description => "Changes nickname of target, if -full argument is used then target will be reconnected to server and his nickname will be fully changed (It won't be posible to check original nickname by report form)";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "fakenick";
 
         public override string[] Aliases => new string[] { "fname", "fnick" };
+
+        public string[] Usage => new string[] { "%player%", "new nickname" };
 
         public string GetUsage()
         {

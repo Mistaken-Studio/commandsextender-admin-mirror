@@ -18,7 +18,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
     {
         public string Permission => "muteall";
 
-        public override string Description => "Disabled muteall";
+        public override string Description => "Disable muteall";
 
         public override string Command => "unmuteall";
 
@@ -38,7 +38,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 if (RealPlayers.List.Any(p => p.UserId == uId))
                 {
                     var player = RealPlayers.List.First(p => p.UserId == uId);
-                    player.IsMuted = false;
+                    player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = false;
                     player.SetGUI("globalMute", PseudoGUIPosition.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone was unmuted", 5);
                     MuteAllCommand.Muted.Remove(uId);
 

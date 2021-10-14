@@ -21,7 +21,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class TalkCommand : IBetterCommand, IPermissionLocked
+    internal class TalkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static readonly Queue<string> Warps = new Queue<string>(new string[]
         {
@@ -43,10 +43,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "talk";
 
-        public string GetUsage()
+        public override string Description => "Teleports targets and admin to one of jails to do interogation";
+
+        public string[] Usage => new string[]
         {
-            return "Talk [players]";
-        }
+            "%player%",
+        };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {

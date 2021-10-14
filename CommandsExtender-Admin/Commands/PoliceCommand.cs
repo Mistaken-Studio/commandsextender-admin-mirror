@@ -14,7 +14,7 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class PoliceCommand : IBetterCommand, IPermissionLocked
+    internal class PoliceCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static readonly Dictionary<string, float> PoliceMode = new Dictionary<string, float>();
 
@@ -28,6 +28,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string Command => "police";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[] { "value (true/false, default: toggle)", "speed in seconds(default: 1s)" };
 
         public string GetUsage()
         {

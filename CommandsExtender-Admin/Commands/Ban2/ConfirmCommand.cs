@@ -18,11 +18,6 @@ namespace Mistaken.CommandsExtender.Admin
 
         public override string Description => "Let's confirm some bans";
 
-        public string GetUsage()
-        {
-            return "CONFIRM";
-        }
-
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;

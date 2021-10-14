@@ -12,11 +12,11 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class DLCZCommand : IBetterCommand, IPermissionLocked
+    internal class DLCZCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "dlcz";
 
-        public override string Description => "LCZ Decontamination";
+        public override string Description => "SetTime -> Setts progress time, can be used to delay or speed up decontamination | SetStatus -> can disable decontamination";
 
         public string PluginName => PluginHandler.Instance.Name;
 
@@ -24,9 +24,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
+        public string[] Usage => new string[] { "settime/setstatus", "value?" };
+
         public string GetUsage()
         {
-            return "dlcz get/play (id) (global: true/false)";
+            return "dlcz get/settime/setstatus (value)";
         }
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
@@ -41,10 +43,6 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
             switch (args[0].ToLower())
             {
-                case "g":
-                case "get":
-                    return new string[] { "Current Id: " + (dlcz._nextPhase - 1) };
-
                 case "st":
                 case "settime":
                     {

@@ -15,18 +15,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
     {
         public string Permission => "doorrestart";
 
-        public override string Description => "Restart Facility Door System";
+        public override string Description => "Restart Facility Door System, Closes all doors in facility with CASSIE message";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "doorrestart";
 
         public override string[] Aliases => new string[] { "drestart" };
-
-        public string GetUsage()
-        {
-            return "DoorRestart";
-        }
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {

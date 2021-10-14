@@ -6,21 +6,25 @@
 
 using CommandSystem;
 using Mistaken.API.Commands;
+using Exiled.API.Extensions;
+using System.Linq;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class CassiePrivateCommand : IBetterCommand, IPermissionLocked
+    internal class CassiePrivateCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "cassie_p";
 
-        public override string Description => "CASSIE Private";
+        public override string Description => "Sends CASSIE broadcast that only target players can hear";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "cassie_p";
 
         public override string[] Aliases => new string[] { "cassie_private" };
+
+        public string[] Usage => new string[] { "%player%", "cassie announcment" };
 
         public string GetUsage()
         {
@@ -30,18 +34,19 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
-            return new string[] { "Haha, cassie says <b><color=red>no</color></b>" };
-            /*if (args.Length == 0) return new string[] { GetUsage() };
+            if (args.Length == 0)
+                return new string[] { this.GetUsage() };
             var pids = args[0];
             args = args.Skip(1).ToArray();
-            var tor = this.ForeachPlayer(pids, out bool success, (player) => {
-                PlayerManager.localPlayer.GetComponent<Respawning.RespawnEffectsController>().CallTargetRpc("RpcCassieAnnouncement", player.Connection, string.Join(" ", args), false, false);
+            var tor = this.ForeachPlayer(pids, out bool success, (player) =>
+            {
+                player.PlayCassieAnnouncement(string.Join(" ", args), false, false);
                 return new string[] { "Done" };
             });
             if (!success)
                 return new string[] { "No players found" };
-            _s = true;
-            return tor;*/
+            s = true;
+            return tor;
         }
     }
 }

@@ -112,13 +112,8 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (MuteAllCommand.GlobalMuteActive && !ev.Player.IsMuted)
             {
-                ev.Player.IsMuted = true;
+                ev.Player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
                 MuteAllCommand.Muted.Add(ev.Player.UserId);
-            }
-            else if (!MuteAllCommand.GlobalMuteActive && ev.Player.IsMuted && MuteAllCommand.Muted.Contains(ev.Player.UserId))
-            {
-                ev.Player.IsMuted = false;
-                MuteAllCommand.Muted.Remove(ev.Player.UserId);
             }
 
             ev.Player.SetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
@@ -129,10 +124,7 @@ namespace Mistaken.CommandsExtender.Admin
             if (!ev.Player.IsReadyPlayer())
                 return;
             if (MuteAllCommand.Muted.Contains(ev.Player.UserId))
-            {
-                ev.Player.IsMuted = false;
                 MuteAllCommand.Muted.Remove(ev.Player.UserId);
-            }
 
             if (TalkCommand.Active.TryGetValue(ev.Player.UserId, out int[] players))
             {

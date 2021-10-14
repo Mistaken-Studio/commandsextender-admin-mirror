@@ -15,15 +15,17 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class MarkCommand : IBetterCommand, IPermissionLocked
+    internal class MarkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "mark";
 
-        public override string Description => "Mark player";
+        public override string Description => "When player is marked admin who marked him will see him as tutorial";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "mark";
+
+        public string[] Usage => new string[] { "%player%" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {

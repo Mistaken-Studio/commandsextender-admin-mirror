@@ -15,7 +15,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class WarpCommand : IBetterCommand, IPermissionLocked
+    internal class WarpCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "warp";
 
@@ -25,10 +25,15 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public string PluginName => PluginHandler.Instance.Name;
 
+        public string[] Usage => new string[] { "warp name (or \"list\" to get warp list)", "%player%" };
+
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length == 0) return new string[] { this.GetUsage() };
+            if (args.Length == 0)
+                return new string[] { this.GetUsage() };
+            if (args[0] == "list")
+                return new string[] { "Warp list:", "heli", "car", "jail", "jail2", "jail3", "jail4", "jail5", "gatea_up", "gatea_bottom", "gateb_up", "escape_up", "079", "checkpoint_lcz_a", "checkpoint_lcz_b", "checkpoint_ez", "shelter" };
             var res = this.ForeachPlayer(args.Length > 1 ? args[1] : sender.GetPlayer().Id.ToString(), out bool s, (player) =>
             {
                 return ExecuteWarp(player, args[0].ToLower());
@@ -41,7 +46,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public string GetUsage()
         {
-            return "WARP [Type] (Id)/All";
+            return "WARP [Type] (Id)";
         }
 
         internal static string[] ExecuteWarp(Player player, string warp)

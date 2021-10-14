@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class AfkCommand : IBetterCommand, IPermissionLocked
+    internal class AfkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "afk";
 
@@ -21,6 +21,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string Command => "afk";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[] { "%player%" };
 
         public string GetUsage()
         {
