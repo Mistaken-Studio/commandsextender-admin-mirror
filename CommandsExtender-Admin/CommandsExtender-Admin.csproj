@@ -85,6 +85,11 @@
     <Compile Include="Commands\LastAttackerCmd.cs" />
     <Compile Include="Commands\LastVictimCommand.cs" />
     <Compile Include="Commands\LockElevatorCommand.cs" />
+    <Compile Include="Commands\Logs\DoorLogCommand.cs" />
+    <Compile Include="Commands\Logs\ElevatorLogCommand.cs" />
+    <Compile Include="Commands\Logs\FlashLogCommand.cs" />
+    <Compile Include="Commands\Logs\PlayerLogCommand.cs" />
+    <Compile Include="Commands\Logs\SCP914LogCommand.cs" />
     <Compile Include="Commands\MarkCommand.cs" />
     <Compile Include="Commands\MCommands\MCloseCommand.cs" />
     <Compile Include="Commands\MCommands\MDestroyCommand.cs" />
@@ -110,10 +115,17 @@
     <Compile Include="Commands\WarheadCommand.cs" />
     <Compile Include="Commands\WarpCommand.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Logs\DoorLog.cs" />
+    <Compile Include="Logs\ElevatorLog.cs" />
+    <Compile Include="Logs\LogHandler.cs" />
+    <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Patches\NicknamePatch.cs" />
     <Compile Include="Patches\NicknamePatch2.cs" />
+    <Compile Include="Logs\PlayerInfo.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Logs\SCP914Action.cs" />
+    <Compile Include="Logs\SCP914Log.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
