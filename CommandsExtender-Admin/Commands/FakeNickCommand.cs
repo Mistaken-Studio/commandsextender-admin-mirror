@@ -15,7 +15,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class FakeNickCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
-        public static readonly Dictionary<string, string> RealNicknames = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> FakeNicknames = new Dictionary<string, string>();
 
         public string Permission => "fakenick";
 
@@ -47,9 +47,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             var player = players[0];
             if (args.Contains("-full"))
             {
-                RealNicknames[player.UserId] = string.Join(" ", args.Skip(1).Where(i => i != "-full"));
-                if (string.IsNullOrWhiteSpace(RealNicknames[player.UserId]))
-                    RealNicknames.Remove(player.UserId);
+                FakeNicknames[player.UserId] = string.Join(" ", args.Skip(1).Where(i => i != "-full"));
+                if (string.IsNullOrWhiteSpace(FakeNicknames[player.UserId]))
+                    FakeNicknames.Remove(player.UserId);
                 MirrorExtensions.SendFakeTargetRpc(player, player.Connection.identity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), 0.1f, true);
                 return new string[] { "Reconnecting" };
             }
