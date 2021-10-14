@@ -44,7 +44,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             foreach (var player in RealPlayers.List.Where(p => p.IsMuted == false && !p.CheckPermissions(PlayerPermissions.AdminChat)))
             {
                 Muted.Add(player.UserId);
-                player.IsMuted = true;
+                player.ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = true;
                 API.Diagnostics.Module.RunSafeCoroutine(this.InformGlobalMute(player), "MuteAllCommand.InformGlobalMute");
             }
 

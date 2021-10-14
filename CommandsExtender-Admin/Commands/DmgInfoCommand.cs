@@ -12,19 +12,21 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class DmgInfoCommand : IBetterCommand, IPermissionLocked
+    internal class DmgInfoCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static readonly HashSet<int> Active = new HashSet<int>();
 
         public string Permission => "dmginfo";
 
-        public override string Description => "Damage Info";
+        public override string Description => "Damage Info, When enabled you will recive broadcasts saying who and how much damage done to you";
 
         public override string Command => "dmginfo";
 
         public override string[] Aliases => new string[] { };
 
         public string PluginName => PluginHandler.Instance.Name;
+
+        public string[] Usage => new string[] { "value (true/false)" };
 
         public string GetUsage()
         {

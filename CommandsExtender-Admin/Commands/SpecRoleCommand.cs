@@ -11,7 +11,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class SpecRoleCommand : IBetterCommand, IPermissionLocked
+    internal class SpecRoleCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static RoleType SpecRole { get; set; } = RoleType.Spectator;
 
@@ -24,6 +24,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string Command => "specrole";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[] { "class" };
 
         public string GetUsage()
         {

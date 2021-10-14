@@ -14,7 +14,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
     {
         public string Permission => "overcharge";
 
-        public override string Description => "Teminate 079";
+        public override string Description => "Forces SCP079 overcharge";
 
         public string PluginName => PluginHandler.Instance.Name;
 

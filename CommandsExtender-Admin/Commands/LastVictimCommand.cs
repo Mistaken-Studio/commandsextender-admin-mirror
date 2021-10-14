@@ -12,7 +12,7 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class LastVictimCommand : IBetterCommand, IPermissionLocked
+    internal class LastVictimCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "last_attacker";
 
@@ -23,6 +23,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string Command => "lastvictim";
 
         public override string[] Aliases => new string[] { "lv" };
+
+        public string[] Usage => new string[] { "%player%" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {

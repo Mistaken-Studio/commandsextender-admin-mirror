@@ -68,7 +68,6 @@
     <Compile Include="Commands\BlackoutCommand.cs" />
     <Compile Include="Commands\C106Command.cs" />
     <Compile Include="Commands\CassiePrivateCommand.cs" />
-    <Compile Include="Commands\CEHelpCommand.cs" />
     <Compile Include="Commands\ClearMapCommand.cs" />
     <Compile Include="Commands\Controll079Command.cs" />
     <Compile Include="Commands\CustomRoundTimeCommand.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Commands\RespawnLockCommand.cs" />
     <Compile Include="Commands\SetSizeCommand.cs" />
     <Compile Include="Commands\ShakeCommand.cs" />
-    <Compile Include="Commands\SpawnDummyCommand.cs" />
     <Compile Include="Commands\SpecRoleCommand.cs" />
     <Compile Include="Commands\TalkCommand.cs" />
     <Compile Include="Commands\TeslaCommand.cs" />

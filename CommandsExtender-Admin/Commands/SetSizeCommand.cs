@@ -11,17 +11,19 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class SetSizeCommand : IBetterCommand, IPermissionLocked
+    internal class SetSizeCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "setsize";
 
-        public override string Description => "SetSize";
+        public override string Description => "Sets targets size";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "setsize";
 
         public override string[] Aliases => new string[] { "ssize" };
+
+        public string[] Usage => new string[] { "%player%", "sizeX", "sizeY", "sizeZ" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {

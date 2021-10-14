@@ -13,7 +13,7 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class TutorialMeCommand : IBetterCommand, IPermissionLocked
+    internal class TutorialMeCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "tutorial";
 
@@ -25,10 +25,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { "tut" };
 
-        public string GetUsage()
-        {
-            return "Tut [args]";
-        }
+        public string[] Usage => new string[] { "--noclip (automaticly enables noclip)", "--vanish (enables vanish with level 1)", "--vanish-level [level] (enables vanish with specified level)" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
@@ -40,12 +37,21 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 player.IsGodModeEnabled = true;
                 player.IsBypassModeEnabled = true;
 
+                bool nextVanishLevel = false;
+
                 foreach (var item in args.Select(i => i.ToLower()))
                 {
+                    if (nextVanishLevel)
+                    {
+                        if (byte.TryParse(item, out byte lvl))
+                            VanishHandler.SetGhost(player, true, lvl);
+                        nextVanishLevel = false;
+                    }
+
                     switch (item)
                     {
                         case "-n":
-                        case "-noclip":
+                        case "--noclip":
                             {
                                 if (player.CheckPermission("Global.Noclip"))
                                     player.NoClipEnabled = true;
@@ -57,6 +63,14 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                             {
                                 if (player.CheckPermission(PluginHandler.Instance.Name + ".vanish"))
                                     VanishHandler.SetGhost(player, true);
+                                break;
+                            }
+
+                        case "-v-l":
+                        case "--vanish-level":
+                            {
+                                if (player.CheckPermission(PluginHandler.Instance.Name + ".vanish"))
+                                    nextVanishLevel = true;
                                 break;
                             }
                     }

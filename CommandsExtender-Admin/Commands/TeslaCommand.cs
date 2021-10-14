@@ -11,19 +11,19 @@ using Mistaken.API.Utilities;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class TeslaCommand : IBetterCommand, IPermissionLocked
+    internal class TeslaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "tesla";
 
-        public override string Description =>
-
-            "Manipulate Facility Tesla System";
+        public override string Description => "Manipulate Facility Tesla System";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "tesla";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[] { "action (enable/disable/restart)" };
 
         public string GetUsage()
         {

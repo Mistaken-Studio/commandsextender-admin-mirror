@@ -14,17 +14,19 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class ClearMapCommand : IBetterCommand, IPermissionLocked
+    internal class ClearMapCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "clearmap";
 
-        public override string Description => "CLEAR MAP";
+        public override string Description => "Removes all pickups from map";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "clearmap";
 
         public override string[] Aliases => new string[] { "cmap" };
+
+        public string[] Usage => new string[] { "clear ragdolls (default false)" };
 
         public string GetUsage()
         {

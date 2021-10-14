@@ -13,7 +13,7 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class WarheadCommand : IBetterCommand, IPermissionLocked
+    internal class WarheadCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "basic";
 
@@ -24,6 +24,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Aliases => new string[] { "wc" };
 
         public override string Description => "Controll Alpha Warhead";
+
+        public string[] Usage => new string[] { "start/stop/on/off/open/close/lockstart/lockstop/lockbutton/locklever/getlast/stats" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {

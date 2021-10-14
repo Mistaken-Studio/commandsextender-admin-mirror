@@ -12,17 +12,19 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class C106Command : IBetterCommand, IPermissionLocked
+    internal class C106Command : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "c106";
 
-        public override string Description => "Manipulate SCP 106 conntainment";
+        public override string Description => "Manipulate SCP 106 conntainment (force -> button press)";
 
         public string PluginName => PluginHandler.Instance.Name;
 
         public override string Command => "c106";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[] { "action (true/false/force)" };
 
         public string GetUsage()
         {
