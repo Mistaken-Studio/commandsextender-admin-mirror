@@ -118,7 +118,7 @@ namespace Mistaken.CommandsExtender.Admin
 
             ev.Player.SetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
 
-            if (Patches.NicknamePatch.RealNicknames.TryGetValue(ev.Player.UserId, out string realNickname))
+            if (FakeNickCommand.FakeNicknames.ContainsKey(ev.Player.UserId) && Patches.NicknamePatch.RealNicknames.TryGetValue(ev.Player.UserId, out string realNickname))
                 ev.Player.SetSessionVar("REAL_NICKNAME", realNickname);
         }
 
