@@ -6,14 +6,16 @@
 
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Features.Items;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
+using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    /*[CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class BallCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    internal class BallCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "ball";
 
@@ -24,6 +26,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
         public override string Command => "ball";
 
         public override string[] Aliases => new string[] { };
+
+        public string[] Usage => new string[]
+        {
+            "%player%",
+            "amount (default is 1)",
+        };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
@@ -55,10 +63,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public void DropUnder(int[] pids, int times)
         {
+            var nade = new Throwable(ItemType.SCP018);
             foreach (var item in pids)
             {
-                RealPlayers.Get(item).DropGrenadeUnder(2, times);
+                var player = RealPlayers.Get(item);
+                for (int i = 0; i < times; i++)
+                    nade.Throw(player.Position, Vector3.down);
             }
         }
-    }*/
+    }
 }
