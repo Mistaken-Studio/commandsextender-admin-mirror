@@ -12,7 +12,7 @@ using Mistaken.CommandsExtender.Admin.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Patches
 {
-    /*[HarmonyPatch(typeof(NicknameSync), "SetNick", typeof(string))]
+    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.SetNick), typeof(string))]
     internal static class NicknamePatch2
     {
         public static bool Prefix(NicknameSync __instance, ref string nick)
@@ -24,5 +24,5 @@ namespace Mistaken.CommandsExtender.Admin.Patches
                 nick = newNick;
             return true;
         }
-    }*/
+    }
 }
