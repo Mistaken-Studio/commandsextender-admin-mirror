@@ -171,10 +171,10 @@ namespace Mistaken.CommandsExtender.Admin
                                 p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName.Trim();
                                 p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
 
-                                foreach (var item in data.effects)
+                                foreach (var (effect, dur, intensity) in data.effects)
                                 {
-                                    item.effect.Intensity = item.intensity;
-                                    item.effect.ServerChangeDuration(item.dur);
+                                    effect.Intensity = intensity;
+                                    effect.ServerChangeDuration(dur);
                                 }
                             },
                             "PlayerLeft");

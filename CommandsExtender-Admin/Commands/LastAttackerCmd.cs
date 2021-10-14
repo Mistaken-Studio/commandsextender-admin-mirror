@@ -27,7 +27,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
-            if (args.Length == 0) return new string[] { this.GetUsage() };
+            if (args.Length == 0)
+                return new string[] { this.GetUsage() };
             var output = this.ForeachPlayer(args[0], out bool success, (player) =>
             {
                 CommandsHandler.LastAttackers.TryGetValue(player.UserId, out (Player, Player) info);
