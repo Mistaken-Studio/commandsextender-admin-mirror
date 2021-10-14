@@ -117,6 +117,9 @@ namespace Mistaken.CommandsExtender.Admin
             }
 
             ev.Player.SetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+
+            if (FakeNickCommand.RealNicknames.TryGetValue(ev.Player.UserId, out string realNickname))
+                ev.Player.SetSessionVar("REAL_NICKNAME", realNickname);
         }
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)

@@ -32,7 +32,7 @@ namespace Mistaken.CommandsExtender.Admin.Patches
             if (string.IsNullOrWhiteSpace(__instance._hub.characterClassManager.UserId))
                 return true;
             RealNicknames[__instance._hub.characterClassManager.UserId] = n;
-            if (FakeNickCommand.FullNicknames.TryGetValue(__instance._hub.characterClassManager.UserId, out string newNick))
+            if (FakeNickCommand.RealNicknames.TryGetValue(__instance._hub.characterClassManager.UserId, out string newNick))
                 n = newNick;
             return true;
         }
