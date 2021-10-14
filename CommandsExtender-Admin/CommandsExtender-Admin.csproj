@@ -117,16 +117,17 @@
     <Compile Include="Commands\WarheadCommand.cs" />
     <Compile Include="Commands\WarpCommand.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="DoorLog.cs" />
-    <Compile Include="ElevatorLog.cs" />
-    <Compile Include="LogManager.cs" />
+    <Compile Include="Logs\DoorLog.cs" />
+    <Compile Include="Logs\ElevatorLog.cs" />
+    <Compile Include="Logs\LogHandler.cs" />
+    <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Patches\NicknamePatch.cs" />
     <Compile Include="Patches\NicknamePatch2.cs" />
-    <Compile Include="PlayerInfo.cs" />
+    <Compile Include="Logs\PlayerInfo.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SCP914Action.cs" />
-    <Compile Include="SCP914Log.cs" />
+    <Compile Include="Logs\SCP914Action.cs" />
+    <Compile Include="Logs\SCP914Log.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

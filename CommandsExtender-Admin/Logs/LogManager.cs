@@ -15,7 +15,7 @@ namespace Mistaken.CommandsExtender.Admin
     {
         public static Dictionary<ElevatorType, List<ElevatorLog>> ElevatorLogs { get; } = new Dictionary<ElevatorType, List<ElevatorLog>>();
 
-        public static Dictionary<Interactables.Interobjects.DoorUtils.DoorVariant, List<DoorLog>> DoorLogs { get; } = new Dictionary<Interactables.Interobjects.DoorUtils.DoorVariant, List<DoorLog>>();
+        public static Dictionary<Door, List<DoorLog>> DoorLogs { get; } = new Dictionary<Door, List<DoorLog>>();
 
         public static Dictionary<int, List<PlayerInfo>> PlayerLogs { get; } = new Dictionary<int, List<PlayerInfo>>();
 
