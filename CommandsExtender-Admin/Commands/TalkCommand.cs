@@ -70,7 +70,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                         p.DisableAllEffects();
                         p.SetSessionVar(SessionVarType.NO_SPAWN_PROTECT, true);
-                        p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
+
+                        // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                         p.SetSessionVar(SessionVarType.ITEM_LESS_CLSSS_CHANGE, true);
                         var old = Respawning.RespawnManager.CurrentSequence();
                         Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
@@ -80,7 +81,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                             p.UnitName = array[data.UnitIndex];
                         Respawning.RespawnManager.Singleton._curSequence = old;
                         p.SetSessionVar(SessionVarType.ITEM_LESS_CLSSS_CHANGE, false);
-                        p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
+
+                        // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(SessionVarType.NO_SPAWN_PROTECT, false);
                         API.Diagnostics.Module.CallSafeDelayed(
                             0.5f,
@@ -153,7 +155,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     if (p == null || !p.IsConnected)
                         continue;
                     p.SetSessionVar(SessionVarType.TALK, true);
-                    p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
+                    //p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                     SavedInfo.Add(
                         p.Id,
 #pragma warning disable SA1118
@@ -172,11 +174,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType,
                             p.ReferenceHub.playerEffectsController.AllEffects.Values.Select(i => (i, i.Duration, i.Intensity)).ToArray()));
 #pragma warning restore SA1118
+                    foreach (var item in p.Items.ToArray())
+                        p.RemoveItem(item, false);
                     var old = Respawning.RespawnManager.CurrentSequence();
                     Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                     p.Role = RoleType.Tutorial;
                     Respawning.RespawnManager.Singleton._curSequence = old;
-                    p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
+                    //p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();
                     API.Diagnostics.Module.CallSafeDelayed(
                         0.5f,
