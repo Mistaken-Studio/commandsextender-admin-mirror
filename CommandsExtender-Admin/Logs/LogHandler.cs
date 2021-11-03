@@ -25,16 +25,20 @@ namespace Mistaken.CommandsExtender.Admin
 
         public override void OnDisable()
         {
-            throw new NotImplementedException();
+            Exiled.Events.Handlers.Server.RestartingRound -= this.Server_RestartingRound;
+            Exiled.Events.Handlers.Player.InteractingElevator -= this.Player_InteractingElevator;
+            Exiled.Events.Handlers.Player.InteractingDoor -= this.Player_InteractingDoor;
+            Exiled.Events.Handlers.Player.Verified -= this.Player_Verified;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
         }
 
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => this.Server_RestartingRound(), "RoundRestart");
-            Exiled.Events.Handlers.Player.InteractingElevator += this.Handle<Exiled.Events.EventArgs.InteractingElevatorEventArgs>((ev) => this.Player_InteractingElevator(ev));
-            Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => this.Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => this.Player_Verified(ev));
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Server.RestartingRound += this.Server_RestartingRound;
+            Exiled.Events.Handlers.Player.InteractingElevator += this.Player_InteractingElevator;
+            Exiled.Events.Handlers.Player.InteractingDoor += this.Player_InteractingDoor;
+            Exiled.Events.Handlers.Player.Verified += this.Player_Verified;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
         }
 
         private void Server_WaitingForPlayers()
@@ -71,6 +75,8 @@ namespace Mistaken.CommandsExtender.Admin
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
+            if (ev.Player == null)
+                return;
             if (Commands.Logs.DoorLogCommand.Active.Contains(ev.Player.Id))
             {
                 if (LogManager.DoorLogs.TryGetValue(ev.Door, out List<DoorLog> value))

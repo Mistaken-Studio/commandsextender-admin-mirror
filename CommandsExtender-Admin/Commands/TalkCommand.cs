@@ -155,7 +155,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     if (p == null || !p.IsConnected)
                         continue;
                     p.SetSessionVar(SessionVarType.TALK, true);
-                    //p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
+
+                    // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                     SavedInfo.Add(
                         p.Id,
 #pragma warning disable SA1118
@@ -180,7 +181,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                     p.Role = RoleType.Tutorial;
                     Respawning.RespawnManager.Singleton._curSequence = old;
-                    //p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
+
+                    // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();
                     API.Diagnostics.Module.CallSafeDelayed(
                         0.5f,
