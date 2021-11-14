@@ -216,6 +216,12 @@ namespace Mistaken.CommandsExtender.Admin
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
+            if (ev.Player == null)
+            {
+                this.Log.Debug("Player was null in Player_InteractingDoor", PluginHandler.Instance.Config.VerbouseOutput);
+                return;
+            }
+
             if (MDestroyCommand.Active.Contains(ev.Player.Id))
                 ev.Door.BreakDoor();
             MDestroyCommand.Active.Remove(ev.Player.Id);
