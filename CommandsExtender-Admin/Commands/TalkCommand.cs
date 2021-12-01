@@ -69,10 +69,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         }
 
                         p.DisableAllEffects();
-                        p.SetSessionVar(SessionVarType.NO_SPAWN_PROTECT, true);
+                        p.SetSessionVariable(SessionVarType.NO_SPAWN_PROTECT, true);
 
                         // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
-                        p.SetSessionVar(SessionVarType.ITEM_LESS_CLSSS_CHANGE, true);
+                        p.SetSessionVariable(SessionVarType.ITEM_LESS_CLSSS_CHANGE, true);
                         var old = Respawning.RespawnManager.CurrentSequence();
                         Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
@@ -80,10 +80,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.UnitName = array[data.UnitIndex];
                         Respawning.RespawnManager.Singleton._curSequence = old;
-                        p.SetSessionVar(SessionVarType.ITEM_LESS_CLSSS_CHANGE, false);
+                        p.SetSessionVariable(SessionVarType.ITEM_LESS_CLSSS_CHANGE, false);
 
                         // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
-                        p.SetSessionVar(SessionVarType.NO_SPAWN_PROTECT, false);
+                        p.SetSessionVariable(SessionVarType.NO_SPAWN_PROTECT, false);
                         API.Diagnostics.Module.CallSafeDelayed(
                             0.5f,
                             () =>
@@ -127,7 +127,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                     item.effect.ServerChangeDuration(item.dur);
                                 }
 
-                                p.SetSessionVar(SessionVarType.TALK, false);
+                                p.SetSessionVariable(SessionVarType.TALK, false);
                             },
                             "TalkRestore");
                     }
@@ -154,7 +154,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 {
                     if (p == null || !p.IsConnected)
                         continue;
-                    p.SetSessionVar(SessionVarType.TALK, true);
+                    p.SetSessionVariable(SessionVarType.TALK, true);
 
                     // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                     SavedInfo.Add(

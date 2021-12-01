@@ -82,7 +82,7 @@ namespace Mistaken.CommandsExtender.Admin
             {
                 if (ev.Player.IsHuman)
                 {
-                    var set = ev.Player.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+                    var set = ev.Player.GetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
                     if (set.Count != 0)
                     {
                         foreach (var admin in set)
@@ -95,7 +95,7 @@ namespace Mistaken.CommandsExtender.Admin
 
                 foreach (var item in RealPlayers.List)
                 {
-                    var set2 = item.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+                    var set2 = item.GetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
                     foreach (var admin in set2)
                     {
                         if (admin.Role != RoleType.Tutorial)
@@ -116,10 +116,10 @@ namespace Mistaken.CommandsExtender.Admin
                 MuteAllCommand.Muted.Add(ev.Player.UserId);
             }
 
-            ev.Player.SetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+            ev.Player.SetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
 
             if (FakeNickCommand.FakeNicknames.ContainsKey(ev.Player.UserId) && Patches.NicknamePatch.RealNicknames.TryGetValue(ev.Player.UserId, out string realNickname))
-                ev.Player.SetSessionVar("REAL_NICKNAME", realNickname);
+                ev.Player.SetSessionVariable("REAL_NICKNAME", realNickname);
         }
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
