@@ -185,7 +185,7 @@ namespace Mistaken.CommandsExtender.Admin
             if (!ev.Target.IsReadyPlayer())
                 return;
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
-                ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.DamageType.Name} | {ev.Amount}");
+                ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.Handler.Type} | {ev.Amount}");
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
                 LastAttackers[ev.Target.UserId] = (null, ev.Attacker);
             else
