@@ -9,6 +9,7 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Extensions;
 using Mistaken.API.Commands;
+using RoundRestarting;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
@@ -50,7 +51,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 FakeNicknames[player.UserId] = string.Join(" ", args.Skip(1).Where(i => i != "-full"));
                 if (string.IsNullOrWhiteSpace(FakeNicknames[player.UserId]))
                     FakeNicknames.Remove(player.UserId);
-                MirrorExtensions.SendFakeTargetRpc(player, player.Connection.identity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), 0.1f, true);
+                player.Connection.Send<RoundRestartMessage>(new RoundRestartMessage(RoundRestartType.FullRestart, 0f, 0, true));
                 return new string[] { "Reconnecting" };
             }
 

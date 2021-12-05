@@ -42,7 +42,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 {
                     if (player.Role == RoleType.Scp106)
                     {
-                        player.ReferenceHub.scp106PlayerScript.Contain(rh);
+                        player.ReferenceHub.scp106PlayerScript.Contain(new Footprinting.Footprint(rh));
                     }
                 }
 

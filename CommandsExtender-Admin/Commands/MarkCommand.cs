@@ -35,7 +35,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             var admin = sender.GetPlayer();
             var output = this.ForeachPlayer(args[0], out bool success, (player) =>
             {
-                var set = player.GetSessionVar(SessionVarType.ADMIN_MARK, new HashSet<Player>());
+                var set = player.GetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
                 if (set.Contains(admin))
                 {
                     set.Remove(admin);
