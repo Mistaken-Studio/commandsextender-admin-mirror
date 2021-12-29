@@ -196,6 +196,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                     0.5f,
                                     () =>
                                     {
+                                        if (!p.IsConnected)
+                                            return;
                                         p.Position += this.GetPosByCounter(counter++);
                                     },
                                     "TalkTeleport");
