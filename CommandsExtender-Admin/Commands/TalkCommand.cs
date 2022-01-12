@@ -128,6 +128,16 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                 }
 
                                 p.SetSessionVariable(SessionVarType.TALK, false);
+                                p.SetSessionVariable(SessionVarType.POST_TALK, true);
+                                CustomInfoHandler.Set(p, "post_talk", "<color=red>Post TALK protection: <color=yellow>Active</color></color>");
+                                API.Diagnostics.Module.CallSafeDelayed(
+                                    5f,
+                                    () =>
+                                    {
+                                        p.SetSessionVariable(SessionVarType.POST_TALK, false);
+                                        CustomInfoHandler.Set(p, "post_talk", null);
+                                    },
+                                    "DisablePostTalkFlag");
                             },
                             "TalkRestore");
                     }
