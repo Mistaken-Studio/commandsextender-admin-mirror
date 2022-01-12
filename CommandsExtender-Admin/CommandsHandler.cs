@@ -42,6 +42,8 @@ namespace Mistaken.CommandsExtender.Admin
             Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
             Exiled.Events.Handlers.Player.Dying += this.Player_Dying;
             Exiled.Events.Handlers.Player.Shooting += this.Player_Shooting;
+            Exiled.Events.Handlers.Scp096.AddingTarget += this.Scp096_AddingTarget;
+            Exiled.Events.Handlers.Player.UsingItem += this.Player_UsingItem;
         }
 
         public override void OnDisable()
@@ -55,6 +57,8 @@ namespace Mistaken.CommandsExtender.Admin
             Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
             Exiled.Events.Handlers.Player.Dying -= this.Player_Dying;
             Exiled.Events.Handlers.Player.Shooting -= this.Player_Shooting;
+            Exiled.Events.Handlers.Scp096.AddingTarget -= this.Scp096_AddingTarget;
+            Exiled.Events.Handlers.Player.UsingItem -= this.Player_UsingItem;
         }
 
         private void Server_RoundStarted()
@@ -67,6 +71,18 @@ namespace Mistaken.CommandsExtender.Admin
 
             TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpA).Position + Vector3.up);
             TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpB).Position + Vector3.up);
+        }
+
+        private void Player_UsingItem(Exiled.Events.EventArgs.UsingItemEventArgs ev)
+        {
+            if (ev.Player.GetSessionVariable<bool>(SessionVarType.POST_TALK))
+                ev.IsAllowed = false;
+        }
+
+        private void Scp096_AddingTarget(Exiled.Events.EventArgs.AddingTargetEventArgs ev)
+        {
+            if (ev.Target.GetSessionVariable<bool>(SessionVarType.POST_TALK))
+                ev.IsAllowed = false;
         }
 
         private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
