@@ -41,6 +41,9 @@ namespace Mistaken.CommandsExtender.Admin
             Exiled.Events.Handlers.Player.ChangingRole += this.Player_ChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
             Exiled.Events.Handlers.Player.Dying += this.Player_Dying;
+            Exiled.Events.Handlers.Player.Shooting += this.Player_Shooting;
+            Exiled.Events.Handlers.Scp096.AddingTarget += this.Scp096_AddingTarget;
+            Exiled.Events.Handlers.Player.UsingItem += this.Player_UsingItem;
         }
 
         public override void OnDisable()
@@ -53,6 +56,9 @@ namespace Mistaken.CommandsExtender.Admin
             Exiled.Events.Handlers.Player.ChangingRole -= this.Player_ChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
             Exiled.Events.Handlers.Player.Dying -= this.Player_Dying;
+            Exiled.Events.Handlers.Player.Shooting -= this.Player_Shooting;
+            Exiled.Events.Handlers.Scp096.AddingTarget -= this.Scp096_AddingTarget;
+            Exiled.Events.Handlers.Player.UsingItem -= this.Player_UsingItem;
         }
 
         private void Server_RoundStarted()
@@ -63,8 +69,26 @@ namespace Mistaken.CommandsExtender.Admin
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, -58f)); // Bridge
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, 1f)); // Crossroads near Gate A elevator
 
-            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpA).Position);
-            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpB).Position);
+            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpA).Position + Vector3.up);
+            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpB).Position + Vector3.up);
+        }
+
+        private void Player_UsingItem(Exiled.Events.EventArgs.UsingItemEventArgs ev)
+        {
+            if (ev.Player.GetSessionVariable<bool>(SessionVarType.POST_TALK))
+                ev.IsAllowed = false;
+        }
+
+        private void Scp096_AddingTarget(Exiled.Events.EventArgs.AddingTargetEventArgs ev)
+        {
+            if (ev.Target.GetSessionVariable<bool>(SessionVarType.POST_TALK))
+                ev.IsAllowed = false;
+        }
+
+        private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
+        {
+            if (ev.Shooter.GetSessionVariable<bool>(SessionVarType.POST_TALK))
+                ev.IsAllowed = false;
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
@@ -184,6 +208,10 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (!ev.Target.IsReadyPlayer())
                 return;
+
+            if (ev.Target.GetSessionVariable<bool>(SessionVarType.POST_TALK))
+                ev.IsAllowed = false;
+
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
                 ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.Handler.Type} | {ev.Amount}");
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
