@@ -149,7 +149,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 if (TalkRooms.TryGetValue(player, out var room))
                 {
-                    Mirror.NetworkServer.Destroy(room);
+                    foreach (var nid in room.GetComponentsInChildren<Mirror.NetworkIdentity>())
+                        Mirror.NetworkServer.Destroy(nid.gameObject);
+                    GameObject.Destroy(room);
                     TalkRooms.Remove(player);
                 }
 
@@ -174,8 +176,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 {
                     if (!TalkRooms.ContainsKey(player))
                         TalkRooms.Add(player, null);
-                    TalkRooms[player] = CustomStructures.CustomStructuresHandler.SpawnAsset(((CustomStructures.Asset)Asset).Meta.Type);
-                    TalkRooms[player].transform.position = new Vector3(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f);
+                    TalkRooms[player] = ((CustomStructures.Asset)Asset).Spawn(new Vector3(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f), Vector3.zero, Vector3.one).transform.GetChild(0).gameObject;
                 }
 
                 Vector3 lastPos = Vector3.zero;
