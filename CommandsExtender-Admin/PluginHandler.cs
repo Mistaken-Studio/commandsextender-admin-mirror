@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 
@@ -37,8 +38,8 @@ namespace Mistaken.CommandsExtender.Admin
             this.harmony.PatchAll();
             new CommandsHandler(this);
             new LogHandler(this);
-
             API.Diagnostics.Module.OnEnable(this);
+            Events.Handlers.CustomEvents.LoadedPlugins += this.CustomEvents_LoadedPlugins;
 
             base.OnEnabled();
         }
@@ -48,6 +49,7 @@ namespace Mistaken.CommandsExtender.Admin
         {
             this.harmony.UnpatchAll();
             API.Diagnostics.Module.OnDisable(this);
+            Events.Handlers.CustomEvents.LoadedPlugins -= this.CustomEvents_LoadedPlugins;
 
             base.OnDisabled();
         }
@@ -55,5 +57,14 @@ namespace Mistaken.CommandsExtender.Admin
         internal static PluginHandler Instance { get; private set; }
 
         private HarmonyLib.Harmony harmony;
+
+        private void CustomEvents_LoadedPlugins()
+        {
+            if (Exiled.Loader.Loader.Plugins.Any(x => x.Name == "CustomStructures"))
+            {
+                if (CustomStructures.CustomStructuresHandler.TryGetAsset("Talk_Void_Room", out var asset))
+                    Admin.Commands.TalkCommand.Asset = asset;
+            }
+        }
     }
 }

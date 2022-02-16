@@ -37,6 +37,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)> SavedInfo
             = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)>();
 
+        public static readonly Dictionary<Player, GameObject> TalkRooms = new Dictionary<Player, GameObject>();
+
+        public static object Asset { get; set; } = null;
+
         public string Permission => "talk";
 
         public string PluginName => PluginHandler.Instance.Name;
@@ -143,6 +147,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     }
                 }
 
+                if (TalkRooms.TryGetValue(player, out var room))
+                {
+                    Mirror.NetworkServer.Destroy(room);
+                    TalkRooms.Remove(player);
+                }
+
                 Active.Remove(player.UserId);
             }
             else
@@ -160,6 +170,15 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     return new string[] { "You cannot use this command for the first 35 seconds of the round if one player is an SCP" };
                 }
 
+                if (!(Asset is null))
+                {
+                    if (!TalkRooms.ContainsKey(player))
+                        TalkRooms.Add(player, null);
+                    TalkRooms[player] = CustomStructures.CustomStructuresHandler.SpawnAsset(((CustomStructures.Asset)Asset).Meta.Type);
+                    TalkRooms[player].transform.position = new Vector3(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f);
+                }
+
+                Vector3 lastPos = Vector3.zero;
                 foreach (var p in talkPlayers)
                 {
                     if (p == null || !p.IsConnected)
@@ -198,7 +217,28 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         0.5f,
                         () =>
                         {
-                            WarpCommand.ExecuteWarp(p, pos);
+                            if (TalkRooms.TryGetValue(player, out var room))
+                            {
+                                if (p.CheckPermissions(PlayerPermissions.AdminChat))
+                                    p.Position = TalkRooms[player].transform.Find("Admin_SpawnPoint").position;
+                                else
+                                {
+                                    if (counter == 0)
+                                    {
+                                        lastPos = TalkRooms[player].transform.Find("Player_SpawnPoint").position;
+                                        p.Position = lastPos;
+                                    }
+                                    else if (counter % 2 != 0)
+                                    {
+                                        lastPos += Vector3.right * 0.4f;
+                                        p.Position = lastPos;
+                                    }
+                                    else
+                                        p.Position = new Vector3(-lastPos.x, lastPos.y, lastPos.z);
+                                }
+                            }
+                            else
+                                WarpCommand.ExecuteWarp(p, pos);
                             if (!p.CheckPermissions(PlayerPermissions.AdminChat))
                             {
                                 p.EnableEffect<CustomPlayerEffects.Ensnared>();
@@ -206,7 +246,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                     0.5f,
                                     () =>
                                     {
-                                        if (!p.IsConnected)
+                                        if (!p.IsConnected || TalkRooms.ContainsKey(player))
                                             return;
                                         p.Position += this.GetPosByCounter(counter++);
                                     },
