@@ -60,15 +60,10 @@ namespace Mistaken.CommandsExtender.Admin
 
         private void CustomEvents_LoadedPlugins()
         {
-            Log.Debug("no cos cos");
             if (Exiled.Loader.Loader.Plugins.Any(x => x.Name == "CustomStructures"))
             {
-                Log.Debug("no cos wiencej");
                 if (CustomStructures.CustomStructuresHandler.TryGetAsset("Talk_Void_Room", out var asset))
-                {
-                    Log.Debug("no cos duzo");
-                    Admin.Commands.TalkCommand.Asset = asset;
-                }
+                    CustomStructuresIntegration.Asset = asset;
             }
         }
     }

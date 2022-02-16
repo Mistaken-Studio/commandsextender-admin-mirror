@@ -39,8 +39,6 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public static readonly Dictionary<Player, GameObject> TalkRooms = new Dictionary<Player, GameObject>();
 
-        public static object Asset { get; set; } = null;
-
         public string Permission => "talk";
 
         public string PluginName => PluginHandler.Instance.Name;
@@ -172,11 +170,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     return new string[] { "You cannot use this command for the first 35 seconds of the round if one player is an SCP" };
                 }
 
-                if (!(Asset is null))
+                if (!(CustomStructuresIntegration.Asset is null))
                 {
                     if (!TalkRooms.ContainsKey(player))
                         TalkRooms.Add(player, null);
-                    TalkRooms[player] = ((CustomStructures.Asset)Asset).Spawn(new Vector3(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f), Vector3.zero, Vector3.one).transform.GetChild(0).gameObject;
+                    TalkRooms[player] = CustomStructuresIntegration.SpawnAsset(new Vector3(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f));
                 }
 
                 Vector3 lastPos = Vector3.zero;

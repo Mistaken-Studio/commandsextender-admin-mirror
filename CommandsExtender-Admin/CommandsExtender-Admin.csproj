@@ -119,6 +119,7 @@
     <Compile Include="Commands\WarheadCommand.cs" />
     <Compile Include="Commands\WarpCommand.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="CustomStructuresIntegration.cs" />
     <Compile Include="Logs\DoorLog.cs" />
     <Compile Include="Logs\ElevatorLog.cs" />
     <Compile Include="Logs\LogHandler.cs" />
