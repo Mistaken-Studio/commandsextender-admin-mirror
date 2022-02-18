@@ -38,9 +38,13 @@
     <Reference Include="Exiled.API" HintPath="$(MISTAKEN_REFERENCES)\Exiled.API.dll" />
     <Reference Include="Exiled.Events" HintPath="$(MISTAKEN_REFERENCES)\Exiled.Events.dll" />
     <Reference Include="Exiled.Permissions" HintPath="$(MISTAKEN_REFERENCES)\Exiled.Permissions.dll" />
+    <Reference Include="Exiled.Loader" HintPath="$(MISTAKEN_REFERENCES)\Exiled.Loader.dll" />
     <Reference Include="Mistaken.Updater" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.Updater.dll" />
     <Reference Include="0Mistaken.API" HintPath="$(MISTAKEN_REFERENCES)\0Mistaken.API.dll" />
+    <Reference Include="Mistaken.CustomStructures" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.CustomStructures.dll" />
     <Reference Include="Mistaken.RoundLogger" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.RoundLogger.dll" />
+    <Reference Include="Mistaken.Events" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.Events.dll" />
+    <Reference Include="Mistaken.UnityPrefabs" HintPath="$(MISTAKEN_REFERENCES)\Mistaken.UnityPrefabs.dll" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(MISTAKEN_REFERENCES)\UnityEngine.CoreModule.dll" />
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(MISTAKEN_REFERENCES)\UnityEngine.PhysicsModule.dll" />
     <Reference Include="CommandSystem.Core" HintPath="$(MISTAKEN_REFERENCES)\CommandSystem.Core.dll" />
@@ -115,6 +119,7 @@
     <Compile Include="Commands\WarheadCommand.cs" />
     <Compile Include="Commands\WarpCommand.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="CustomStructuresIntegration.cs" />
     <Compile Include="Logs\DoorLog.cs" />
     <Compile Include="Logs\ElevatorLog.cs" />
     <Compile Include="Logs\LogHandler.cs" />
