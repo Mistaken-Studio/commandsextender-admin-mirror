@@ -163,7 +163,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 Warps.Enqueue(pos);
                 List<Player> talkPlayers = new List<Player>();
                 for (int i = 0; i < targets.Length; i++)
-                    talkPlayers.Add(RealPlayers.Get(targets[i]));
+                {
+                    var target = RealPlayers.Get(targets[i]);
+                    if (!(target is null))
+                        talkPlayers.Add(target);
+                }
+
                 if (talkPlayers.Any(x => x.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
                 {
                     success = true;
