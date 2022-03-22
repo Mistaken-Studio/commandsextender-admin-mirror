@@ -33,10 +33,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 return new string[] { this.GetUsage() };
             var output = this.ForeachPlayer(args[0], out bool success, (Player player) =>
             {
-                if (player.Team == Team.SCP || player.Team == Team.RIP)
+                if (player.Role.Team == Team.SCP || player.Role.Team == Team.RIP)
                     return new string[] { "You have to be human" };
                 DissonanceUserSetup dus = player.ReferenceHub.GetComponent<DissonanceUserSetup>();
-                dus.TargetUpdateForTeam(player.Team);
+                dus.TargetUpdateForTeam(player.Role.Team);
                 dus.SpectatorChat = false;
                 dus.SCPChat = false;
                 dus.RadioAsHuman = false;

@@ -6,7 +6,6 @@
 
 using System.Linq;
 using CommandSystem;
-using Exiled.API.Features;
 using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
@@ -39,14 +38,14 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             if (!bool.TryParse(args[1], out bool value))
                 return new string[] { this.GetUsage() };
             success = true;
-            var elevators = Map.Lifts;
+            var elevators = Exiled.API.Features.Lift.List;
             switch (args[0].ToLower())
             {
                 case "049":
                     {
-                        var elev = elevators.FirstOrDefault(e => e.elevatorName == "SCP-049");
+                        var elev = elevators.FirstOrDefault(e => e.Name == "SCP-049");
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
                         return new string[] { "Done" };
@@ -54,9 +53,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "nuke":
                     {
-                        var elev = elevators.FirstOrDefault(e => e.elevatorName == string.Empty);
+                        var elev = elevators.FirstOrDefault(e => e.Name == string.Empty);
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
                         return new string[] { "Done" };
@@ -64,9 +63,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "gatea":
                     {
-                        var elev = elevators.FirstOrDefault(e => e.elevatorName == "GateA");
+                        var elev = elevators.FirstOrDefault(e => e.Name == "GateA");
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
                         return new string[] { "Done" };
@@ -74,9 +73,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "gateb":
                     {
-                        var elev = elevators.FirstOrDefault(e => e.elevatorName == "GateB");
+                        var elev = elevators.FirstOrDefault(e => e.Name == "GateB");
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
                         return new string[] { "Done" };
@@ -84,26 +83,26 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "lcza":
                     {
-                        var elev = elevators.FirstOrDefault(e => e.elevatorName == "ElA");
+                        var elev = elevators.FirstOrDefault(e => e.Name == "ElA");
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
-                        elevators.First(e => e.elevatorName == "ElA2").Network_locked = value;
+                        elevators.First(e => e.Name == "ElA2").IsLocked = value;
 
                         return new string[] { "Done" };
                     }
 
                 case "lczb":
                     {
-                        var elev = elevators.FirstOrDefault(e => e.elevatorName == "ElB");
+                        var elev = elevators.FirstOrDefault(e => e.Name == "ElB");
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
-                        elevators.First(e => e.elevatorName == "ElB2").Network_locked = value;
+                        elevators.First(e => e.Name == "ElB2").IsLocked = value;
                         if (elev != null)
-                            elev.Network_locked = value;
+                            elev.IsLocked = value;
                         else
                             return new string[] { "Server Error, elevator not found" };
                         return new string[] { "Done" };

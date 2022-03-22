@@ -77,7 +77,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         p.SetSessionVariable(SessionVarType.ITEM_LESS_CLSSS_CHANGE, true);
                         var old = Respawning.RespawnManager.CurrentSequence();
                         Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-                        p.Role = data.Role;
+                        p.Role.Type = data.Role;
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.UnitName = array[data.UnitIndex];
@@ -169,7 +169,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         talkPlayers.Add(target);
                 }
 
-                if (talkPlayers.Any(x => x.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
+                if (talkPlayers.Any(x => x.Role.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
                 {
                     success = true;
                     return new string[] { "You cannot use this command for the first 35 seconds of the round if one player is an SCP" };
@@ -212,7 +212,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         p.RemoveItem(item, false);
                     var old = Respawning.RespawnManager.CurrentSequence();
                     Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-                    p.Role = RoleType.Tutorial;
+                    p.Role.Type = RoleType.Tutorial;
                     Respawning.RespawnManager.Singleton._curSequence = old;
 
                     // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, false);

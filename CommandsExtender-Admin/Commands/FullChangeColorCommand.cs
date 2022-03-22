@@ -48,7 +48,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 var color = new Color(r / 255f, g / 255f, b / 255f);
 
-                foreach (var room in Exiled.API.Features.Map.Rooms)
+                foreach (var room in Exiled.API.Features.Room.List)
                 {
                     var controller = room.GetComponentInChildren<FlickerableLightController>();
                     if (controller == null)

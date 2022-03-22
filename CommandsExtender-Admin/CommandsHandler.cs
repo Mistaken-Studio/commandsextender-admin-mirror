@@ -69,8 +69,8 @@ namespace Mistaken.CommandsExtender.Admin
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, -58f)); // Bridge
             TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, 1f)); // Crossroads near Gate A elevator
 
-            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpA).Position + Vector3.up);
-            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpB).Position + Vector3.up);
+            TalkCommand.AfterDecontRooms.Add(Room.List.First(x => x.Type == RoomType.HczChkpA).Position + Vector3.up);
+            TalkCommand.AfterDecontRooms.Add(Room.List.First(x => x.Type == RoomType.HczChkpB).Position + Vector3.up);
         }
 
         private void Player_UsingItem(Exiled.Events.EventArgs.UsingItemEventArgs ev)
@@ -165,7 +165,7 @@ namespace Mistaken.CommandsExtender.Admin
                             continue;
                         var old = Respawning.RespawnManager.CurrentSequence();
                         Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-                        p.Role = data.Role;
+                        p.Role.Type = data.Role;
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.UnitName = array[data.UnitIndex];

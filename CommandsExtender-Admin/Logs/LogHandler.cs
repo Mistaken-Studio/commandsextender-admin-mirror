@@ -58,8 +58,8 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (Commands.Logs.ElevatorLogCommand.Active.Contains(ev.Player.Id))
             {
-                if (LogManager.ElevatorLogs.TryGetValue(ev.Lift.Type(), out List<ElevatorLog> value))
-                    Commands.Logs.ElevatorLogCommand.Execute(ev.Player, ev.Lift.Type(), value);
+                if (LogManager.ElevatorLogs.TryGetValue(ev.Lift.Type, out List<ElevatorLog> value))
+                    Commands.Logs.ElevatorLogCommand.Execute(ev.Player, ev.Lift.Type, value);
                 else
                     ev.Player.Broadcast("ELEVATOR LOG", 10, "Elevator data not found", Broadcast.BroadcastFlags.AdminChat);
                 ev.IsAllowed = false;
@@ -68,9 +68,9 @@ namespace Mistaken.CommandsExtender.Admin
             if (!ev.IsAllowed)
                 return;
 
-            if (!LogManager.ElevatorLogs.ContainsKey(ev.Lift.Type()))
-                LogManager.ElevatorLogs.Add(ev.Lift.Type(), NorthwoodLib.Pools.ListPool<ElevatorLog>.Shared.Rent());
-            LogManager.ElevatorLogs[ev.Lift.Type()].Add(new ElevatorLog(ev));
+            if (!LogManager.ElevatorLogs.ContainsKey(ev.Lift.Type))
+                LogManager.ElevatorLogs.Add(ev.Lift.Type, NorthwoodLib.Pools.ListPool<ElevatorLog>.Shared.Rent());
+            LogManager.ElevatorLogs[ev.Lift.Type].Add(new ElevatorLog(ev));
         }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)

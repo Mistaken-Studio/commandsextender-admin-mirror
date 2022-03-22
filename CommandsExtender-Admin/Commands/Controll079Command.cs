@@ -5,6 +5,8 @@
 // -----------------------------------------------------------------------
 
 using CommandSystem;
+using Exiled.API.Features.Roles;
+using Exiled.Events.Handlers;
 using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
@@ -38,19 +40,20 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 return new string[] { this.GetUsage() };
             var output = this.ForeachPlayer(args[0], out bool success, (player) =>
             {
+                var scp = (Scp079Role)player.Role;
                 switch (args[1].ToLower())
                 {
                     case "lvl":
-                        player.Level = value;
+                        scp.Level = value;
                         return new string[] { "Done" };
                     case "xp":
-                        player.Experience = value;
+                        scp.Experience = value;
                         return new string[] { "Done" };
                     case "ap":
-                        player.Energy = value;
+                        scp.Energy = value;
                         return new string[] { "Done" };
                     case "max_ap":
-                        player.MaxEnergy = value;
+                        scp.MaxEnergy = value;
                         return new string[] { "Done" };
                     default:
                         return new string[] { this.GetUsage() };

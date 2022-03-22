@@ -19,7 +19,7 @@ namespace Mistaken.CommandsExtender.Admin
         {
             this.Player = ev.Player;
             this.Time = DateTime.Now;
-            this.Status = ev.Status;
+            this.Status = ev.Lift.Status;
         }
     }
 }
