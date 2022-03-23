@@ -61,10 +61,7 @@ namespace Mistaken.CommandsExtender.Admin
         private void CustomEvents_LoadedPlugins()
         {
             if (Exiled.Loader.Loader.Plugins.Any(x => x.Name == "CustomStructures"))
-            {
-                if (CustomStructures.CustomStructuresHandler.TryGetAsset("Talk_Void_Room", out var asset))
-                    CustomStructuresIntegration.Asset = asset;
-            }
+                CustomStructuresIntegration.Init();
         }
     }
 }
