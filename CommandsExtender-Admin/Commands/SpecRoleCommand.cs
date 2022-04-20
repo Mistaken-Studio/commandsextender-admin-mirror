@@ -116,7 +116,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             }
 
             foreach (var item in RealPlayers.Get(RoleType.Spectator))
-                item.Role = SpecRole;
+                item.Role.Type = SpecRole;
             return new string[] { "SpecRole is now " + SpecRole };
         }
     }

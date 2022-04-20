@@ -7,6 +7,7 @@
 using System.Linq;
 using CommandSystem;
 using Exiled.API.Features.Items;
+using InventorySystem.Items.ThrowableProjectiles;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
@@ -63,7 +64,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public void DropUnder(int[] pids, int times)
         {
-            var nade = new Throwable(ItemType.SCP018);
+            var nade = (ThrowableItem)Item.Create(ItemType.SCP018).Base;
             foreach (var item in pids)
             {
                 var player = RealPlayers.Get(item);

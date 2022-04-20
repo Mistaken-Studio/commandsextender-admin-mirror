@@ -33,7 +33,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             if (player.Role != RoleType.Tutorial)
             {
                 player.IsOverwatchEnabled = false;
-                player.Role = RoleType.Tutorial;
+                player.Role.Type = RoleType.Tutorial;
                 player.IsGodModeEnabled = true;
                 player.IsBypassModeEnabled = true;
 
@@ -81,7 +81,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 player.IsGodModeEnabled = false;
                 player.IsBypassModeEnabled = false;
                 player.NoClipEnabled = false;
-                player.Role = RoleType.Spectator;
+                player.Role.Type = RoleType.Spectator;
                 VanishHandler.SetGhost(player, false);
             }
 

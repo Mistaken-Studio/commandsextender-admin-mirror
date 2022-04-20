@@ -129,25 +129,25 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "checkpoint_lcz_a":
                     {
-                        player.Position = Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.LczChkpA).transform.position + Vector3.up;
+                        player.Position = Room.List.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.LczChkpA).transform.position + Vector3.up;
                         return new string[] { "Done" };
                     }
 
                 case "checkpoint_lcz_b":
                     {
-                        player.Position = Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.LczChkpB).transform.position + Vector3.up;
+                        player.Position = Room.List.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.LczChkpB).transform.position + Vector3.up;
                         return new string[] { "Done" };
                     }
 
                 case "checkpoint_ez":
                     {
-                        player.Position = Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.HczEzCheckpoint).transform.position + Vector3.up;
+                        player.Position = Room.List.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.HczEzCheckpoint).transform.position + Vector3.up;
                         return new string[] { "Done" };
                     }
 
                 case "shelter":
                     {
-                        player.Position = Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.EzShelter).transform.position + Vector3.up;
+                        player.Position = Room.List.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.EzShelter).transform.position + Vector3.up;
                         return new string[] { "Done" };
                     }
 

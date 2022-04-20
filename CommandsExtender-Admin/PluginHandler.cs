@@ -27,7 +27,7 @@ namespace Mistaken.CommandsExtender.Admin
         public override PluginPriority Priority => PluginPriority.Default;
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new Version(4, 1, 2);
+        public override Version RequiredExiledVersion => new Version(5, 0, 0);
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -61,10 +61,7 @@ namespace Mistaken.CommandsExtender.Admin
         private void CustomEvents_LoadedPlugins()
         {
             if (Exiled.Loader.Loader.Plugins.Any(x => x.Name == "CustomStructures"))
-            {
-                if (CustomStructures.CustomStructuresHandler.TryGetAsset("Talk_Void_Room", out var asset))
-                    CustomStructuresIntegration.Asset = asset;
-            }
+                CustomStructuresIntegration.Init();
         }
     }
 }

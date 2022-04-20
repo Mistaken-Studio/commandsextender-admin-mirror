@@ -79,7 +79,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public IEnumerator<float> Execute(Player player, int amount = 5, bool throwIt = false)
         {
-            var nade = new Throwable(ItemType.GrenadeFlash);
+            var nade = (ThrowableItem)Item.Create(ItemType.GrenadeFlash).Base;
 
             ThrownProjectile projectile;
             if (throwIt)

@@ -51,7 +51,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 FakeNicknames[player.UserId] = string.Join(" ", args.Skip(1).Where(i => i != "-full"));
                 if (string.IsNullOrWhiteSpace(FakeNicknames[player.UserId]))
                     FakeNicknames.Remove(player.UserId);
-                player.Connection.Send<RoundRestartMessage>(new RoundRestartMessage(RoundRestartType.FullRestart, 0f, 0, true));
+                player.Connection.Send<RoundRestartMessage>(new RoundRestartMessage(RoundRestartType.FullRestart, 0f, 0, true, false));
                 return new string[] { "Reconnecting" };
             }
 
