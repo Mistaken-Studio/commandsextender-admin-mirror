@@ -160,6 +160,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             else
             {
                 int[] targets = (args[0] + $".{player.Id}").Split('.').Select(i => int.Parse(i)).ToHashSet().ToArray();
+
+                if (SavedInfo.Any(x => targets.Any(y => y == x.Key)))
+                {
+                    success = false;
+                    return new string[] { "At least one of specified players is already on talk!", "<b><color=red>You foking monkey!</color></b>" };
+                }
+
                 string pos = Warps.Dequeue();
                 int counter = 0;
                 Warps.Enqueue(pos);
