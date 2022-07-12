@@ -93,8 +93,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                 if (!p.IsConnected)
                                     return;
 
-                                // This is broken :|
-                                if (!Warhead.IsDetonated || true)
+                                if (!Warhead.IsDetonated)
                                 {
                                     if (MapPlus.IsLCZDecontaminated(30))
                                     {
