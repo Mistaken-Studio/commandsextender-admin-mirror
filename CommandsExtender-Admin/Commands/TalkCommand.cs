@@ -218,6 +218,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 #pragma warning restore SA1118
                     foreach (var item in p.Items.ToArray())
                         p.RemoveItem(item, false);
+
+                    if (p.IsOverwatchEnabled)
+                    {
+                        p.IsOverwatchEnabled = false;
+                        p.Broadcast("Talk", 10, "Overwatch mode disabled", flags: Broadcast.BroadcastFlags.AdminChat);
+                    }
+
                     var old = Respawning.RespawnManager.CurrentSequence();
                     Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                     p.Role.Type = RoleType.Tutorial;
