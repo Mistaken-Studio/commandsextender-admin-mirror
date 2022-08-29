@@ -315,7 +315,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             if (!Active.TryGetValue(p.UserId, out int[] playerIds))
                 yield break;
-            Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).ToArray();
+            Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).Where(x => x != null).ToArray();
             foreach (var player in players)
                 player.SetGUI("talk", PseudoGUIPosition.TOP, $"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size>");
             while (Active.ContainsKey(p.UserId))
