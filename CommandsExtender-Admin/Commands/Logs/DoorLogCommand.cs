@@ -6,7 +6,6 @@
 
 using System.Collections.Generic;
 using CommandSystem;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;

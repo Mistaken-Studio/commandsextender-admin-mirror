@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using Exiled.API.Extensions;
 using Exiled.API.Interfaces;
 using Mistaken.API;
 using Mistaken.API.Diagnostics;
