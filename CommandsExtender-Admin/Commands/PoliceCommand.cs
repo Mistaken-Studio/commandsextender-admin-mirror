@@ -9,7 +9,6 @@ using CommandSystem;
 using Exiled.API.Features;
 using MEC;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
@@ -38,7 +37,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
-            var player = sender.GetPlayer();
+            var player = Player.Get(sender);
             if (args.Length == 0 || !bool.TryParse(args[0], out bool value))
                 value = !PoliceMode.ContainsKey(player.UserId);
             if (args.Length < 2 || !float.TryParse(args[1], out float time))

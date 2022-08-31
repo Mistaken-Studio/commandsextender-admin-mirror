@@ -9,7 +9,6 @@ using CommandSystem;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
 using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
@@ -34,7 +33,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 return new string[] { this.GetUsage() };
             if (args[0] == "list")
                 return new string[] { "Warp list:", "heli", "car", "jail", "jail2", "jail3", "jail4", "jail5", "gatea_up", "gatea_bottom", "gateb_up", "escape_up", "079", "checkpoint_lcz_a", "checkpoint_lcz_b", "checkpoint_ez", "shelter" };
-            var res = this.ForeachPlayer(args.Length > 1 ? args[1] : sender.GetPlayer().Id.ToString(), out bool s, (player) =>
+            var res = this.ForeachPlayer(args.Length > 1 ? args[1] : Player.Get(sender).Id.ToString(), out bool s, (player) =>
             {
                 return ExecuteWarp(player, args[0].ToLower());
             });

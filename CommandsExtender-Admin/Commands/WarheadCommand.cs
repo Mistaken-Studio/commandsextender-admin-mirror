@@ -6,6 +6,7 @@
 
 using CommandSystem;
 using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
@@ -32,13 +33,14 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             success = false;
             if (args.Length == 0)
                 return new string[] { this.GetUsage() };
-            var admin = sender.GetPlayer();
+            var player = Player.Get(sender);
 
             switch (args[0])
             {
                 case "start":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
                         Warhead.Start();
                         BetterWarheadHandler.Warhead.CountingDown = true;
                         success = true;
@@ -55,7 +57,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "on":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
                         Warhead.LeverStatus = true;
                         BetterWarheadHandler.Warhead.Enabled = true;
                         success = true;
@@ -64,7 +67,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "off":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
                         Warhead.LeverStatus = false;
                         BetterWarheadHandler.Warhead.Enabled = false;
                         success = true;
@@ -73,7 +77,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "open":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
                         Warhead.IsKeycardActivated = true;
                         BetterWarheadHandler.Warhead.ButtonOpen = true;
                         success = true;
@@ -82,7 +87,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "close":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
                         Warhead.IsKeycardActivated = false;
                         BetterWarheadHandler.Warhead.ButtonOpen = false;
                         success = true;
@@ -91,8 +97,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "lockstart":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
-                        if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockstart true/false" };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
+                        if (args.Length == 1)
+                            return new string[] { "Wrong arguments", "warhead lockstart true/false" };
                         if (args[1] == "true")
                         {
                             BetterWarheadHandler.Warhead.StartLock = true;
@@ -113,8 +121,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "lockstop":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
-                        if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockstop true/false" };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
+                        if (args.Length == 1)
+                            return new string[] { "Wrong arguments", "warhead lockstop true/false" };
                         if (args[1] == "true")
                         {
                             BetterWarheadHandler.Warhead.StopLock = true;
@@ -139,8 +149,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "lockbutton":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
-                        if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockbutton true/false" };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
+                        if (args.Length == 1)
+                            return new string[] { "Wrong arguments", "warhead lockbutton true/false" };
                         if (args[1] == "true")
                         {
                             BetterWarheadHandler.Warhead.ButtonLock = true;
@@ -161,8 +173,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "locklever":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
-                        if (args.Length == 1) return new string[] { "Wrong arguments", "warhead locklever true/false" };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
+                            return new string[] { "No Permissions." };
+                        if (args.Length == 1)
+                            return new string[] { "Wrong arguments", "warhead locklever true/false" };
                         if (args[1] == "true")
                         {
                             BetterWarheadHandler.Warhead.LeverLock = true;
@@ -183,7 +197,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "getlast":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.data")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.data"))
+                            return new string[] { "No Permissions." };
                         success = true;
                         return new string[]
                         {
@@ -194,7 +209,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                 case "stats":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.data")) return new string[] { "No Permissions." };
+                        if (!Permissions.CheckPermission(player, $"{this.PluginName}.data"))
+                            return new string[] { "No Permissions." };
                         success = true;
                         return new string[]
                         {

@@ -4,7 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using CommandSystem;
 using Exiled.API.Features;
@@ -32,7 +31,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             s = false;
             if (args.Length == 0)
                 return new string[] { this.GetUsage() };
-            var admin = sender.GetPlayer();
+            var admin = Player.Get(sender);
             var output = this.ForeachPlayer(args[0], out bool success, (player) =>
             {
                 var set = player.GetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
