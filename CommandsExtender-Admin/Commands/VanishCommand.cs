@@ -6,9 +6,9 @@
 
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Features;
 using Mistaken.API;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
@@ -35,7 +35,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = true;
-            var player = sender.GetPlayer();
+            var player = Player.Get(sender);
             bool value = !VanishHandler.Vanished.ContainsKey(player.Id);
             if (args.Any(str => str.ToLower() == "true"))
                 value = true;

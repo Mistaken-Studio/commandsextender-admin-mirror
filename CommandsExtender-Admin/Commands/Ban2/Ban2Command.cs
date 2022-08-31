@@ -50,16 +50,15 @@ namespace Mistaken.CommandsExtender.Admin
             {
                 try
                 {
-                    var commandSender = sender as CommandSender;
                     if (!int.TryParse(args[0].Split('.')[0], out int pid))
                         return new string[] { "Failed to parse playerId to int32" };
                     var target = RealPlayers.Get(pid);
                     if (target == null)
                         return new string[] { "Player not found" };
 
-                    if (commandSender.IsPlayer())
+                    if (sender.IsPlayer())
                     {
-                        var admin = commandSender.GetPlayer();
+                        var admin = Player.Get(sender);
 
                         if (admin.ReferenceHub.serverRoles.KickPower <= target.ReferenceHub.serverRoles.Group?.RequiredKickPower)
                             return new string[] { $"Access denied | Too low kickpower | {admin.ReferenceHub.serverRoles.KickPower} <= {target.ReferenceHub.serverRoles.Group?.RequiredKickPower}" };
@@ -88,12 +87,12 @@ namespace Mistaken.CommandsExtender.Admin
                     success = true;
                     if (!requireConfirmation)
                     {
-                        CompleteBan(commandSender, reason, target, duration, textTime, loud);
+                        CompleteBan(sender as CommandSender, reason, target, duration, textTime, loud);
                         return StyleBan(pid, target, baseDur, duration, type, reason);
                     }
                     else
                     {
-                        BanData data = new BanData(commandSender, reason, target, duration, baseDur, type, textTime, loud);
+                        BanData data = new BanData(sender as CommandSender, reason, target, duration, baseDur, type, textTime, loud);
                         AwaitingBans.Add(data);
                         Module.CallSafeDelayed(15, () => AwaitingBans.Remove(data), "Ban2.RemoveAwaitingBan");
 

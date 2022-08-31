@@ -53,7 +53,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
-            var player = sender.GetPlayer();
+            var player = Player.Get(sender);
             if (Active.TryGetValue(player.UserId, out int[] players))
             {
                 foreach (var playerId in players)
