@@ -6,8 +6,8 @@
 
 using System.Collections.Generic;
 using CommandSystem;
+using Exiled.API.Features;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
@@ -36,7 +36,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            var player = sender.GetPlayer();
+            var player = Player.Get(sender);
             bool value;
             if (args.Length == 0)
             {

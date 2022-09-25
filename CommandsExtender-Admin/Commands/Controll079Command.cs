@@ -6,7 +6,6 @@
 
 using CommandSystem;
 using Exiled.API.Features.Roles;
-using Exiled.Events.Handlers;
 using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands

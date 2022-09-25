@@ -5,8 +5,8 @@
 // -----------------------------------------------------------------------
 
 using CommandSystem;
+using Exiled.API.Features;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
 using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
@@ -39,7 +39,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     if (float.TryParse(args[2].Replace("~", string.Empty), out float z))
                     {
                         return this.ForeachPlayer(
-                            args.Length > 3 ? args[3] : sender.GetPlayer().Id.ToString(),
+                            args.Length > 3 ? args[3] : Player.Get(sender).Id.ToString(),
                             out success,
                             player =>
                             {

@@ -6,7 +6,6 @@
 
 using System.Collections.Generic;
 using CommandSystem;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
@@ -41,7 +40,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Logs
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = true;
-            var player = sender.GetPlayer();
+            var player = Player.Get(sender);
             if (!Active.Contains(player.Id))
                 Active.Add(player.Id);
             else

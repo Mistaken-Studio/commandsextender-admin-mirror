@@ -6,6 +6,8 @@
 
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
@@ -29,8 +31,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
-            var player = sender.GetPlayer();
-            if (player.Role != RoleType.Tutorial)
+            var player = Player.Get(sender);
+            if (player.Role.Type != RoleType.Tutorial)
             {
                 player.IsOverwatchEnabled = false;
                 player.Role.Type = RoleType.Tutorial;
@@ -53,7 +55,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         case "-n":
                         case "--noclip":
                             {
-                                if (player.CheckPermission("Global.Noclip"))
+                                if (Permissions.CheckPermission(player, "Global.Noclip"))
                                     player.NoClipEnabled = true;
                                 break;
                             }
@@ -61,7 +63,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         case "-v":
                         case "--vanish":
                             {
-                                if (player.CheckPermission(PluginHandler.Instance.Name + ".vanish"))
+                                if (Permissions.CheckPermission(player, PluginHandler.Instance.Name + ".vanish"))
                                     VanishHandler.SetGhost(player, true);
                                 break;
                             }
@@ -69,7 +71,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         case "-v-l":
                         case "--vanish-level":
                             {
-                                if (player.CheckPermission(PluginHandler.Instance.Name + ".vanish"))
+                                if (Permissions.CheckPermission(player, PluginHandler.Instance.Name + ".vanish"))
                                     nextVanishLevel = true;
                                 break;
                             }
