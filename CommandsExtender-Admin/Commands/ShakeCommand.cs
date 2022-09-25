@@ -26,7 +26,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = true;
-            Warhead.Shake();
+
+            foreach (Player player in Player.List)
+                Warhead.Controller.TargetRpcShake(player.Connection, false, true);
+
             return new string[] { "Done" };
         }
     }
