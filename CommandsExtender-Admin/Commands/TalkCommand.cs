@@ -16,6 +16,7 @@ using Mistaken.API.Extensions;
 using Mistaken.API.GUI;
 using Respawning;
 using UnityEngine;
+using CustomInfoHandler = Mistaken.API.Handlers.CustomInfoHandler;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {

@@ -85,7 +85,6 @@
     <Compile Include="Commands\Grenades\CandelaCommand.cs" />
     <Compile Include="Commands\Grenades\FlashCommand.cs" />
     <Compile Include="Commands\Grenades\GrenadeCommand.cs" />
-    <Compile Include="Commands\IntercomCommand.cs" />
     <Compile Include="Commands\LastAttackerCmd.cs" />
     <Compile Include="Commands\LastVictimCommand.cs" />
     <Compile Include="Commands\LockElevatorCommand.cs" />
@@ -112,7 +111,6 @@
     <Compile Include="Commands\TalkCommand.cs" />
     <Compile Include="Commands\TeslaCommand.cs" />
     <Compile Include="Commands\TpcCommand.cs" />
-    <Compile Include="Commands\TTRCommand.cs" />
     <Compile Include="Commands\TutorialMeCommand.cs" />
     <Compile Include="Commands\UnMuteAllCommand.cs" />
     <Compile Include="Commands\VanishCommand.cs" />

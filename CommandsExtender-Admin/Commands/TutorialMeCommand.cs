@@ -11,6 +11,7 @@ using Exiled.Permissions.Extensions;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
+using VanishHandler = Mistaken.API.Handlers.VanishHandler;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {

@@ -9,6 +9,7 @@ using CommandSystem;
 using Exiled.API.Features;
 using Mistaken.API;
 using Mistaken.API.Commands;
+using VanishHandler = Mistaken.API.Handlers.VanishHandler;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
