@@ -13,7 +13,7 @@ using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class MarkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "mark";
@@ -24,37 +24,37 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "mark";
 
-        public string[] Usage => new string[] { "%player%" };
+        public string[] Usage => new[] { "%player%" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             var admin = Player.Get(sender);
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = this.ForeachPlayer(args[0], out var success, (player) =>
             {
                 var set = player.GetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
                 if (set.Contains(admin))
                 {
                     set.Remove(admin);
                     player.ChangeAppearance(admin, player.Role);
-                    return new string[] { "Disabled" };
+                    return new[] { "Disabled" };
                 }
                 else
                 {
                     if (admin.Role != RoleType.Tutorial)
-                        return new string[] { "You have to be tutorial" };
+                        return new[] { "You have to be tutorial" };
                     if (!player.IsHuman)
-                        return new string[] { "Has to be Human" };
+                        return new[] { "Has to be Human" };
 
                     player.ChangeAppearance(admin, RoleType.Tutorial);
                     set.Add(admin);
-                    return new string[] { "Enabled" };
+                    return new[] { "Enabled" };
                 }
             });
             if (!success)
-                return new string[] { "Player not found", this.GetUsage() };
+                return new[] { "Player not found", this.GetUsage() };
             s = true;
             return output;
         }

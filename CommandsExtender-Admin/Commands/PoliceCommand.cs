@@ -12,10 +12,10 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class PoliceCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
-        public static readonly Dictionary<string, float> PoliceMode = new Dictionary<string, float>();
+        public static readonly Dictionary<string, float> PoliceMode = new();
 
         public string Permission => "police";
 
@@ -28,7 +28,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "value (true/false, default: toggle)", "speed in seconds(default: 1s)" };
+        public string[] Usage => new[] { "value (true/false, default: toggle)", "speed in seconds(default: 1s)" };
 
         public string GetUsage()
         {
@@ -38,11 +38,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             var player = Player.Get(sender);
-            if (args.Length == 0 || !bool.TryParse(args[0], out bool value))
+            if (args.Length == 0 || !bool.TryParse(args[0], out var value))
                 value = !PoliceMode.ContainsKey(player.UserId);
-            if (args.Length < 2 || !float.TryParse(args[1], out float time))
+            if (args.Length < 2 || !float.TryParse(args[1], out var time))
                 time = 1;
-            bool start = value;
+            var start = value;
             if (value && PoliceMode.ContainsKey(player.UserId))
             {
                 PoliceMode.Remove(player.UserId);
@@ -56,12 +56,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             if (start)
                 API.Diagnostics.Module.RunSafeCoroutine(this.Execute(player), "Police.Execute");
             s = true;
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
 
         private IEnumerator<float> Execute(Player player)
         {
-            while (PoliceMode.TryGetValue(player.UserId, out float time))
+            while (PoliceMode.TryGetValue(player.UserId, out var time))
             {
                 if (player.RankColor != "red")
                     player.RankColor = "red";

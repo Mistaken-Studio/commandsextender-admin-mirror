@@ -13,16 +13,16 @@ using Mistaken.API;
 using Mistaken.API.Diagnostics;
 using Mistaken.API.Extensions;
 using Mistaken.CommandsExtender.Admin.Commands;
+using Mistaken.CommandsExtender.Admin.Commands.MCommands;
 using Respawning;
 using UnityEngine;
-using VanishHandler = Mistaken.API.Handlers.VanishHandler;
 
 namespace Mistaken.CommandsExtender.Admin
 {
     internal class CommandsHandler : Module
     {
-        public static readonly Dictionary<string, (Player, Player)> LastAttackers = new Dictionary<string, (Player, Player)>();
-        public static readonly Dictionary<string, (Player, Player)> LastVictims = new Dictionary<string, (Player, Player)>();
+        public static readonly Dictionary<string, (Player, Player)> LastAttackers = new();
+        public static readonly Dictionary<string, (Player, Player)> LastVictims = new();
 
         public CommandsHandler(PluginHandler plugin)
             : base(plugin)
@@ -96,9 +96,9 @@ namespace Mistaken.CommandsExtender.Admin
             if (ev.NewRole == RoleType.Spectator && SpecRoleCommand.SpecRole != RoleType.Spectator && SpecRoleCommand.SpecRole != RoleType.None)
                 ev.NewRole = SpecRoleCommand.SpecRole;
 
-            if (VanishHandler.Vanished.ContainsKey(ev.Player.Id))
+            if (API.Handlers.VanishHandler.Vanished.ContainsKey(ev.Player.Id))
             {
-                VanishHandler.SetGhost(ev.Player, false);
+                API.Handlers.VanishHandler.SetGhost(ev.Player, false);
                 ev.Player.Broadcast(5, "Vanish deactivated due to role change", Broadcast.BroadcastFlags.AdminChat);
             }
 
@@ -142,7 +142,7 @@ namespace Mistaken.CommandsExtender.Admin
 
             ev.Player.SetSessionVariable(SessionVarType.ADMIN_MARK, new HashSet<Player>());
 
-            if (FakeNickCommand.FakeNicknames.ContainsKey(ev.Player.UserId) && Patches.NicknamePatch.RealNicknames.TryGetValue(ev.Player.UserId, out string realNickname))
+            if (FakeNickCommand.FakeNicknames.ContainsKey(ev.Player.UserId) && Patches.NicknamePatch.RealNicknames.TryGetValue(ev.Player.UserId, out var realNickname))
                 ev.Player.SetSessionVariable("REAL_NICKNAME", realNickname);
         }
 
@@ -153,23 +153,23 @@ namespace Mistaken.CommandsExtender.Admin
             if (MuteAllCommand.Muted.Contains(ev.Player.UserId))
                 MuteAllCommand.Muted.Remove(ev.Player.UserId);
 
-            if (TalkCommand.Active.TryGetValue(ev.Player.UserId, out int[] players))
+            if (TalkCommand.Active.TryGetValue(ev.Player.UserId, out var players))
             {
                 foreach (var playerId in players)
                 {
                     if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
-                        Player p = RealPlayers.Get(playerId);
+                        var p = RealPlayers.Get(playerId);
                         if (p == null)
                             continue;
-                        var old = Respawning.RespawnManager.CurrentSequence();
-                        Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+                        var old = RespawnManager.CurrentSequence();
+                        RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role.Type = data.Role;
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
-                        if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
+                        if (RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.UnitName = array[data.UnitIndex];
-                        Respawning.RespawnManager.Singleton._curSequence = old;
+                        RespawnManager.Singleton._curSequence = old;
                         this.CallDelayed(
                             0.5f,
                             () =>
@@ -214,13 +214,13 @@ namespace Mistaken.CommandsExtender.Admin
 
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
                 ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.Handler.Type} | {ev.Amount}");
-            if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
+            if (!LastAttackers.TryGetValue(ev.Target.UserId, out var attackers))
                 LastAttackers[ev.Target.UserId] = (null, ev.Attacker);
             else
                 LastAttackers[ev.Target.UserId] = (attackers.Item1, ev.Attacker);
             if (ev.Attacker?.UserId == null)
                 return;
-            if (!LastVictims.TryGetValue(ev.Attacker.UserId, out (Player, Player) victims))
+            if (!LastVictims.TryGetValue(ev.Attacker.UserId, out var victims))
                 LastVictims[ev.Attacker.UserId] = (null, ev.Target);
             else
                 LastVictims[ev.Attacker.UserId] = (victims.Item1, ev.Target);
@@ -230,13 +230,13 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (!ev.Target.IsReadyPlayer())
                 return;
-            if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
+            if (!LastAttackers.TryGetValue(ev.Target.UserId, out var attackers))
                 LastAttackers[ev.Target.UserId] = (ev.Killer, null);
             else
                 LastAttackers[ev.Target.UserId] = (ev.Killer, attackers.Item2);
             if (ev.Killer?.UserId == null)
                 return;
-            if (!LastVictims.TryGetValue(ev.Killer.UserId, out (Player, Player) victims))
+            if (!LastVictims.TryGetValue(ev.Killer.UserId, out var victims))
                 LastVictims[ev.Killer.UserId] = (ev.Target, null);
             else
                 LastVictims[ev.Killer.UserId] = (ev.Target, victims.Item2);
@@ -246,7 +246,7 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (ev.Player == null)
             {
-                this.Log.Debug("Player was null in Player_InteractingDoor", PluginHandler.Instance.Config.VerbouseOutput);
+                this.Log.Debug("Player was null in Player_InteractingDoor", PluginHandler.Instance.Config.VerboseOutput);
                 return;
             }
 

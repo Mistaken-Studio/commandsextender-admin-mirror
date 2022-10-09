@@ -11,7 +11,7 @@ using Mistaken.API;
 using Mistaken.API.Diagnostics;
 using Mistaken.API.Extensions;
 
-namespace Mistaken.CommandsExtender.Admin
+namespace Mistaken.CommandsExtender.Admin.Logs
 {
     internal class LogHandler : Module
     {
@@ -24,36 +24,36 @@ namespace Mistaken.CommandsExtender.Admin
 
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.RestartingRound -= this.Server_RestartingRound;
-            Exiled.Events.Handlers.Player.InteractingElevator -= this.Player_InteractingElevator;
-            Exiled.Events.Handlers.Player.InteractingDoor -= this.Player_InteractingDoor;
-            Exiled.Events.Handlers.Player.Verified -= this.Player_Verified;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Server.RestartingRound -= Server_RestartingRound;
+            Exiled.Events.Handlers.Player.InteractingElevator -= Player_InteractingElevator;
+            Exiled.Events.Handlers.Player.InteractingDoor -= Player_InteractingDoor;
+            Exiled.Events.Handlers.Player.Verified -= Player_Verified;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= Server_WaitingForPlayers;
         }
 
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RestartingRound += this.Server_RestartingRound;
-            Exiled.Events.Handlers.Player.InteractingElevator += this.Player_InteractingElevator;
-            Exiled.Events.Handlers.Player.InteractingDoor += this.Player_InteractingDoor;
-            Exiled.Events.Handlers.Player.Verified += this.Player_Verified;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
+            Exiled.Events.Handlers.Player.InteractingElevator += Player_InteractingElevator;
+            Exiled.Events.Handlers.Player.InteractingDoor += Player_InteractingDoor;
+            Exiled.Events.Handlers.Player.Verified += Player_Verified;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += Server_WaitingForPlayers;
         }
 
-        private void Server_WaitingForPlayers()
+        private static void Server_WaitingForPlayers()
         {
             Commands.Logs.DoorLogCommand.Active.Clear();
             Commands.Logs.ElevatorLogCommand.Active.Clear();
         }
 
-        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        private static void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             if (!LogManager.PlayerLogs.ContainsKey(RoundPlus.RoundId))
                 LogManager.PlayerLogs[RoundPlus.RoundId] = NorthwoodLib.Pools.ListPool<PlayerInfo>.Shared.Rent();
             LogManager.PlayerLogs[RoundPlus.RoundId].Add(new PlayerInfo(ev.Player));
         }
 
-        private void Player_InteractingElevator(Exiled.Events.EventArgs.InteractingElevatorEventArgs ev)
+        private static void Player_InteractingElevator(Exiled.Events.EventArgs.InteractingElevatorEventArgs ev)
         {
             if (Commands.Logs.ElevatorLogCommand.Active.Contains(ev.Player.Id))
             {
@@ -72,7 +72,7 @@ namespace Mistaken.CommandsExtender.Admin
             LogManager.ElevatorLogs[ev.Lift.Type].Add(new ElevatorLog(ev));
         }
 
-        private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
+        private static void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (ev.Player == null)
                 return;
@@ -92,7 +92,7 @@ namespace Mistaken.CommandsExtender.Admin
             LogManager.DoorLogs[ev.Door].Add(new DoorLog(ev));
         }
 
-        private void Server_RestartingRound()
+        private static void Server_RestartingRound()
         {
             LogManager.RoundStartTime[RoundPlus.RoundId] = DateTime.Now;
             foreach (var item in LogManager.DoorLogs)

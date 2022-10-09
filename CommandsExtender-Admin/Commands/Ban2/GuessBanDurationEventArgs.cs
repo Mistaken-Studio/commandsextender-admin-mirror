@@ -5,12 +5,15 @@
 // -----------------------------------------------------------------------
 
 using Exiled.API.Features;
+using JetBrains.Annotations;
 
+// ReSharper disable once CheckNamespace
 namespace Mistaken.CommandsExtender.Admin
 {
     /// <summary>
     /// Event args.
     /// </summary>
+    [PublicAPI]
     public class GuessBanDurationEventArgs
     {
         /// <summary>

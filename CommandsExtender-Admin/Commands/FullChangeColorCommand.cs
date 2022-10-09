@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class FullChangeColorCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "fullchangecolor";
@@ -19,11 +19,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "fullchangecolor";
 
-        public override string[] Aliases => new string[] { "fullchangecolor", "fccolor", "fullccolor" };
+        public override string[] Aliases => new[] { "fullchangecolor", "fccolor", "fullccolor" };
 
         public override string Description => "Change colors everywere";
 
-        public string[] Usage => new string[]
+        public string[] Usage => new[]
         {
             "r",
             "g",
@@ -34,15 +34,15 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             success = false;
             if (args.Length < 3)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             else
             {
-                if (!float.TryParse(args[0], out float r))
-                    return new string[] { this.GetUsage() };
-                if (!float.TryParse(args[1], out float g))
-                    return new string[] { this.GetUsage() };
-                if (!float.TryParse(args[2], out float b))
-                    return new string[] { this.GetUsage() };
+                if (!float.TryParse(args[0], out var r))
+                    return new[] { this.GetUsage() };
+                if (!float.TryParse(args[1], out var g))
+                    return new[] { this.GetUsage() };
+                if (!float.TryParse(args[2], out var b))
+                    return new[] { this.GetUsage() };
 
                 var color = new Color(r / 255f, g / 255f, b / 255f);
 
@@ -63,7 +63,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     }
                 }
 
-                return new string[] { "Done" };
+                return new[] { "Done" };
             }
         }
 

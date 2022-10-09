@@ -5,12 +5,12 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
-using Mistaken.Updater.Config;
+using Exiled.API.Interfaces;
 
 namespace Mistaken.CommandsExtender.Admin
 {
     /// <inheritdoc/>
-    public class Config : IAutoUpdatableConfig
+    public class Config : IConfig
     {
         /// <inheritdoc/>
         public bool IsEnabled { get; set; } = true;
@@ -19,16 +19,6 @@ namespace Mistaken.CommandsExtender.Admin
         /// Gets or sets a value indicating whether debug should be displayed.
         /// </summary>
         [Description("If true then debug will be displayed")]
-        public bool VerbouseOutput { get; set; }
-
-        /// <inheritdoc/>
-        [Description("Auto Update Settings")]
-        public System.Collections.Generic.Dictionary<string, string> AutoUpdateConfig { get; set; } = new System.Collections.Generic.Dictionary<string, string>
-        {
-            { "Url", "https://git.mistaken.pl/api/v4/projects/30" },
-            { "Token", string.Empty },
-            { "Type", "GITLAB" },
-            { "VerbouseOutput", "false" },
-        };
+        public bool VerboseOutput { get; set; }
     }
 }

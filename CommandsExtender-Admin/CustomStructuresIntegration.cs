@@ -11,7 +11,7 @@ namespace Mistaken.CommandsExtender.Admin
 {
     internal static class CustomStructuresIntegration
     {
-        public static object Asset { get; set; } = null;
+        public static object Asset { get; private set; }
 
         public static void Init()
         {

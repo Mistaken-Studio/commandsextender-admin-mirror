@@ -10,7 +10,7 @@ using Mistaken.API.Utilities;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class BlackoutCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "blackout";
@@ -23,27 +23,27 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Description => "Enabled or disabled blackout in facility";
 
-        public string[] Usage => new string[] { "value (true/false)" };
+        public string[] Usage => new[] { "value (true/false)" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             else
             {
-                if (bool.TryParse(args[0], out bool value))
+                if (bool.TryParse(args[0], out var value))
                 {
                     Map.Blackout.Enabled = value;
                     success = true;
                     if (value)
-                        return new string[] { "Enabled" };
+                        return new[] { "Enabled" };
                     else
-                        return new string[] { "Disabled" };
+                        return new[] { "Disabled" };
                 }
                 else
                 {
-                    return new string[] { this.GetUsage() };
+                    return new[] { this.GetUsage() };
                 }
             }
         }

@@ -10,7 +10,7 @@ using Mistaken.API.Utilities;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class DoorRestartCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "doorrestart";
@@ -21,13 +21,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "doorrestart";
 
-        public override string[] Aliases => new string[] { "drestart" };
+        public override string[] Aliases => new[] { "drestart" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             Map.RestartDoors();
             success = true;
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
     }
 }

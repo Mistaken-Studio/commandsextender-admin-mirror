@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class Controll079Command : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "controll079";
@@ -21,9 +21,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "controll079";
 
-        public override string[] Aliases => new string[] { "c079" };
+        public override string[] Aliases => new[] { "c079" };
 
-        public string[] Usage => new string[] { "%player%", "lvl/xp/ap/max_ap", "value" };
+        public string[] Usage => new[] { "%player%", "lvl/xp/ap/max_ap", "value" };
 
         public string GetUsage()
         {
@@ -34,32 +34,32 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             s = false;
             if (args.Length < 3)
-                return new string[] { this.GetUsage() };
-            if (!byte.TryParse(args[2], out byte value))
-                return new string[] { this.GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+                return new[] { this.GetUsage() };
+            if (!byte.TryParse(args[2], out var value))
+                return new[] { this.GetUsage() };
+            var output = this.ForeachPlayer(args[0], out var success, (player) =>
             {
                 var scp = (Scp079Role)player.Role;
                 switch (args[1].ToLower())
                 {
                     case "lvl":
                         scp.Level = value;
-                        return new string[] { "Done" };
+                        return new[] { "Done" };
                     case "xp":
                         scp.Experience = value;
-                        return new string[] { "Done" };
+                        return new[] { "Done" };
                     case "ap":
                         scp.Energy = value;
-                        return new string[] { "Done" };
+                        return new[] { "Done" };
                     case "max_ap":
                         scp.MaxEnergy = value;
-                        return new string[] { "Done" };
+                        return new[] { "Done" };
                     default:
-                        return new string[] { this.GetUsage() };
+                        return new[] { this.GetUsage() };
                 }
             });
             if (!success)
-                return new string[] { "Plyaer not found", this.GetUsage() };
+                return new[] { "Plyaer not found", this.GetUsage() };
             s = true;
             return output;
         }

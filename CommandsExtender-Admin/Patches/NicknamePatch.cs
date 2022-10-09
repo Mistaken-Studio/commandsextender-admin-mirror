@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Mistaken.CommandsExtender.Admin.Commands;
 
+// ReSharper disable InconsistentNaming
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
 namespace Mistaken.CommandsExtender.Admin.Patches
@@ -20,9 +21,9 @@ namespace Mistaken.CommandsExtender.Admin.Patches
     public static class NicknamePatch
     {
         /// <summary>
-        /// List of real nicknames (Orginal).
+        /// List of real nicknames (Original).
         /// </summary>
-        public static readonly Dictionary<string, string> RealNicknames = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> RealNicknames = new();
 
         /// <summary>
         /// Prefix Patch.
@@ -32,7 +33,7 @@ namespace Mistaken.CommandsExtender.Admin.Patches
             if (string.IsNullOrWhiteSpace(__instance._hub.characterClassManager.UserId))
                 return true;
             RealNicknames[__instance._hub.characterClassManager.UserId] = n;
-            if (FakeNickCommand.FakeNicknames.TryGetValue(__instance._hub.characterClassManager.UserId, out string newNick))
+            if (FakeNickCommand.FakeNicknames.TryGetValue(__instance._hub.characterClassManager.UserId, out var newNick))
                 n = newNick;
             return true;
         }
