@@ -10,6 +10,7 @@ using Exiled.Permissions.Extensions;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
+using BetterWarheadHandler = Mistaken.API.Handlers.BetterWarheadHandler;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {

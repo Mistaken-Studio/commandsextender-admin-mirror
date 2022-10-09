@@ -15,6 +15,7 @@ using Mistaken.API.Extensions;
 using Mistaken.CommandsExtender.Admin.Commands;
 using Respawning;
 using UnityEngine;
+using VanishHandler = Mistaken.API.Handlers.VanishHandler;
 
 namespace Mistaken.CommandsExtender.Admin
 {
