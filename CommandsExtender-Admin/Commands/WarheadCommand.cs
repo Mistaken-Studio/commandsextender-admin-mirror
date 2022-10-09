@@ -7,13 +7,11 @@
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using Mistaken.API;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class WarheadCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "basic";
@@ -22,17 +20,17 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "warhead_controll";
 
-        public override string[] Aliases => new string[] { "wc" };
+        public override string[] Aliases => new[] { "wc" };
 
         public override string Description => "Controll Alpha Warhead";
 
-        public string[] Usage => new string[] { "start/stop/on/off/open/close/lockstart/lockstop/lockbutton/locklever/getlast/stats" };
+        public string[] Usage => new[] { "start/stop/on/off/open/close/lockstart/lockstop/lockbutton/locklever/getlast/stats" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             var player = Player.Get(sender);
 
             switch (args[0])
@@ -40,198 +38,198 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 case "start":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         Warhead.Start();
-                        BetterWarheadHandler.Warhead.CountingDown = true;
+                        API.Handlers.BetterWarheadHandler.Warhead.CountingDown = true;
                         success = true;
-                        return new string[] { "Alpha Warhead engaged" };
+                        return new[] { "Alpha Warhead engaged" };
                     }
 
                 case "stop":
                     {
                         Warhead.Stop();
-                        BetterWarheadHandler.Warhead.CountingDown = false;
+                        API.Handlers.BetterWarheadHandler.Warhead.CountingDown = false;
                         success = true;
-                        return new string[] { "Alpha Warhead cancled" };
+                        return new[] { "Alpha Warhead cancled" };
                     }
 
                 case "on":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         Warhead.LeverStatus = true;
-                        BetterWarheadHandler.Warhead.Enabled = true;
+                        API.Handlers.BetterWarheadHandler.Warhead.Enabled = true;
                         success = true;
-                        return new string[] { "Alpha Warhead turned on" };
+                        return new[] { "Alpha Warhead turned on" };
                     }
 
                 case "off":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         Warhead.LeverStatus = false;
-                        BetterWarheadHandler.Warhead.Enabled = false;
+                        API.Handlers.BetterWarheadHandler.Warhead.Enabled = false;
                         success = true;
-                        return new string[] { "Alpha Warhead turned off" };
+                        return new[] { "Alpha Warhead turned off" };
                     }
 
                 case "open":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         Warhead.IsKeycardActivated = true;
-                        BetterWarheadHandler.Warhead.ButtonOpen = true;
+                        API.Handlers.BetterWarheadHandler.Warhead.ButtonOpen = true;
                         success = true;
-                        return new string[] { "Alpha Warhead button opened" };
+                        return new[] { "Alpha Warhead button opened" };
                     }
 
                 case "close":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         Warhead.IsKeycardActivated = false;
-                        BetterWarheadHandler.Warhead.ButtonOpen = false;
+                        API.Handlers.BetterWarheadHandler.Warhead.ButtonOpen = false;
                         success = true;
-                        return new string[] { "Alpha Warhead button closed" };
+                        return new[] { "Alpha Warhead button closed" };
                     }
 
                 case "lockstart":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         if (args.Length == 1)
-                            return new string[] { "Wrong arguments", "warhead lockstart true/false" };
+                            return new[] { "Wrong arguments", "warhead lockstart true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.StartLock = true;
+                            API.Handlers.BetterWarheadHandler.Warhead.StartLock = true;
                             success = true;
-                            return new string[] { "Alpha Warhead start lock turned on" };
+                            return new[] { "Alpha Warhead start lock turned on" };
                         }
                         else if (args[1] == "false")
                         {
-                            BetterWarheadHandler.Warhead.StartLock = false;
+                            API.Handlers.BetterWarheadHandler.Warhead.StartLock = false;
                             success = true;
-                            return new string[] { "Alpha Warhead start lock turned off" };
+                            return new[] { "Alpha Warhead start lock turned off" };
                         }
                         else
                         {
-                            return new string[] { "Wrong arguments", "warhead lockstart true/false" };
+                            return new[] { "Wrong arguments", "warhead lockstart true/false" };
                         }
                     }
 
                 case "lockstop":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         if (args.Length == 1)
-                            return new string[] { "Wrong arguments", "warhead lockstop true/false" };
+                            return new[] { "Wrong arguments", "warhead lockstop true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.StopLock = true;
+                            API.Handlers.BetterWarheadHandler.Warhead.StopLock = true;
                             success = true;
 
                             // plugin.CommandManager.CallCommand(sender, "nuke", new string[] { "lock" });
-                            return new string[] { "Alpha Warhead stop lock turned on" };
+                            return new[] { "Alpha Warhead stop lock turned on" };
                         }
                         else if (args[1] == "false")
                         {
-                            BetterWarheadHandler.Warhead.StopLock = false;
+                            API.Handlers.BetterWarheadHandler.Warhead.StopLock = false;
                             success = true;
 
                             // plugin.CommandManager.CallCommand(sender, "nuke", new string[] { "unlock" });
-                            return new string[] { "Alpha Warhead stop lock turned off" };
+                            return new[] { "Alpha Warhead stop lock turned off" };
                         }
                         else
                         {
-                            return new string[] { "Wrong arguments", "warhead lockstop true/false" };
+                            return new[] { "Wrong arguments", "warhead lockstop true/false" };
                         }
                     }
 
                 case "lockbutton":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         if (args.Length == 1)
-                            return new string[] { "Wrong arguments", "warhead lockbutton true/false" };
+                            return new[] { "Wrong arguments", "warhead lockbutton true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.ButtonLock = true;
+                            API.Handlers.BetterWarheadHandler.Warhead.ButtonLock = true;
                             success = true;
-                            return new string[] { "Alpha Warhead button lock turned on" };
+                            return new[] { "Alpha Warhead button lock turned on" };
                         }
                         else if (args[2] == "false")
                         {
-                            BetterWarheadHandler.Warhead.ButtonLock = false;
+                            API.Handlers.BetterWarheadHandler.Warhead.ButtonLock = false;
                             success = true;
-                            return new string[] { "Alpha Warhead button lock turned off" };
+                            return new[] { "Alpha Warhead button lock turned off" };
                         }
                         else
                         {
-                            return new string[] { "Wrong arguments", "warhead lockbutton true/false" };
+                            return new[] { "Wrong arguments", "warhead lockbutton true/false" };
                         }
                     }
 
                 case "locklever":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.lock"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         if (args.Length == 1)
-                            return new string[] { "Wrong arguments", "warhead locklever true/false" };
+                            return new[] { "Wrong arguments", "warhead locklever true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.LeverLock = true;
+                            API.Handlers.BetterWarheadHandler.Warhead.LeverLock = true;
                             success = true;
-                            return new string[] { "Alpha Warhead level locked" };
+                            return new[] { "Alpha Warhead level locked" };
                         }
                         else if (args[1] == "false")
                         {
-                            BetterWarheadHandler.Warhead.LeverLock = false;
+                            API.Handlers.BetterWarheadHandler.Warhead.LeverLock = false;
                             success = true;
-                            return new string[] { "Alpha Warhead level locked" };
+                            return new[] { "Alpha Warhead level locked" };
                         }
                         else
                         {
-                            return new string[] { "Wrong arguments", "warhead locklever true/false" };
+                            return new[] { "Wrong arguments", "warhead locklever true/false" };
                         }
                     }
 
                 case "getlast":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.data"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         success = true;
-                        return new string[]
+                        return new[]
                         {
-                            "Last Warhead Start User: " + (BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({BetterWarheadHandler.Warhead.LastStartUser.Id}) | {BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
-                            "Last Warhead Stop User: " + (BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({BetterWarheadHandler.Warhead.LastStopUser.Id}) | {BetterWarheadHandler.Warhead.LastStopUser.UserId}"),
+                            "Last Warhead Start User: " + (API.Handlers.BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{API.Handlers.BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({API.Handlers.BetterWarheadHandler.Warhead.LastStartUser.Id}) | {API.Handlers.BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
+                            "Last Warhead Stop User: " + (API.Handlers.BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown" : $"{API.Handlers.BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({API.Handlers.BetterWarheadHandler.Warhead.LastStopUser.Id}) | {API.Handlers.BetterWarheadHandler.Warhead.LastStopUser.UserId}"),
                         };
                     }
 
                 case "stats":
                     {
                         if (!Permissions.CheckPermission(player, $"{this.PluginName}.data"))
-                            return new string[] { "No Permissions." };
+                            return new[] { "No Permissions." };
                         success = true;
-                        return new string[]
+                        return new[]
                         {
                             "Alpha Warhead stats:",
                             "Detonated: " + Warhead.IsDetonated,
-                            "Counting Down: " + BetterWarheadHandler.Warhead.CountingDown,
+                            "Counting Down: " + API.Handlers.BetterWarheadHandler.Warhead.CountingDown,
                             "Enabled: " + Warhead.LeverStatus,
-                            "Time Left: " + BetterWarheadHandler.Warhead.TimeLeft,
-                            "StartLock: " + BetterWarheadHandler.Warhead.StartLock,
-                            "StopLock: " + BetterWarheadHandler.Warhead.StopLock,
-                            "LeverLock: " + BetterWarheadHandler.Warhead.LeverLock,
-                            "ButtonLock: " + BetterWarheadHandler.Warhead.ButtonLock,
+                            "Time Left: " + API.Handlers.BetterWarheadHandler.Warhead.TimeLeft,
+                            "StartLock: " + API.Handlers.BetterWarheadHandler.Warhead.StartLock,
+                            "StopLock: " + API.Handlers.BetterWarheadHandler.Warhead.StopLock,
+                            "LeverLock: " + API.Handlers.BetterWarheadHandler.Warhead.LeverLock,
+                            "ButtonLock: " + API.Handlers.BetterWarheadHandler.Warhead.ButtonLock,
                             "Button Open: " + Warhead.IsLocked,
-                            "Last Start User: " + (BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({BetterWarheadHandler.Warhead.LastStartUser.Id}) | {BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
-                            "Last Stop User: " + (BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({BetterWarheadHandler.Warhead.LastStopUser.Id}) | {BetterWarheadHandler.Warhead.LastStopUser.UserId}"),
+                            "Last Start User: " + (API.Handlers.BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{API.Handlers.BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({API.Handlers.BetterWarheadHandler.Warhead.LastStartUser.Id}) | {API.Handlers.BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
+                            "Last Stop User: " + (API.Handlers.BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown" : $"{API.Handlers.BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({API.Handlers.BetterWarheadHandler.Warhead.LastStopUser.Id}) | {API.Handlers.BetterWarheadHandler.Warhead.LastStopUser.UserId}"),
                         };
                     }
 
                 default:
                     {
-                        return new string[] { "Wrong arguments", this.GetUsage() };
+                        return new[] { "Wrong arguments", this.GetUsage() };
                     }
             }
         }

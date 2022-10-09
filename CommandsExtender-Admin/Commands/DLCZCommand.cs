@@ -11,8 +11,8 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    internal class DLCZCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    internal class DlczCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "dlcz";
 
@@ -24,22 +24,17 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "settime/setstatus", "value?" };
-
-        public string GetUsage()
-        {
-            return "dlcz get/settime/setstatus (value)";
-        }
+        public string[] Usage => new[] { "settime/setstatus", "value?" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { GetUsage() };
 
-            var dlcz = LightContainmentZoneDecontamination.DecontaminationController.Singleton;
+            var dlcz = DecontaminationController.Singleton;
             if (dlcz == null)
-                return new string[] { "DecontaminationLCZ not found" };
+                return new[] { "DecontaminationLCZ not found" };
 
             switch (args[0].ToLower())
             {
@@ -47,47 +42,52 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 case "settime":
                     {
                         if (args.Length == 1)
-                            return new string[] { this.GetUsage() };
-                        if (float.TryParse(args[1], out float time))
+                            return new[] { GetUsage() };
+                        if (float.TryParse(args[1], out var time))
                         {
-                            double last = dlcz.DecontaminationPhases.First(i => i.Function == DecontaminationController.DecontaminationPhase.PhaseFunction.Final).TimeTrigger - DecontaminationController.GetServerTime;
-                            double toSet = Mirror.NetworkTime.time -
-                            DecontaminationController.Singleton.DecontaminationPhases.First(i =>
-                            i.Function == DecontaminationController.DecontaminationPhase.PhaseFunction.Final).TimeTrigger +
-                            time;
+                            var last = dlcz.DecontaminationPhases.First(i => i.Function == DecontaminationController.DecontaminationPhase.PhaseFunction.Final).TimeTrigger - DecontaminationController.GetServerTime;
+                            var toSet = Mirror.NetworkTime.time -
+                                        DecontaminationController.Singleton.DecontaminationPhases.First(i =>
+                                            i.Function == DecontaminationController.DecontaminationPhase.PhaseFunction.Final).TimeTrigger +
+                                        time;
                             if (toSet <= 0)
                             {
                                 success = false;
-                                return new string[] { $"NetworkRoundStartTime can't be negative | it whould be {toSet}" };
+                                return new[] { $"NetworkRoundStartTime can't be negative | it whould be {toSet}" };
                             }
 
                             dlcz.NetworkRoundStartTime = toSet;
                             success = true;
-                            return new string[] { $"Time set to {time}, it was {last}" };
+                            return new[] { $"Time set to {time}, it was {last}" };
                         }
                         else
-                            return new string[] { this.GetUsage() };
+                            return new[] { GetUsage() };
                     }
 
                 case "ss":
                 case "setstatus":
                     {
                         if (args.Length == 1)
-                            return new string[] { "LCZ Decontamination Status: " + dlcz.enabled };
-                        if (!bool.TryParse(args[1], out bool value))
-                            return new string[] { this.GetUsage() };
+                            return new[] { "LCZ Decontamination Status: " + dlcz.enabled };
+                        if (!bool.TryParse(args[1], out var value))
+                            return new[] { GetUsage() };
                         value = !value;
                         dlcz.disableDecontamination = value;
                         success = true;
                         if (value)
-                            return new string[] { $"Resumed Decontamination" };
+                            return new[] { $"Resumed Decontamination" };
                         else
-                            return new string[] { $"Paused Decontamination" };
+                            return new[] { $"Paused Decontamination" };
                     }
 
                 default:
-                    return new string[] { this.GetUsage() };
+                    return new[] { GetUsage() };
             }
+        }
+
+        private static string GetUsage()
+        {
+            return "dlcz get/settime/setstatus (value)";
         }
     }
 }

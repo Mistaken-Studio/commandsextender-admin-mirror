@@ -9,16 +9,16 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class RespawnLockCommand : IBetterCommand, IUsageProvider
     {
         public override string Description => "Blocks respawns";
 
         public override string Command => "respawnlock";
 
-        public override string[] Aliases => new string[] { "disresp" };
+        public override string[] Aliases => new[] { "disresp" };
 
-        public string[] Usage => new string[] { "true/false" };
+        public string[] Usage => new[] { "true/false" };
 
         public string GetUsage()
         {
@@ -29,15 +29,15 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             success = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
-            if (bool.TryParse(args[0], out bool value))
+                return new[] { this.GetUsage() };
+            if (bool.TryParse(args[0], out var value))
             {
                 API.Utilities.Map.RespawnLock = value;
                 success = true;
-                return new string[] { "RespawnLock:" + value };
+                return new[] { "RespawnLock:" + value };
             }
             else
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
         }
     }
 }

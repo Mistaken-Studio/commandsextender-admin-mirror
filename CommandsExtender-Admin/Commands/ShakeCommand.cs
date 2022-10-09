@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class ShakeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "shake";
@@ -27,10 +27,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             success = true;
 
-            foreach (Player player in Player.List)
+            foreach (var player in Player.List)
                 Warhead.Controller.TargetRpcShake(player.Connection, false, true);
 
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
     }
 }

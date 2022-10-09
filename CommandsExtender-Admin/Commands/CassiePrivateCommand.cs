@@ -11,7 +11,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class CassiePrivateCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "cassie_p";
@@ -22,9 +22,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "cassie_p";
 
-        public override string[] Aliases => new string[] { "cassie_private" };
+        public override string[] Aliases => new[] { "cassie_private" };
 
-        public string[] Usage => new string[] { "%player%", "cassie announcment" };
+        public string[] Usage => new[] { "%player%", "cassie announcment" };
 
         public string GetUsage()
         {
@@ -35,16 +35,16 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             s = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             var pids = args[0];
             args = args.Skip(1).ToArray();
-            var tor = this.ForeachPlayer(pids, out bool success, (player) =>
+            var tor = this.ForeachPlayer(pids, out var success, (player) =>
             {
                 player.PlayCassieAnnouncement(string.Join(" ", args), false, false);
-                return new string[] { "Done" };
+                return new[] { "Done" };
             });
             if (!success)
-                return new string[] { "No players found" };
+                return new[] { "No players found" };
             s = true;
             return tor;
         }

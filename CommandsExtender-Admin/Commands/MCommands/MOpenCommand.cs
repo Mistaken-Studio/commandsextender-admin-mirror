@@ -9,12 +9,12 @@ using CommandSystem;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
 
-namespace Mistaken.CommandsExtender.Admin.Commands
+namespace Mistaken.CommandsExtender.Admin.Commands.MCommands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class MOpenCommand : IBetterCommand, IPermissionLocked
     {
-        public static readonly HashSet<int> Active = new HashSet<int>();
+        public static readonly HashSet<int> Active = new();
 
         public string Permission => "m.open";
 
@@ -40,9 +40,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             else
                 Active.Remove(player.Id);
             if (Active.Contains(player.Id))
-                return new string[] { "Activated" };
+                return new[] { "Activated" };
             else
-                return new string[] { "Deactivated" };
+                return new[] { "Deactivated" };
         }
     }
 }

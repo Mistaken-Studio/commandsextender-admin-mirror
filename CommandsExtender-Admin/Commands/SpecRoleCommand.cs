@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class SpecRoleCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static RoleType SpecRole { get; set; } = RoleType.Spectator;
@@ -25,7 +25,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "class" };
+        public string[] Usage => new[] { "class" };
 
         public string GetUsage()
         {
@@ -35,7 +35,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length == 0) return new string[] { this.GetUsage() };
+            if (args.Length == 0) return new[] { this.GetUsage() };
             success = true;
             switch (args[0].ToLower())
             {
@@ -112,12 +112,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     break;
                 default:
                     success = false;
-                    return new string[] { this.GetUsage() };
+                    return new[] { this.GetUsage() };
             }
 
             foreach (var item in RealPlayers.Get(RoleType.Spectator))
                 item.Role.Type = SpecRole;
-            return new string[] { "SpecRole is now " + SpecRole };
+            return new[] { "SpecRole is now " + SpecRole };
         }
     }
 }

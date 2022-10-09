@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class CandelaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "canadel";
@@ -32,7 +32,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public string PluginName => PluginHandler.Instance.Name;
 
-        public string[] Usage => new string[]
+        public string[] Usage => new[]
         {
             "%player%",
             "amount (default is 1)",
@@ -42,22 +42,22 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
         {
             success = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             else
             {
-                int amount = 1;
+                var amount = 1;
                 if (args.Length > 1)
                 {
                     if (!int.TryParse(args[1], out amount))
-                        return new string[] { this.GetUsage() };
+                        return new[] { this.GetUsage() };
                 }
 
                 var pids = this.GetPlayers(args[0]).Select(p => p.Id).ToArray();
                 if (pids.Length == 0)
-                    return new string[] { "Player not found", this.GetUsage() };
+                    return new[] { "Player not found", this.GetUsage() };
                 this.DropUnder(pids, amount);
                 success = true;
-                return new string[] { "Done" };
+                return new[] { "Done" };
             }
         }
 
@@ -87,16 +87,16 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
             else
                 projectile = nade.Throw(player.Position, Vector3.down);
             yield return Timing.WaitForSeconds(2);
-            Vector3 originaPosition = projectile.transform.position;
-            for (int i = 0; i < amount; i++)
+            var originaPosition = projectile.transform.position;
+            for (var i = 0; i < amount; i++)
             {
-                Vector3 dir = new Vector3
+                var dir = new Vector3
                 {
-                    x = UnityEngine.Random.Range(-2f, 2f),
+                    x = Random.Range(-2f, 2f),
                     y = 2f,
-                    z = UnityEngine.Random.Range(-2f, 2f),
+                    z = Random.Range(-2f, 2f),
                 };
-                projectile = nade.Throw(originaPosition, dir, UnityEngine.Random.Range(0.5f, 5f));
+                projectile = nade.Throw(originaPosition, dir, Random.Range(0.5f, 5f));
                 yield return Timing.WaitForSeconds(0.1f);
             }
 

@@ -9,7 +9,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class AfkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "afk";
@@ -22,25 +22,32 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "%player%" };
-
-        public string GetUsage()
-        {
-            return "Afk [Id]";
-        }
+        public string[] Usage => new[] { "%player%" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
-            if (args.Length == 0) return new string[] { this.GetUsage() };
+            if (args.Length == 0)
+                return new[] { GetUsage() };
+
             var players = this.GetPlayers(args[0]);
-            if (players.Count > 1)
-                return new string[] { "<b><size=200%>1 PLAYER</size></b>" };
-            if (players.Count == 0)
-                return new string[] { "Player not found" };
+
+            switch (players.Count)
+            {
+                case > 1:
+                    return new[] { "<b><size=200%>1 PLAYER</size></b>" };
+                case 0:
+                    return new[] { "Player not found" };
+            }
+
             players[0].Disconnect("You were kicked for being AFK");
             s = true;
-            return new string[] { "Done" };
+            return new[] { "Done" };
+        }
+
+        private static string GetUsage()
+        {
+            return "Afk [Id]";
         }
     }
 }

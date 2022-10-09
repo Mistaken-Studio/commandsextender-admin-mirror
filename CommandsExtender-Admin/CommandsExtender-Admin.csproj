@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -93,7 +94,6 @@
     <Compile Include="Commands\Logs\ElevatorLogCommand.cs" />
     <Compile Include="Commands\Logs\FlashLogCommand.cs" />
     <Compile Include="Commands\Logs\PlayerLogCommand.cs" />
-    <Compile Include="Commands\Logs\SCP914LogCommand.cs" />
     <Compile Include="Commands\MarkCommand.cs" />
     <Compile Include="Commands\MCommands\MCloseCommand.cs" />
     <Compile Include="Commands\MCommands\MDestroyCommand.cs" />
@@ -129,8 +129,6 @@
     <Compile Include="Logs\PlayerInfo.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Logs\SCP914Action.cs" />
-    <Compile Include="Logs\SCP914Log.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -8,11 +8,15 @@ using System;
 using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using HarmonyLib;
+using Mistaken.API.Diagnostics;
+using Mistaken.CommandsExtender.Admin.Logs;
+using Mistaken.Updater.API.Config;
 
 namespace Mistaken.CommandsExtender.Admin
 {
-    /// <inheritdoc/>
-    public class PluginHandler : Plugin<Config>
+    /// <inheritdoc cref="Plugin{IConfig}" />
+    public class PluginHandler : Plugin<Config>, IAutoUpdateablePlugin
     {
         /// <inheritdoc/>
         public override string Author => "Mistaken Devs";
@@ -27,19 +31,27 @@ namespace Mistaken.CommandsExtender.Admin
         public override PluginPriority Priority => PluginPriority.Default;
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new Version(5, 0, 0);
+        public override Version RequiredExiledVersion => new(5, 0, 0);
+
+        /// <inheritdoc />
+        public AutoUpdateConfig AutoUpdateConfig => new()
+        {
+            Type = SourceType.GITLAB,
+            Url = "https://git.mistaken.pl/api/v4/projects/30",
+        };
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
             Instance = this;
 
-            this.harmony = new HarmonyLib.Harmony("com.mistaken.commandsextenderadmin");
+            this.harmony = new Harmony("com.mistaken.commandsextenderadmin");
             this.harmony.PatchAll();
-            new CommandsHandler(this);
-            new LogHandler(this);
-            API.Diagnostics.Module.OnEnable(this);
-            Events.Handlers.CustomEvents.LoadedPlugins += this.CustomEvents_LoadedPlugins;
+
+            Module.RegisterHandler<CommandsHandler>(this);
+            Module.RegisterHandler<LogHandler>(this);
+            Module.OnEnable(this);
+            Events.Handlers.CustomEvents.LoadedPlugins += CustomEvents_LoadedPlugins;
 
             base.OnEnabled();
         }
@@ -48,20 +60,20 @@ namespace Mistaken.CommandsExtender.Admin
         public override void OnDisabled()
         {
             this.harmony.UnpatchAll();
-            API.Diagnostics.Module.OnDisable(this);
-            Events.Handlers.CustomEvents.LoadedPlugins -= this.CustomEvents_LoadedPlugins;
+            Module.OnDisable(this);
+            Events.Handlers.CustomEvents.LoadedPlugins -= CustomEvents_LoadedPlugins;
 
             base.OnDisabled();
         }
 
         internal static PluginHandler Instance { get; private set; }
 
-        private HarmonyLib.Harmony harmony;
-
-        private void CustomEvents_LoadedPlugins()
+        private static void CustomEvents_LoadedPlugins()
         {
             if (Exiled.Loader.Loader.Plugins.Any(x => x.Name == "CustomStructures"))
                 CustomStructuresIntegration.Init();
         }
+
+        private Harmony harmony;
     }
 }

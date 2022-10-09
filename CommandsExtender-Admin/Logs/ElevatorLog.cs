@@ -7,7 +7,7 @@
 using System;
 using Exiled.API.Features;
 
-namespace Mistaken.CommandsExtender.Admin
+namespace Mistaken.CommandsExtender.Admin.Logs
 {
     internal struct ElevatorLog
     {

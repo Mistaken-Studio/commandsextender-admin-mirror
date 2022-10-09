@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class GiveRankCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "giverank";
@@ -23,7 +23,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "%player%", "rank color", "rank name" };
+        public string[] Usage => new[] { "%player%", "rank color", "rank name" };
 
         public string GetUsage()
         {
@@ -34,22 +34,22 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             s = false;
             if (args.Length < 3)
-                return new string[] { this.GetUsage() };
-            string color = args[1].ToLower();
-            string txt = string.Join(" ", args.Skip(2));
+                return new[] { this.GetUsage() };
+            var color = args[1].ToLower();
+            var txt = string.Join(" ", args.Skip(2));
             var output = this.ForeachPlayer(
                 args[0],
-                out bool success,
+                out var success,
                 (player) =>
                 {
                     player.RankColor = color;
                     player.RankName = txt;
 
-                    return new string[] { "Done" };
+                    return new[] { "Done" };
                 },
                 true);
             if (!success)
-                return new string[] { "Player not found", this.GetUsage() };
+                return new[] { "Player not found", this.GetUsage() };
             s = true;
             return output;
         }

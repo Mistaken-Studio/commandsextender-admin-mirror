@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class TTRCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ttr";
@@ -33,9 +33,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             success = true;
 
-            var respawnManager = Respawning.RespawnManager.Singleton;
+            var respawnManager = RespawnManager.Singleton;
             var ttr = Mathf.RoundToInt(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
-            return new string[] { $"TTR: {(ttr - (ttr % 60)) / 60:00}m {ttr % 60:00}s | {respawnManager.NextKnownTeam}" };
+            return new[] { $"TTR: {(ttr - (ttr % 60)) / 60:00}m {ttr % 60:00}s | {respawnManager.NextKnownTeam}" };
         }
     }
 }

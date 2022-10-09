@@ -10,7 +10,7 @@ using Mistaken.API.Utilities;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class OverheatCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "overheat";
@@ -22,51 +22,39 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "overheat";
 
-        public override string[] Aliases => new string[] { "oheat" };
+        public override string[] Aliases => new[] { "oheat" };
 
-        public string[] Usage => new string[] { "level (0-7, 16, -1)" };
+        public string[] Usage => new[] { "level (0-7, 16, -1)" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length == 0 || !int.TryParse(args[0], out int proggressLevel))
-                return new string[] { "Proggress level has to be an int" };
+            if (args.Length == 0 || !int.TryParse(args[0], out var proggressLevel))
+                return new[] { "Proggress level has to be an int" };
             Map.Overheat.OverheatLevel = proggressLevel;
             success = true;
-            switch (proggressLevel)
+            return proggressLevel switch
             {
-                case -1:
-                    return new string[] { "Deactivated overheat" };
-                case 0:
-                    return new string[] { "Overheat in T-30m" };
-                case 1:
-                    return new string[] { "Overheat in T-25m" };
-                case 2:
-                    return new string[] { "Overheat in T-20m" };
-                case 3:
-                    return new string[] { "Overheat in T-15m" };
-                case 4:
-                    return new string[] { "Overheat in T-10m" };
-                case 5:
-                    return new string[] { "Overheat in T-05m" };
-                case 6:
-                    return new string[] { "Overheat in T-03m" };
-                case 7:
-                    return new string[] { "Overheat in T-90s" };
-                case 8:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                case 13:
-                case 14:
-                case 15:
-                    return new string[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" };
-                case 16:
-                    return new string[] { "Overheat in T-00s" };
-                default:
-                    return new string[] { "Out of range" };
-            }
+                -1 => new[] { "Deactivated overheat" },
+                0 => new[] { "Overheat in T-30m" },
+                1 => new[] { "Overheat in T-25m" },
+                2 => new[] { "Overheat in T-20m" },
+                3 => new[] { "Overheat in T-15m" },
+                4 => new[] { "Overheat in T-10m" },
+                5 => new[] { "Overheat in T-05m" },
+                6 => new[] { "Overheat in T-03m" },
+                7 => new[] { "Overheat in T-90s" },
+                8 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                9 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                10 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                11 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                12 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                13 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                14 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                15 => new[] { "You can't use that, use 7 (T-90s) or 16 (T-00s)" },
+                16 => new[] { "Overheat in T-00s" },
+                _ => new[] { "Out of range" }
+            };
         }
     }
 }

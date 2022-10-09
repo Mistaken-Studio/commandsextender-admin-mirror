@@ -4,10 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using CommandSystem;
 using Mistaken.API.Commands;
 
-namespace Mistaken.CommandsExtender.Admin
+namespace Mistaken.CommandsExtender.Admin.Commands.Ban2
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class ConfirmCommand : IBetterCommand
@@ -21,19 +22,20 @@ namespace Mistaken.CommandsExtender.Admin
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            var commandSender = sender as CommandSender;
 
-            foreach (Ban2Command.BanData item in Ban2Command.AwaitingBans.ToArray())
+            if (sender is not CommandSender commandSender)
+                throw new ArgumentException("Expected CommandSender", nameof(sender));
+
+            foreach (var item in Ban2Command.AwaitingBans.ToArray())
             {
-                if (item.Admin?.SenderId == commandSender.SenderId)
-                {
-                    item.Execute();
-                    success = true;
-                    return item.StyleBan();
-                }
+                if (item.Admin?.SenderId != commandSender.SenderId)
+                    continue;
+                item.Execute();
+                success = true;
+                return item.StyleBan();
             }
 
-            return new string[] { "Ban not found" };
+            return new[] { "Ban not found" };
         }
     }
 }
