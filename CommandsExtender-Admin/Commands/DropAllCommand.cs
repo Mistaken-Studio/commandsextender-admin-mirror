@@ -9,7 +9,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class DropAllCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "dropall";
@@ -20,9 +20,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "dropall";
 
-        public override string[] Aliases => new string[] { "dall" };
+        public override string[] Aliases => new[] { "dall" };
 
-        public string[] Usage => new string[] { "%player%" };
+        public string[] Usage => new[] { "%player%" };
 
         public string GetUsage()
         {
@@ -33,14 +33,14 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             s = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+                return new[] { this.GetUsage() };
+            var output = this.ForeachPlayer(args[0], out var success, (player) =>
             {
                 player.DropItems();
-                return new string[] { "Done" };
+                return new[] { "Done" };
             });
             if (!success)
-                return new string[] { "Player not found", this.GetUsage() };
+                return new[] { "Player not found", this.GetUsage() };
             s = true;
             return output;
         }

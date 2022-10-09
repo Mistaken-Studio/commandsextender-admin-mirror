@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class SetSizeCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "setsize";
@@ -21,45 +21,45 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "setsize";
 
-        public override string[] Aliases => new string[] { "ssize" };
+        public override string[] Aliases => new[] { "ssize" };
 
-        public string[] Usage => new string[] { "%player%", "sizeX", "sizeY", "sizeZ" };
+        public string[] Usage => new[] { "%player%", "sizeX", "sizeY", "sizeZ" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
             if (args.Length < 4)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             else
             {
-                if (float.TryParse(args[1], out float x))
+                if (float.TryParse(args[1], out var x))
                 {
-                    if (float.TryParse(args[2], out float y))
+                    if (float.TryParse(args[2], out var y))
                     {
-                        if (float.TryParse(args[3], out float z))
+                        if (float.TryParse(args[3], out var z))
                         {
                             var output = this.ForeachPlayer(
                                 args[0],
-                                out bool success,
+                                out var success,
                                 (player) =>
                                 {
                                     player.Scale = new Vector3(x, y, z);
-                                    return new string[] { "Done" };
+                                    return new[] { "Done" };
                                 },
                                 true);
                             if (!success)
-                                return new string[] { "Player not found", this.GetUsage() };
+                                return new[] { "Player not found", this.GetUsage() };
                             s = true;
                             return output;
                         }
                         else
-                            return new string[] { this.GetUsage() };
+                            return new[] { this.GetUsage() };
                     }
                     else
-                        return new string[] { this.GetUsage() };
+                        return new[] { this.GetUsage() };
                 }
                 else
-                    return new string[] { this.GetUsage() };
+                    return new[] { this.GetUsage() };
             }
         }
 

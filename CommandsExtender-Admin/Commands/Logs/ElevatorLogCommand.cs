@@ -10,18 +10,19 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
+using Mistaken.CommandsExtender.Admin.Logs;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class ElevatorLogCommand : IBetterCommand
     {
-        public static readonly HashSet<int> Active = new HashSet<int>();
+        public static readonly HashSet<int> Active = new();
 
         public static void Execute(Player p, ElevatorType d, List<ElevatorLog> data)
         {
             Active.Remove(p.Id);
-            string toWrite = $"ElevatorLog for elevator {d}";
+            var toWrite = $"ElevatorLog for elevator {d}";
             if (data != null)
             {
                 foreach (var item in data)
@@ -34,7 +35,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 
         public override string Command => "elevatorlog";
 
-        public override string[] Aliases => new string[] { "elog" };
+        public override string[] Aliases => new[] { "elog" };
 
         public override string Description => "Access elevator logs";
 
@@ -47,9 +48,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Logs
             else
                 Active.Remove(player.Id);
             if (Active.Contains(player.Id))
-                return new string[] { "Activated" };
+                return new[] { "Activated" };
             else
-                return new string[] { "Deactivated" };
+                return new[] { "Deactivated" };
         }
     }
 }

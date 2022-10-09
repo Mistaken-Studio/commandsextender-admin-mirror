@@ -11,10 +11,10 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class DmgInfoCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
-        public static readonly HashSet<int> Active = new HashSet<int>();
+        public static readonly HashSet<int> Active = new();
 
         public string Permission => "dmginfo";
 
@@ -26,7 +26,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public string PluginName => PluginHandler.Instance.Name;
 
-        public string[] Usage => new string[] { "value (true/false)" };
+        public string[] Usage => new[] { "value (true/false)" };
 
         public string GetUsage()
         {
@@ -43,17 +43,17 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 value = !Active.Contains(player.Id);
             }
             else if (!bool.TryParse(args[0], out value))
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             success = true;
             if (value)
             {
                 if (!Active.Contains(player.Id)) Active.Add(player.Id);
-                return new string[] { "Enabled" };
+                return new[] { "Enabled" };
             }
             else
             {
                 Active.Remove(player.Id);
-                return new string[] { "Disabled" };
+                return new[] { "Disabled" };
             }
         }
     }

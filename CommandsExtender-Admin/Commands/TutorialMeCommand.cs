@@ -8,14 +8,11 @@ using System.Linq;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using Mistaken.API;
 using Mistaken.API.Commands;
-using Mistaken.API.Extensions;
-using VanishHandler = Mistaken.API.Handlers.VanishHandler;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class TutorialMeCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "tutorial";
@@ -26,9 +23,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "tutorial";
 
-        public override string[] Aliases => new string[] { "tut" };
+        public override string[] Aliases => new[] { "tut" };
 
-        public string[] Usage => new string[] { "--noclip (automaticly enables noclip)", "--vanish (enables vanish with level 1)", "--vanish-level [level] (enables vanish with specified level)" };
+        public string[] Usage => new[] { "--noclip (automaticly enables noclip)", "--vanish (enables vanish with level 1)", "--vanish-level [level] (enables vanish with specified level)" };
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
@@ -40,14 +37,14 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 player.IsGodModeEnabled = true;
                 player.IsBypassModeEnabled = true;
 
-                bool nextVanishLevel = false;
+                var nextVanishLevel = false;
 
                 foreach (var item in args.Select(i => i.ToLower()))
                 {
                     if (nextVanishLevel)
                     {
-                        if (byte.TryParse(item, out byte lvl))
-                            VanishHandler.SetGhost(player, true, lvl);
+                        if (byte.TryParse(item, out var lvl))
+                            API.Handlers.VanishHandler.SetGhost(player, true, lvl);
                         nextVanishLevel = false;
                     }
 
@@ -65,7 +62,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         case "--vanish":
                             {
                                 if (Permissions.CheckPermission(player, PluginHandler.Instance.Name + ".vanish"))
-                                    VanishHandler.SetGhost(player, true);
+                                    API.Handlers.VanishHandler.SetGhost(player, true);
                                 break;
                             }
 
@@ -85,11 +82,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 player.IsBypassModeEnabled = false;
                 player.NoClipEnabled = false;
                 player.Role.Type = RoleType.Spectator;
-                VanishHandler.SetGhost(player, false);
+                API.Handlers.VanishHandler.SetGhost(player, false);
             }
 
             success = true;
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
     }
 }

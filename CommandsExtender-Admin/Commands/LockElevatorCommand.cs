@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class LockElevatorCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "lockelevator";
@@ -21,9 +21,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "lockelevator";
 
-        public override string[] Aliases => new string[] { "lelevator" };
+        public override string[] Aliases => new[] { "lelevator" };
 
-        public string[] Usage => new string[] { "elevator (049/Nuke/GateA/GateB/LczA/LczB)", "value (true/false)" };
+        public string[] Usage => new[] { "elevator (049/Nuke/GateA/GateB/LczA/LczB)", "value (true/false)" };
 
         public string GetUsage()
         {
@@ -34,11 +34,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             success = false;
             if (args.Length < 2)
-                return new string[] { this.GetUsage() };
-            if (!bool.TryParse(args[1], out bool value))
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
+            if (!bool.TryParse(args[1], out var value))
+                return new[] { this.GetUsage() };
             success = true;
-            var elevators = Exiled.API.Features.Lift.List;
+            var elevators = Exiled.API.Features.Lift.List.ToArray()
+                ;
             switch (args[0].ToLower())
             {
                 case "049":
@@ -47,8 +48,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (elev != null)
                             elev.IsLocked = value;
                         else
-                            return new string[] { "Server Error, elevator not found" };
-                        return new string[] { "Done" };
+                            return new[] { "Server Error, elevator not found" };
+                        return new[] { "Done" };
                     }
 
                 case "nuke":
@@ -57,8 +58,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (elev != null)
                             elev.IsLocked = value;
                         else
-                            return new string[] { "Server Error, elevator not found" };
-                        return new string[] { "Done" };
+                            return new[] { "Server Error, elevator not found" };
+                        return new[] { "Done" };
                     }
 
                 case "gatea":
@@ -67,8 +68,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (elev != null)
                             elev.IsLocked = value;
                         else
-                            return new string[] { "Server Error, elevator not found" };
-                        return new string[] { "Done" };
+                            return new[] { "Server Error, elevator not found" };
+                        return new[] { "Done" };
                     }
 
                 case "gateb":
@@ -77,8 +78,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (elev != null)
                             elev.IsLocked = value;
                         else
-                            return new string[] { "Server Error, elevator not found" };
-                        return new string[] { "Done" };
+                            return new[] { "Server Error, elevator not found" };
+                        return new[] { "Done" };
                     }
 
                 case "lcza":
@@ -87,10 +88,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (elev != null)
                             elev.IsLocked = value;
                         else
-                            return new string[] { "Server Error, elevator not found" };
+                            return new[] { "Server Error, elevator not found" };
                         elevators.First(e => e.Name == "ElA2").IsLocked = value;
 
-                        return new string[] { "Done" };
+                        return new[] { "Done" };
                     }
 
                 case "lczb":
@@ -99,19 +100,16 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         if (elev != null)
                             elev.IsLocked = value;
                         else
-                            return new string[] { "Server Error, elevator not found" };
+                            return new[] { "Server Error, elevator not found" };
                         elevators.First(e => e.Name == "ElB2").IsLocked = value;
-                        if (elev != null)
-                            elev.IsLocked = value;
-                        else
-                            return new string[] { "Server Error, elevator not found" };
-                        return new string[] { "Done" };
+
+                        return new[] { "Done" };
                     }
 
                 default:
                     {
                         success = false;
-                        return new string[] { this.GetUsage() };
+                        return new[] { this.GetUsage() };
                     }
             }
         }

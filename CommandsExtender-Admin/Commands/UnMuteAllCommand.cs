@@ -13,7 +13,7 @@ using Mistaken.API.GUI;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class UnMuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "muteall";
@@ -22,7 +22,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "unmuteall";
 
-        public override string[] Aliases => new string[] { "gunmute", "unmall" };
+        public override string[] Aliases => new[] { "gunmute", "unmall" };
 
         public string PluginName => PluginHandler.Instance.Name;
 
@@ -30,7 +30,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         {
             success = false;
             if (!MuteAllCommand.GlobalMuteActive)
-                return new string[] { "Global Mute is not active" };
+                return new[] { "Global Mute is not active" };
             success = true;
             MuteAllCommand.GlobalMuteActive = false;
             foreach (var uId in MuteAllCommand.Muted.ToArray())
@@ -50,7 +50,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
             RoundLogger.RLogger.Log("GLOBAL MUTE", "DEACTIVATED", "Deactivated GlobalMute");
             MapPlus.Broadcast("GLOBAL MUTE", 10, "Deactivated Global Mute", Broadcast.BroadcastFlags.AdminChat);
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
 
         public string GetUsage()

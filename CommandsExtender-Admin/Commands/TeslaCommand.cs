@@ -10,7 +10,7 @@ using Mistaken.API.Utilities;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class TeslaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "tesla";
@@ -23,7 +23,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "action (enable/disable/restart)" };
+        public string[] Usage => new[] { "action (enable/disable/restart)" };
 
         public string GetUsage()
         {
@@ -33,43 +33,43 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length == 0) return new string[] { this.GetUsage() };
+            if (args.Length == 0) return new[] { this.GetUsage() };
             success = true;
             switch (args[0].ToLower())
             {
                 case "enable":
                     {
                         Map.TeslaMode = TeslaMode.ENABLED;
-                        return new string[] { "Tesla gates Enabled" };
+                        return new[] { "Tesla gates Enabled" };
                     }
 
                 case "disable":
                     {
                         Map.TeslaMode = TeslaMode.DISABLED;
-                        return new string[] { "Tesla gates Disabled for players" };
+                        return new[] { "Tesla gates Disabled for players" };
                     }
 
                 case "disableall":
                     {
                         Map.TeslaMode = TeslaMode.DISABLED_FOR_ALL;
-                        return new string[] { "Tesla gates Disabled for all" };
+                        return new[] { "Tesla gates Disabled for all" };
                     }
 
                 case "disable079":
                     {
                         Map.TeslaMode = TeslaMode.DISABLED_FOR_079;
-                        return new string[] { "Tesla gates Disabled for 079" };
+                        return new[] { "Tesla gates Disabled for 079" };
                     }
 
                 case "restart":
                     {
                         Map.RestartTeslaGates(true);
-                        return new string[] { "Tesla gates Restarted" };
+                        return new[] { "Tesla gates Restarted" };
                     }
 
                 default:
                     success = false;
-                    return new string[] { this.GetUsage() };
+                    return new[] { this.GetUsage() };
             }
         }
     }

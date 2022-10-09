@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommandSystem;
+using JetBrains.Annotations;
 using Mistaken.API;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
@@ -14,12 +15,13 @@ using Mistaken.API.GUI;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [PublicAPI]
     internal class MuteAllCommand : IBetterCommand, IPermissionLocked
     {
-        public static readonly List<string> Muted = new List<string>();
+        public static readonly List<string> Muted = new();
 
-        public static bool GlobalMuteActive { get; internal set; } = false;
+        public static bool GlobalMuteActive { get; internal set; }
 
         public string Permission => "muteall";
 
@@ -29,7 +31,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "muteall";
 
-        public override string[] Aliases => new string[] { "gmute", "mall" };
+        public override string[] Aliases => new[] { "gmute", "mall" };
 
         public string GetUsage()
         {
@@ -50,7 +52,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
             RoundLogger.RLogger.Log("GLOBAL MUTE", "ACTIVATED", "Activated GlobalMute");
             MapPlus.Broadcast("GLOBAL MUTE", 10, "Activated Global Mute", Broadcast.BroadcastFlags.AdminChat);
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
 
         private IEnumerator<float> InformGlobalMute()

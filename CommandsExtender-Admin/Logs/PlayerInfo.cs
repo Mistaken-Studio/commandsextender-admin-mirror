@@ -6,23 +6,23 @@
 
 using Exiled.API.Features;
 
-namespace Mistaken.CommandsExtender.Admin
+namespace Mistaken.CommandsExtender.Admin.Logs
 {
     internal struct PlayerInfo
     {
-        public string Name;
-        public string UserId;
-        public string IP;
-        public int ID;
-        public bool IMute;
-        public bool Mute;
+        public readonly string Name;
+        public readonly string UserId;
+        public readonly string Ip;
+        public readonly int Id;
+        public readonly bool IntercomMute;
+        public readonly bool Mute;
 
         public PlayerInfo(Player p)
         {
-            this.ID = p.Id;
+            this.Id = p.Id;
             this.UserId = p.UserId;
-            this.IP = p.IPAddress;
-            this.IMute = p.IsIntercomMuted;
+            this.Ip = p.IPAddress;
+            this.IntercomMute = p.IsIntercomMuted;
             this.Mute = p.IsMuted;
             this.Name = p.Nickname;
         }

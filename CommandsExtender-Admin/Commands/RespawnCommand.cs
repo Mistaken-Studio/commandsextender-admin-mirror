@@ -9,7 +9,7 @@ using Mistaken.API.Commands;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class RespawnCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "respawn";
@@ -22,7 +22,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "time to respawn" };
+        public string[] Usage => new[] { "time to respawn" };
 
         public string GetUsage()
         {
@@ -32,11 +32,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
             s = false;
-            if (args.Length == 0 || !int.TryParse(args[0], out int value))
-                return new string[] { this.GetUsage() };
+            if (args.Length == 0 || !int.TryParse(args[0], out var value))
+                return new[] { this.GetUsage() };
             Respawning.RespawnManager.Singleton._timeForNextSequence = (float)Respawning.RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + value;
             s = true;
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
     }
 }

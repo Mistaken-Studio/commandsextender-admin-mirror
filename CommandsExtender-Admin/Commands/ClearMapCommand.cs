@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class ClearMapCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "clearmap";
@@ -24,9 +24,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string Command => "clearmap";
 
-        public override string[] Aliases => new string[] { "cmap" };
+        public override string[] Aliases => new[] { "cmap" };
 
-        public string[] Usage => new string[] { "clear ragdolls (default false)" };
+        public string[] Usage => new[] { "clear ragdolls (default false)" };
 
         public string GetUsage()
         {
@@ -35,19 +35,19 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool s)
         {
-            bool ragdoll = false;
+            var ragdoll = false;
             if (args.Length > 0)
                 bool.TryParse(args[0], out ragdoll);
             foreach (var item in Map.Pickups.ToArray())
                 item.Destroy();
             if (ragdoll)
             {
-                foreach (var item in GameObject.FindObjectsOfType<Ragdoll>().ToArray())
+                foreach (var item in Object.FindObjectsOfType<Ragdoll>().ToArray())
                     NetworkServer.Destroy(item.gameObject);
             }
 
             s = true;
-            return new string[] { "Done" };
+            return new[] { "Done" };
         }
     }
 }

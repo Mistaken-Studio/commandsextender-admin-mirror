@@ -6,12 +6,13 @@
 
 using CommandSystem;
 using Exiled.API.Features;
+using Footprinting;
 using Mistaken.API.Commands;
 using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class C106Command : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "c106";
@@ -24,7 +25,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[] { "action (true/false/force)" };
+        public string[] Usage => new[] { "action (true/false/force)" };
 
         public string GetUsage()
         {
@@ -34,7 +35,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length == 0) return new string[] { this.GetUsage() };
+            if (args.Length == 0) return new[] { this.GetUsage() };
             if (args[0].ToLower() == "force")
             {
                 var rh = ReferenceHub.GetHub(PlayerManager.localPlayer);
@@ -42,22 +43,22 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 {
                     if (player.Role == RoleType.Scp106)
                     {
-                        player.ReferenceHub.scp106PlayerScript.Contain(new Footprinting.Footprint(rh));
+                        player.ReferenceHub.scp106PlayerScript.Contain(new Footprint(rh));
                     }
                 }
 
                 rh.playerInteract.RpcContain106(rh.gameObject);
                 OneOhSixContainer.used = true;
                 success = true;
-                return new string[] { "Done" };
+                return new[] { "Done" };
             }
-            else if (bool.TryParse(args[0], out bool value))
+            else if (bool.TryParse(args[0], out var value))
             {
-                GameObject.FindObjectOfType<LureSubjectContainer>().SetState(value, value);
+                Object.FindObjectOfType<LureSubjectContainer>().SetState(value, value);
                 success = true;
-                return new string[] { "Changed" };
+                return new[] { "Changed" };
             }
-            else return new string[] { this.GetUsage() };
+            else return new[] { this.GetUsage() };
         }
     }
 }

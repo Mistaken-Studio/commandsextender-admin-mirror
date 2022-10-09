@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class BallCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "ball";
@@ -28,7 +28,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 
         public override string[] Aliases => new string[] { };
 
-        public string[] Usage => new string[]
+        public string[] Usage => new[]
         {
             "%player%",
             "amount (default is 1)",
@@ -38,22 +38,22 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
         {
             success = false;
             if (args.Length == 0)
-                return new string[] { this.GetUsage() };
+                return new[] { this.GetUsage() };
             else
             {
-                int amount = 1;
+                var amount = 1;
                 if (args.Length > 1)
                 {
                     if (!int.TryParse(args[1], out amount))
-                        return new string[] { this.GetUsage() };
+                        return new[] { this.GetUsage() };
                 }
 
                 var pids = this.GetPlayers(args[0]).Select(p => p.Id).ToArray();
                 if (pids.Length == 0)
-                    return new string[] { "Player not found", this.GetUsage() };
+                    return new[] { "Player not found", this.GetUsage() };
                 this.DropUnder(pids, amount);
                 success = true;
-                return new string[] { "Done" };
+                return new[] { "Done" };
             }
         }
 
@@ -68,7 +68,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
             foreach (var item in pids)
             {
                 var player = RealPlayers.Get(item);
-                for (int i = 0; i < times; i++)
+                for (var i = 0; i < times; i++)
                     nade.Throw(player.Position, Vector3.down);
             }
         }

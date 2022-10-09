@@ -9,18 +9,19 @@ using CommandSystem;
 using Exiled.API.Features;
 using Mistaken.API.Commands;
 using Mistaken.API.Extensions;
+using Mistaken.CommandsExtender.Admin.Logs;
 
 namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class DoorLogCommand : IBetterCommand
     {
-        public static readonly HashSet<int> Active = new HashSet<int>();
+        public static readonly HashSet<int> Active = new();
 
         public static void Execute(Player player, Door door, List<DoorLog> data)
         {
             Active.Remove(player.Id);
-            string toWrite = $"DoorLog for door {door.Type}";
+            var toWrite = $"DoorLog for door {door.Type}";
             if (data != null)
             {
                 foreach (var item in data)
@@ -33,7 +34,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 
         public override string Command => "doorlog";
 
-        public override string[] Aliases => new string[] { "dlog" };
+        public override string[] Aliases => new[] { "dlog" };
 
         public override string Description => "Access door logs";
 
@@ -47,9 +48,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands.Logs
                 Active.Remove(player.Id);
 
             if (Active.Contains(player.Id))
-                return new string[] { "Activated" };
+                return new[] { "Activated" };
             else
-                return new string[] { "Deactivated" };
+                return new[] { "Deactivated" };
         }
     }
 }
