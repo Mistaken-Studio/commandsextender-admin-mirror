@@ -177,12 +177,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     .Where(target => target is not null)
                     .ToList();
 
-                if (talkPlayers.Any(x => x.Role.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
+                if (talkPlayers.Any(x => x.Role.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 60)
                 {
                     success = true;
                     return new[]
                     {
-                        "You cannot use this command for the first 35 seconds of the round if one player is an SCP",
+                        "You cannot use this command for the first 60 seconds of the round if one player is an SCP",
                     };
                 }
 
