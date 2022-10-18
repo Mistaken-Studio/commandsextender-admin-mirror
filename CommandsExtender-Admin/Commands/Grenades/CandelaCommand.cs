@@ -20,7 +20,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class CandelaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class CandelaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "canadel";
 

@@ -11,7 +11,7 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class LastVictimCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class LastVictimCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "last_attacker";
 

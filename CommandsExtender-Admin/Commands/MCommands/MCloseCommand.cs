@@ -12,7 +12,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands.MCommands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class MCloseCommand : IBetterCommand, IPermissionLocked
+    internal sealed class MCloseCommand : IBetterCommand, IPermissionLocked
     {
         public static readonly HashSet<int> Active = new();
 

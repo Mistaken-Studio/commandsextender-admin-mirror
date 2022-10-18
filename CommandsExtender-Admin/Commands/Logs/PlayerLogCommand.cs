@@ -13,7 +13,7 @@ using Mistaken.CommandsExtender.Admin.Logs;
 namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class PlayerLogCommand : IBetterCommand, IUsageProvider
+    internal sealed class PlayerLogCommand : IBetterCommand, IUsageProvider
     {
         public override string Description => "PlayerLog";
 

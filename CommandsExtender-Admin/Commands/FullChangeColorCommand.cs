@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class FullChangeColorCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class FullChangeColorCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "fullchangecolor";
 

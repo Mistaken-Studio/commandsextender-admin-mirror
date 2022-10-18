@@ -11,7 +11,7 @@ using Mistaken.API.Utilities;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class DoorRestartCommand : IBetterCommand, IPermissionLocked
+    internal sealed class DoorRestartCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "doorrestart";
 

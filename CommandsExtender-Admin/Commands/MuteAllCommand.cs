@@ -17,7 +17,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [PublicAPI]
-    internal class MuteAllCommand : IBetterCommand, IPermissionLocked
+    internal sealed class MuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public static readonly List<string> Muted = new();
 

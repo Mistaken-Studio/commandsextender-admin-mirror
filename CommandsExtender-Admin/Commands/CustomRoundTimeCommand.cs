@@ -12,7 +12,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class CustomRoundTimeCommand : IBetterCommand
+    internal sealed class CustomRoundTimeCommand : IBetterCommand
     {
         public override string Description => "Round Time but formated";
 

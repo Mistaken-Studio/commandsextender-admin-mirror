@@ -14,7 +14,7 @@ using Mistaken.CommandsExtender.Admin.Logs;
 namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class DoorLogCommand : IBetterCommand
+    internal sealed class DoorLogCommand : IBetterCommand
     {
         public static readonly HashSet<int> Active = new();
 

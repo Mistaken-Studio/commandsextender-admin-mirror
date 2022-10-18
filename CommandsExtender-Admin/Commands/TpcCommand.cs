@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class TpcCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class TpcCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "tpc";
 
