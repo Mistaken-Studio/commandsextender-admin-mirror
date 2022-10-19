@@ -14,7 +14,7 @@ using Mistaken.API.GUI;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class UnMuteAllCommand : IBetterCommand, IPermissionLocked
+    internal sealed class UnMuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "muteall";
 

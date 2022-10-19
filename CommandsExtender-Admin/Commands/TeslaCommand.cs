@@ -11,7 +11,7 @@ using Mistaken.API.Utilities;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class TeslaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class TeslaCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "tesla";
 

@@ -11,7 +11,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class ShakeCommand : IBetterCommand, IPermissionLocked
+    internal sealed class ShakeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "shake";
 

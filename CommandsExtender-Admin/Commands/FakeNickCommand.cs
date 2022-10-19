@@ -13,7 +13,7 @@ using RoundRestarting;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class FakeNickCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class FakeNickCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static readonly Dictionary<string, string> FakeNicknames = new();
 

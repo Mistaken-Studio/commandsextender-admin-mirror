@@ -16,7 +16,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands.Grenades
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class GrenadeCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class GrenadeCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "grenade";
 

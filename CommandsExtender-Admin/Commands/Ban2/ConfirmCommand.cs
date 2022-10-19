@@ -11,7 +11,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands.Ban2
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class ConfirmCommand : IBetterCommand
+    internal sealed class ConfirmCommand : IBetterCommand
     {
         public override string Command => "confirm";
 

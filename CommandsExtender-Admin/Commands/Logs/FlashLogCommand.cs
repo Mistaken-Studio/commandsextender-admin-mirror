@@ -11,7 +11,7 @@ using Mistaken.CommandsExtender.Admin.Logs;
 namespace Mistaken.CommandsExtender.Admin.Commands.Logs
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class FlashLogCommand : IBetterCommand, IUsageProvider
+    internal sealed class FlashLogCommand : IBetterCommand, IUsageProvider
     {
         public override string Command => "flashlog";
 

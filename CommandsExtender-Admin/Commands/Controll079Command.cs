@@ -11,7 +11,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class Controll079Command : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class Controll079Command : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "controll079";
 

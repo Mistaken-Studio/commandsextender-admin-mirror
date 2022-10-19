@@ -22,15 +22,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [UsedImplicitly]
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class TalkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class TalkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public static readonly Dictionary<string, int[]> Active = new();
 
-        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP,
-            Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort
-            Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float
-            dur, byte intensity)[] effects)> SavedInfo
-            = new();
+        public static readonly Dictionary<int, TalkPlayerInfo> SavedInfo = new();
 
         public string Permission => "talk";
 
@@ -57,12 +53,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                     SavedInfo.Remove(playerId);
                     var p = RealPlayers.Get(playerId);
-                    if (p == null)
-                    {
-                        // if (data.Role.GetTeam() == Team.SCP)
-                        //     NineTailedFoxAnnouncer.CheckForZombies(Server.Host.GameObject);
+                    if (p is null)
                         continue;
-                    }
 
                     p.DisableAllEffects();
                     p.SetSessionVariable(SessionVarType.NO_SPAWN_PROTECT, true);
@@ -70,14 +62,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                     p.SetSessionVariable(SessionVarType.ITEM_LESS_CLSSS_CHANGE, true);
                     var old = RespawnManager.CurrentSequence();
-                    RespawnManager.Singleton._curSequence =
-                        RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-                    p.Role.Type = data.Role;
+                    RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+                    p.Role.Type = data.RoleType;
                     p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
-                    if (RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(
-                            data.UnitType,
-                            out var array))
+                    if (RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                         p.UnitName = array[data.UnitIndex];
+
                     RespawnManager.Singleton._curSequence = old;
                     p.SetSessionVariable(SessionVarType.ITEM_LESS_CLSSS_CHANGE, false);
 
@@ -87,44 +77,56 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         0.5f,
                         () =>
                         {
-                            if (!p.IsConnected)
+                            if (!p.IsConnected())
                                 return;
 
                             if (!Warhead.IsDetonated)
                             {
                                 if (MapPlus.IsLCZDecontaminated(30))
                                 {
-                                    if (data.Pos.y is not (> -100 and < 100))
-                                        p.Position = data.Pos;
+                                    if (data.Position.y is not (> -100 and < 100))
+                                        p.Position = data.Position;
                                     else
-                                        p.Position = AfterDecontRooms[Random.Range(0, AfterDecontRooms.Count)];
+                                        p.Position = AfterDecontRooms[UnityEngine.Random.Range(0, AfterDecontRooms.Count)];
                                 }
                                 else
-                                    p.Position = data.Pos;
+                                    p.Position = data.Position;
                             }
                             else
                             {
-                                if (data.Pos.y > 900)
-                                    p.Position = data.Pos;
+                                if (data.Position.y > 900)
+                                    p.Position = data.Position;
                                 else
-                                    p.Position = AfterWarHeadRooms[Random.Range(0, AfterWarHeadRooms.Count)];
+                                    p.Position = AfterWarHeadRooms[UnityEngine.Random.Range(0, AfterWarHeadRooms.Count)];
                             }
 
                             p.Health = data.HP;
-                            p.ArtificialHealth = data.AP;
+                            p.ArtificialHealth = data.AHP;
                             p.ClearInventory();
                             foreach (var item in data.Inventory)
+                            {
                                 p.AddItem(item);
+                                if (item is Exiled.API.Features.Items.Scp330 scp)
+                                {
+                                    Timing.CallDelayed(0.5f, () =>
+                                    {
+                                        item.Base.Owner = p.ReferenceHub;
+                                        scp.Base.ServerRefreshBag();
+                                    });
+                                }
+                            }
+
                             p.Ammo[ItemType.Ammo12gauge] = data.Ammo12gauge;
                             p.Ammo[ItemType.Ammo44cal] = data.Ammo44cal;
                             p.Ammo[ItemType.Ammo556x45] = data.Ammo556x45;
                             p.Ammo[ItemType.Ammo762x39] = data.Ammo762x39;
                             p.Ammo[ItemType.Ammo9x19] = data.Ammo9x19;
+                            p.Inventory.ServerSendAmmo();
 
-                            foreach (var (effect, duration, intensity) in data.effects)
+                            foreach (var e in data.PlayerEffects)
                             {
-                                effect.Intensity = intensity;
-                                effect.ServerChangeDuration(duration);
+                                e.Effect.Intensity = e.Intensity;
+                                e.Effect.ServerChangeDuration(e.Duration);
                             }
 
                             p.SetSessionVariable(SessionVarType.TALK, false);
@@ -133,6 +135,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                 p,
                                 "post_talk",
                                 "<color=red>Post TALK protection: <color=yellow>Active</color></color>");
+
                             API.Diagnostics.Module.CallSafeDelayed(
                                 5f,
                                 () =>
@@ -149,7 +152,8 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 {
                     foreach (var nid in room.GetComponentsInChildren<Mirror.NetworkIdentity>())
                         Mirror.NetworkServer.Destroy(nid.gameObject);
-                    Object.Destroy(room);
+
+                    UnityEngine.Object.Destroy(room);
                     TalkRooms.Remove(player);
                 }
 
@@ -157,7 +161,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             }
             else
             {
-                var targets = (args[0] + $".{player.Id}").Split('.').Select(int.Parse).ToHashSet().ToArray();
+                int[] targets;
+                if (args.Length == 0)
+                    targets = new int[] { player.Id };
+                else
+                    targets = ($"{player.Id}." + args[0]).Split('.').Select(int.Parse).ToHashSet().ToArray();
 
                 if (SavedInfo.Any(x => targets.Any(y => y == x.Key)))
                 {
@@ -170,11 +178,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 }
 
                 var pos = Warps.Dequeue();
-                var counter = 0;
                 Warps.Enqueue(pos);
                 List<Player> talkPlayers = targets
                     .Select(RealPlayers.Get)
-                    .Where(target => target is not null)
+                    .Where(target => target is not null && target.IsConnected())
                     .ToList();
 
                 if (talkPlayers.Any(x => x.Role.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 60)
@@ -190,37 +197,35 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 {
                     if (!TalkRooms.ContainsKey(player))
                         TalkRooms.Add(player, null);
-                    TalkRooms[player] = CustomStructuresIntegration.SpawnAsset(
-                        new Vector3(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f));
+
+                    TalkRooms[player] = CustomStructuresIntegration.SpawnAsset(new(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f));
                 }
 
-                var lastPos = Vector3.zero;
-                var offset = Vector3.zero;
-                foreach (var p in talkPlayers.Where(p => p?.IsConnected() ?? false))
+                int normalPlayers = talkPlayers.Where(x => !x.CheckPermissions(PlayerPermissions.AdminChat)).Count();
+                int counter = 0;
+                foreach (var p in talkPlayers)
                 {
                     p.SetSessionVariable(SessionVarType.TALK, true);
+                    TalkPlayerInfo info = new()
+                    {
+                        Position = p.Position,
+                        RoleType = p.Role.Type,
+                        HP = p.Health,
+                        AHP = p.ArtificialHealth,
+                        Inventory = p.Items.ToArray(),
+                        Ammo12gauge = p.Ammo.TryGetValue(ItemType.Ammo12gauge, out var ammo12Gauge) ? ammo12Gauge : (ushort)0,
+                        Ammo44cal = p.Ammo.TryGetValue(ItemType.Ammo44cal, out var ammo44Cal) ? ammo44Cal : (ushort)0,
+                        Ammo556x45 = p.Ammo.TryGetValue(ItemType.Ammo556x45, out var ammo556X45) ? ammo556X45 : (ushort)0,
+                        Ammo762x39 = p.Ammo.TryGetValue(ItemType.Ammo762x39, out var ammo762X39) ? ammo762X39 : (ushort)0,
+                        Ammo9x19 = p.Ammo.TryGetValue(ItemType.Ammo9x19, out var ammo9X19) ? ammo9X19 : (ushort)0,
+                        UnitIndex = RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName),
+                        UnitType = p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType,
+                        PlayerEffects = p.ReferenceHub.playerEffectsController.AllEffects.Values.Select(i => new TalkPlayerInfo.TalkPlayerEffects(i, i.Duration, i.Intensity)).ToArray(),
+                    };
 
                     // p.SetSessionVar(SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
-                    SavedInfo.Add(
-                        p.Id,
-#pragma warning disable SA1118
-                        (
-                            p.Position,
-                            p.Role,
-                            p.Health,
-                            p.ArtificialHealth,
-                            p.Items.ToArray(),
-                            p.Ammo.TryGetValue(ItemType.Ammo12gauge, out var ammo12Gauge) ? ammo12Gauge : (ushort)0,
-                            p.Ammo.TryGetValue(ItemType.Ammo44cal, out var ammo44Cal) ? ammo44Cal : (ushort)0,
-                            p.Ammo.TryGetValue(ItemType.Ammo556x45, out var ammo556X45) ? ammo556X45 : (ushort)0,
-                            p.Ammo.TryGetValue(ItemType.Ammo762x39, out var ammo762X39) ? ammo762X39 : (ushort)0,
-                            p.Ammo.TryGetValue(ItemType.Ammo9x19, out var ammo9X19) ? ammo9X19 : (ushort)0,
-                            RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(
-                                x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName),
-                            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType,
-                            p.ReferenceHub.playerEffectsController.AllEffects.Values
-                                .Select(i => (i, i.Duration, i.Intensity)).ToArray()));
-#pragma warning restore SA1118
+                    SavedInfo.Add(p.Id, info);
+
                     foreach (var item in p.Items.ToArray())
                         p.RemoveItem(item, false);
 
@@ -241,28 +246,25 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         0.5f,
                         () =>
                         {
+                            float angle = counter * 2f * (float)System.Math.PI / normalPlayers;
+
                             if (TalkRooms.TryGetValue(player, out var room))
                             {
+                                var center = room.transform.Find("SpawnPoint").position;
+
                                 if (p.CheckPermissions(PlayerPermissions.AdminChat))
-                                    p.Position = room.transform.Find("Admin_SpawnPoint").position;
+                                    p.Position = center;
                                 else
                                 {
-                                    if (counter == 0)
-                                    {
-                                        lastPos = room.transform.Find("Player_SpawnPoint").position;
-                                        p.Position = lastPos;
-                                    }
-                                    else if (counter % 2 != 0)
-                                    {
-                                        offset += Vector3.right * 0.4f;
-                                        p.Position = lastPos + offset;
-                                    }
-                                    else
-                                        p.Position = lastPos - offset;
-
-                                    counter++;
+                                    Vector3 pos = new(
+                                        (Mathf.Sin(angle) * 4f) + center.x,
+                                        center.y,
+                                        (Mathf.Cos(angle) * 4f) + center.z
+                                        ); // 4f is for radius of the circle
 
                                     p.EnableEffect<CustomPlayerEffects.Ensnared>();
+                                    p.Position = pos;
+                                    counter++;
                                 }
                             }
                             else
@@ -277,9 +279,17 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                     0.5f,
                                     () =>
                                     {
-                                        if (!p.IsConnected || TalkRooms.ContainsKey(player))
+                                        if (!p.IsConnected())
                                             return;
-                                        p.Position += GetPosByCounter(counter++);
+
+                                        Vector3 pos = new(
+                                            (Mathf.Sin(angle) * 2f) + p.Position.x,
+                                            p.Position.y,
+                                            (Mathf.Cos(angle) * 2f) + p.Position.z
+                                            ); // 2f is for radius of the circle
+
+                                        p.Position = pos;
+                                        counter++;
                                     },
                                     "TalkTeleport");
                             }
@@ -293,6 +303,51 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
             success = true;
             return new[] { "Done" };
+        }
+
+        public struct TalkPlayerInfo
+        {
+            public Vector3 Position { get; set; }
+
+            public RoleType RoleType { get; set; }
+
+            public float HP { get; set; }
+
+            public float AHP { get; set; }
+
+            public Exiled.API.Features.Items.Item[] Inventory { get; set; }
+
+            public ushort Ammo12gauge { get; set; }
+
+            public ushort Ammo44cal { get; set; }
+
+            public ushort Ammo556x45 { get; set; }
+
+            public ushort Ammo762x39 { get; set; }
+
+            public ushort Ammo9x19 { get; set; }
+
+            public int UnitIndex { get; set; }
+
+            public byte UnitType { get; set; }
+
+            public TalkPlayerEffects[] PlayerEffects { get; set; }
+
+            public struct TalkPlayerEffects
+            {
+                public TalkPlayerEffects(CustomPlayerEffects.PlayerEffect effect, float duration, byte intensity)
+                {
+                    this.Effect = effect;
+                    this.Duration = duration;
+                    this.Intensity = intensity;
+                }
+
+                public CustomPlayerEffects.PlayerEffect Effect { get; set; }
+
+                public float Duration { get; set; }
+
+                public byte Intensity { get; set; }
+            }
         }
 
         internal static readonly List<Vector3> AfterDecontRooms = new();
@@ -310,27 +365,12 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                 "jail5",
             });
 
-        private static Vector3 GetPosByCounter(int counter)
-        {
-            return counter switch
-            {
-                0 => new Vector3(0.5f, -0.2f, 0),
-                1 => new Vector3(0, -0.2f, 0.5f),
-                2 => new Vector3(-0.5f, -0.2f, 0),
-                3 => new Vector3(0, -0.2f, -.5f),
-                4 => new Vector3(0.5f, -0.2f, 0.5f),
-                5 => new Vector3(0.5f, -0.2f, -0.5f),
-                6 => new Vector3(-0.5f, -0.2f, 0.5f),
-                7 => new Vector3(-0.5f, -0.2f, -0.5f),
-                _ => new Vector3(0, -0.2f, 0)
-            };
-        }
-
         private static IEnumerator<float> ShowHint(Player p)
         {
             if (!Active.TryGetValue(p.UserId, out var playerIds))
                 yield break;
-            Player[] players = playerIds.Select(RealPlayers.Get).Where(x => x != null).ToArray();
+
+            Player[] players = playerIds.Select(RealPlayers.Get).Where(x => x is not null).ToArray();
             foreach (var player in players)
             {
                 player.SetGUI(

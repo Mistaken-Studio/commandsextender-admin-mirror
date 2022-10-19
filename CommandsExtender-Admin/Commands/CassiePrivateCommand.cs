@@ -12,7 +12,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class CassiePrivateCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class CassiePrivateCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "cassie_p";
 

@@ -13,7 +13,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class C106Command : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class C106Command : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "c106";
 

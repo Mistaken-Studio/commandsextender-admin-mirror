@@ -14,7 +14,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class ClearMapCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class ClearMapCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "clearmap";
 

@@ -11,7 +11,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class GiveRankCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class GiveRankCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "giverank";
 

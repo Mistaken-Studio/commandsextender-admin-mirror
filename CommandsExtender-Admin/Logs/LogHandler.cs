@@ -13,7 +13,7 @@ using Mistaken.API.Extensions;
 
 namespace Mistaken.CommandsExtender.Admin.Logs
 {
-    internal class LogHandler : Module
+    internal sealed class LogHandler : Module
     {
         public LogHandler(IPlugin<IConfig> plugin)
             : base(plugin)

@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace Mistaken.CommandsExtender.Admin
 {
-    internal class CommandsHandler : Module
+    internal sealed class CommandsHandler : Module
     {
         public static readonly Dictionary<string, (Player, Player)> LastAttackers = new();
         public static readonly Dictionary<string, (Player, Player)> LastVictims = new();
@@ -29,7 +29,7 @@ namespace Mistaken.CommandsExtender.Admin
         {
         }
 
-        public override string Name => "CommandsExtender";
+        public override string Name => nameof(CommandsHandler);
 
         public override void OnEnable()
         {
@@ -65,9 +65,9 @@ namespace Mistaken.CommandsExtender.Admin
         {
             TalkCommand.AfterWarHeadRooms.Add(RoleType.ChaosConscript.GetRandomSpawnProperties().Item1);
             TalkCommand.AfterWarHeadRooms.Add(RoleType.NtfCaptain.GetRandomSpawnProperties().Item1);
-            TalkCommand.AfterWarHeadRooms.Add(new Vector3(87f, 996f, -48f)); // Elevator near Gate B
-            TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, -58f)); // Bridge
-            TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, 1f)); // Crossroads near Gate A elevator
+            TalkCommand.AfterWarHeadRooms.Add(new(87f, 996f, -48f)); // Elevator near Gate B
+            TalkCommand.AfterWarHeadRooms.Add(new(0f, 1003f, -58f)); // Bridge
+            TalkCommand.AfterWarHeadRooms.Add(new(0f, 1003f, 1f)); // Crossroads near Gate A elevator
 
             TalkCommand.AfterDecontRooms.Add(Room.List.First(x => x.Type == RoomType.HczChkpA).Position + Vector3.up);
             TalkCommand.AfterDecontRooms.Add(Room.List.First(x => x.Type == RoomType.HczChkpB).Position + Vector3.up);
@@ -150,6 +150,7 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (!ev.Player.IsReadyPlayer())
                 return;
+
             if (MuteAllCommand.Muted.Contains(ev.Player.UserId))
                 MuteAllCommand.Muted.Remove(ev.Player.UserId);
 
@@ -157,31 +158,35 @@ namespace Mistaken.CommandsExtender.Admin
             {
                 foreach (var playerId in players)
                 {
-                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Exiled.API.Features.Items.Item[] Inventory, ushort Ammo12gauge, ushort Ammo44cal, ushort Ammo556x45, ushort Ammo762x39, ushort Ammo9x19, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
+                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out TalkCommand.TalkPlayerInfo data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
                         var p = RealPlayers.Get(playerId);
-                        if (p == null)
+                        if (p is null)
                             continue;
+
                         var old = RespawnManager.CurrentSequence();
                         RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-                        p.Role.Type = data.Role;
+                        p.Role.Type = data.RoleType;
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         if (RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.UnitName = array[data.UnitIndex];
+
                         RespawnManager.Singleton._curSequence = old;
                         this.CallDelayed(
                             0.5f,
                             () =>
                             {
-                                if (!p.IsConnected)
+                                if (!p.IsConnected())
                                     return;
-                                p.Position = data.Pos;
+
+                                p.Position = data.Position;
                                 p.Health = data.HP;
-                                p.ArtificialHealth = data.AP;
+                                p.ArtificialHealth = data.AHP;
                                 p.ClearInventory();
                                 foreach (var item in data.Inventory)
                                     p.AddItem(item);
+
                                 p.Ammo[ItemType.Ammo12gauge] = data.Ammo12gauge;
                                 p.Ammo[ItemType.Ammo44cal] = data.Ammo44cal;
                                 p.Ammo[ItemType.Ammo556x45] = data.Ammo556x45;
@@ -190,10 +195,10 @@ namespace Mistaken.CommandsExtender.Admin
                                 p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName.Trim();
                                 p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
 
-                                foreach (var (effect, dur, intensity) in data.effects)
+                                foreach (var e in data.PlayerEffects)
                                 {
-                                    effect.Intensity = intensity;
-                                    effect.ServerChangeDuration(dur);
+                                    e.Effect.Intensity = e.Intensity;
+                                    e.Effect.ServerChangeDuration(e.Duration);
                                 }
                             },
                             "PlayerLeft");
@@ -214,12 +219,15 @@ namespace Mistaken.CommandsExtender.Admin
 
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
                 ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.Handler.Type} | {ev.Amount}");
+
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out var attackers))
                 LastAttackers[ev.Target.UserId] = (null, ev.Attacker);
             else
                 LastAttackers[ev.Target.UserId] = (attackers.Item1, ev.Attacker);
+
             if (ev.Attacker?.UserId == null)
                 return;
+
             if (!LastVictims.TryGetValue(ev.Attacker.UserId, out var victims))
                 LastVictims[ev.Attacker.UserId] = (null, ev.Target);
             else
@@ -230,12 +238,15 @@ namespace Mistaken.CommandsExtender.Admin
         {
             if (!ev.Target.IsReadyPlayer())
                 return;
+
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out var attackers))
                 LastAttackers[ev.Target.UserId] = (ev.Killer, null);
             else
                 LastAttackers[ev.Target.UserId] = (ev.Killer, attackers.Item2);
+
             if (ev.Killer?.UserId == null)
                 return;
+
             if (!LastVictims.TryGetValue(ev.Killer.UserId, out var victims))
                 LastVictims[ev.Killer.UserId] = (ev.Target, null);
             else
@@ -252,18 +263,23 @@ namespace Mistaken.CommandsExtender.Admin
 
             if (MDestroyCommand.Active.Contains(ev.Player.Id))
                 ev.Door.BreakDoor();
+
             MDestroyCommand.Active.Remove(ev.Player.Id);
             if (MOpenCommand.Active.Contains(ev.Player.Id))
                 ev.Door.IsOpen = true;
+
             MOpenCommand.Active.Remove(ev.Player.Id);
             if (MCloseCommand.Active.Contains(ev.Player.Id))
                 ev.Door.IsOpen = false;
+
             MCloseCommand.Active.Remove(ev.Player.Id);
             if (MLockCommand.Active.Contains(ev.Player.Id))
                 ev.Door.ChangeLock(ev.Door.DoorLockType | DoorLockType.AdminCommand);
+
             MLockCommand.Active.Remove(ev.Player.Id);
             if (MUnlockCommand.Active.Contains(ev.Player.Id))
                 ev.Door.ChangeLock(ev.Door.DoorLockType & ~DoorLockType.AdminCommand);
+
             MUnlockCommand.Active.Remove(ev.Player.Id);
         }
 

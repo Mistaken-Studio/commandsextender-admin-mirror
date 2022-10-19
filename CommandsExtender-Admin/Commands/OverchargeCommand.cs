@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class OverchargeCommand : IBetterCommand, IPermissionLocked
+    internal sealed class OverchargeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "overcharge";
 

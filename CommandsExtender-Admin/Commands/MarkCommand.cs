@@ -14,7 +14,7 @@ using Mistaken.API.Extensions;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class MarkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class MarkCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "mark";
 

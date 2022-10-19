@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class RespawnCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class RespawnCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "respawn";
 

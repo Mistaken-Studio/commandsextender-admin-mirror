@@ -12,7 +12,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class VanishCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class VanishCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "vanish";
 

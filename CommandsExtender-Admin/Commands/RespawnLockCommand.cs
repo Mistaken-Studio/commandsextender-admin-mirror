@@ -10,7 +10,7 @@ using Mistaken.API.Commands;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class RespawnLockCommand : IBetterCommand, IUsageProvider
+    internal sealed class RespawnLockCommand : IBetterCommand, IUsageProvider
     {
         public override string Description => "Blocks respawns";
 

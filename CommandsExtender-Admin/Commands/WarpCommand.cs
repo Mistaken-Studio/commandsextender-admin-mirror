@@ -14,7 +14,7 @@ using UnityEngine;
 namespace Mistaken.CommandsExtender.Admin.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    internal class WarpCommand : IBetterCommand, IPermissionLocked, IUsageProvider
+    internal sealed class WarpCommand : IBetterCommand, IPermissionLocked, IUsageProvider
     {
         public string Permission => "warp";
 
