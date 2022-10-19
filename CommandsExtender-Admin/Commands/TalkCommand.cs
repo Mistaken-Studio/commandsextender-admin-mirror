@@ -150,7 +150,11 @@ namespace Mistaken.CommandsExtender.Admin.Commands
             }
             else
             {
-                var targets = (args[0] + $".{player.Id}").Split('.').Select(int.Parse).ToHashSet().ToArray();
+                int[] targets;
+                if (args.Length == 0)
+                    targets = new int[] { player.Id };
+                else
+                    targets = ($"{player.Id}." + args[0]).Split('.').Select(int.Parse).ToHashSet().ToArray();
 
                 if (SavedInfo.Any(x => targets.Any(y => y == x.Key)))
                 {
@@ -236,7 +240,9 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                             {
                                 var center = room.transform.Find("SpawnPoint").position;
 
-                                if (p.CheckPermissions(PlayerPermissions.AdminChat))
+                                // if (p.CheckPermissions(PlayerPermissions.AdminChat))
+                                //     p.Position = center;
+                                if (i == 0)
                                     p.Position = center;
                                 else
                                 {
