@@ -104,13 +104,24 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                             p.ArtificialHealth = data.AHP;
                             p.ClearInventory();
                             foreach (var item in data.Inventory)
+                            {
                                 p.AddItem(item);
+                                if (item is Exiled.API.Features.Items.Scp330 scp)
+                                {
+                                    Timing.CallDelayed(0.5f, () =>
+                                    {
+                                        item.Base.Owner = p.ReferenceHub;
+                                        scp.Base.ServerRefreshBag();
+                                    });
+                                }
+                            }
 
                             p.Ammo[ItemType.Ammo12gauge] = data.Ammo12gauge;
                             p.Ammo[ItemType.Ammo44cal] = data.Ammo44cal;
                             p.Ammo[ItemType.Ammo556x45] = data.Ammo556x45;
                             p.Ammo[ItemType.Ammo762x39] = data.Ammo762x39;
                             p.Ammo[ItemType.Ammo9x19] = data.Ammo9x19;
+                            p.Inventory.ServerSendAmmo();
 
                             foreach (var e in data.PlayerEffects)
                             {
@@ -190,9 +201,10 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                     TalkRooms[player] = CustomStructuresIntegration.SpawnAsset(new(1000f + (100f * (TalkRooms.Count - 1f)), 1000f, 1000f));
                 }
 
-                for (int i = 0; i < talkPlayers.Count; i++)
+                int normalPlayers = talkPlayers.Where(x => !x.CheckPermissions(PlayerPermissions.AdminChat)).Count();
+                int counter = 0;
+                foreach (var p in talkPlayers)
                 {
-                    var p = talkPlayers[i];
                     p.SetSessionVariable(SessionVarType.TALK, true);
                     TalkPlayerInfo info = new()
                     {
@@ -234,15 +246,13 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                         0.5f,
                         () =>
                         {
-                            float angle = 2f * (float)System.Math.PI / (i + 1); // calculate angle for each player in the circle
+                            float angle = counter * 2f * (float)System.Math.PI / normalPlayers;
 
                             if (TalkRooms.TryGetValue(player, out var room))
                             {
                                 var center = room.transform.Find("SpawnPoint").position;
 
-                                // if (p.CheckPermissions(PlayerPermissions.AdminChat))
-                                //     p.Position = center;
-                                if (i == 0)
+                                if (p.CheckPermissions(PlayerPermissions.AdminChat))
                                     p.Position = center;
                                 else
                                 {
@@ -254,6 +264,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
 
                                     p.EnableEffect<CustomPlayerEffects.Ensnared>();
                                     p.Position = pos;
+                                    counter++;
                                 }
                             }
                             else
@@ -278,6 +289,7 @@ namespace Mistaken.CommandsExtender.Admin.Commands
                                             ); // 2f is for radius of the circle
 
                                         p.Position = pos;
+                                        counter++;
                                     },
                                     "TalkTeleport");
                             }
